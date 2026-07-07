@@ -1,0 +1,20 @@
+﻿LEGION GO AMD 26.6.2 TOOLKIT
+PUBLIC BETA v1.0 - SHA-256 MANIFEST
+============================================================
+
+Included release files:
+
+BDB22718D81326B60DCA1358551CEEE1D447EE7B34AC3B820E6D6F09D40E58C6  01-Prepare-Build-Sign-And-Enter-Test-Signing.ps1
+29DBCB7AC750AAF47815915AEC7C01211F4934AB330DEDDF8A13EEF524ED9A66  02-Install-Driver-And-Verify-Normal-Signing.ps1
+28C8E2A30D348BFC27EE1336AFD2E4A301E8424FF32AD9FA1DBB3EF2C47A87AA  03-Install-AMD-Software-And-Reboot.ps1
+5DFA3E65529DDE78A2AEA03AA41A7C1B4D344578C1EEA0643638004477668CEF  04-Final-Persistence-Audit.ps1
+BBBAA6932FDF216CA212C5AA5C047C32968ADBCE1022863EE2111B77B46E2530  Instructions.txt
+
+Required external AMD installer (NOT included in this ZIP):
+
+3FD0073C74E0D043558087511F5624ED42D1241E852C2A9ED5AC5C80F158F893  whql-amd-software-adrenalin-edition-26.6.2-win11-c.exe
+
+Expected installer size: 1,630,707,976 bytes
+
+The ZIP archive hash is published separately because an archive cannot
+contain its own final SHA-256 value without changing that value.
