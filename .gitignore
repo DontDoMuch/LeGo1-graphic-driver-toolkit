@@ -1,0 +1,38 @@
+# User-supplied AMD installer and proprietary binaries
+whql-amd-software-adrenalin-edition-26.6.2-win11-c.exe
+*.exe
+*.msi
+*.msix
+*.appx
+*.cab
+*.cat
+*.sys
+*.dll
+
+# Local logs, reports, state, and extracted work
+Logs/
+logs/
+reports/
+state/
+extracted/
+temp/
+*.log
+*.etl
+*.dmp
+
+# Private signing material
+*.pfx
+*.p12
+*.pvk
+*.snk
+*.cer
+*.crt
+*.key
+
+# Editor and OS files
+.vs/
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+.DS_Store
