@@ -49,6 +49,8 @@ whql-amd-software-adrenalin-edition-26.6.2-win11-c.exe
 Size:   1,630,707,976 bytes
 SHA-256:
 3FD0073C74E0D043558087511F5624ED42D1241E852C2A9ED5AC5C80F158F893
+
+You can find this installer on AMD webpage here https://www.amd.com/en/resources/support-articles/release-notes/RN-RAD-WIN-26-6-2.html
 ```
 
 Scripts 1 and 3 independently verify the installer's filename, size, SHA-256, and digital signature.
