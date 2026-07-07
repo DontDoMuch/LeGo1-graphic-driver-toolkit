@@ -1,0 +1,121 @@
+name: Bug report
+description: Report a reproducible failure in the documented Public Beta workflow
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Stop at the failed script. Do not skip ahead. Remove personal information and never post recovery keys, private certificates, or account secrets.
+
+  - type: dropdown
+    id: release
+    attributes:
+      label: Release
+      options:
+        - Public Beta v1.0
+        - Modified or development build
+    validations:
+      required: true
+
+  - type: dropdown
+    id: script
+    attributes:
+      label: Failed script
+      options:
+        - Script 1
+        - Script 2
+        - Script 3
+        - Script 4
+        - Release verification or extraction
+    validations:
+      required: true
+
+  - type: input
+    id: hardware
+    attributes:
+      label: Device and GPU hardware ID
+      placeholder: "Original Legion Go; PCI\\VEN_1002&DEV_15BF&SUBSYS_381217AA"
+    validations:
+      required: true
+
+  - type: input
+    id: windows
+    attributes:
+      label: Windows edition and build
+      placeholder: "Windows 11 24H2, build ..."
+    validations:
+      required: true
+
+  - type: input
+    id: baseline
+    attributes:
+      label: Starting display-driver version and INF
+      placeholder: "32.0.23017.1001 / oemXX.inf"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: secureboot
+    attributes:
+      label: Secure Boot state at failure
+      options:
+        - Enabled
+        - Disabled
+        - Unknown
+    validations:
+      required: true
+
+  - type: dropdown
+    id: testsigning
+    attributes:
+      label: Test Signing state at failure
+      options:
+        - Enabled
+        - Disabled
+        - Unknown
+    validations:
+      required: true
+
+  - type: textarea
+    id: command
+    attributes:
+      label: Exact command used
+      render: powershell
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Complete relevant terminal output
+      description: Include the first failed check and terminating error.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: log
+    attributes:
+      label: Relevant transcript or log excerpt
+      description: "Logs are under C:\\ProgramData\\LegionGo-AMD-26.6.2\\Logs. Redact personal data."
+      render: text
+
+  - type: textarea
+    id: changes
+    attributes:
+      label: Changes from the documented workflow
+      placeholder: Different installer, edited script, DDU use, manual package changes, or none
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I used the original Legion Go and removed secrets or recovery information.
+          required: true
+        - label: I stopped at the failed script and did not skip ahead.
+          required: true
