@@ -64,6 +64,36 @@ Published SHA-256:
 
 Also attach or paste the standalone ZIP hash record.
 
+
+## Ko-fi and the GitHub Sponsor button
+
+The repository is already configured with:
+
+```yaml
+ko_fi: dontdomuch
+```
+
+in `.github/FUNDING.yml`.
+
+After the files are committed to the default branch:
+
+1. Open the repository on GitHub.
+2. Open **Settings**.
+3. Under **General → Features**, enable **Sponsorships** if it is not already
+   enabled.
+4. Confirm that the repository displays a **Sponsor** button.
+5. Open the button and verify that it leads to:
+   `https://ko-fi.com/dontdomuch`
+
+The README and `FUNDING.md` also contain the direct Ko-fi link.
+
+Keep the language in `FUNDING.md` and
+`docs/HARDWARE-FUNDING.md`: donations fund access to hardware and research,
+not guaranteed device support or release dates.
+
+Do not publish payment credentials, API keys, recovery information, or a
+donation link controlled by an unrelated third party.
+
 ## Do not upload
 
 - AMD's installer

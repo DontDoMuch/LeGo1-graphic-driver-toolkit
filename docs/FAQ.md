@@ -51,3 +51,19 @@ No. Any edit changes the file hash and creates an unvalidated build.
 ## Is Public Beta v1.0 guaranteed to work?
 
 No. It completed an end-to-end test on the documented device and baseline, but Windows installations and device states can differ.
+
+## What do donations fund?
+
+They may fund additional handhelds, direct acquisition costs, recovery media,
+replacement parts, adapters, and continued validation work.
+
+## Does donating guarantee support for my handheld?
+
+No. A donation allows research and hands-on testing to occur. Support is
+announced only after the exact device completes the full validation process.
+
+## Why must the project own or retain a test device?
+
+A one-time installation test is not enough. Future AMD drivers, Windows
+updates, regressions, and recovery testing may require repeated access to the
+same hardware.
