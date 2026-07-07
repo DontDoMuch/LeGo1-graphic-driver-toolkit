@@ -32,6 +32,16 @@ Failed checks: 0
 TOOLKIT COMPLETE: True
 ```
 
+
+### Repository documentation
+
+- Added a transparent funding policy for future hardware acquisition
+- Added a hardware funding and validation tracker
+- Activated the official Ko-fi funding link:
+  `https://ko-fi.com/dontdomuch`
+- Configured GitHub's Sponsor button through `.github/FUNDING.yml`
+- Clarified that donations do not guarantee device support or release dates
+
 ### Release integrity
 
 ```text

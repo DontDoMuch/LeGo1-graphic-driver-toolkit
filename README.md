@@ -49,8 +49,6 @@ whql-amd-software-adrenalin-edition-26.6.2-win11-c.exe
 Size:   1,630,707,976 bytes
 SHA-256:
 3FD0073C74E0D043558087511F5624ED42D1241E852C2A9ED5AC5C80F158F893
-
-You can find this installer on AMD webpage here https://www.amd.com/en/resources/support-articles/release-notes/RN-RAD-WIN-26-6-2.html
 ```
 
 Scripts 1 and 3 independently verify the installer's filename, size, SHA-256, and digital signature.
@@ -82,6 +80,38 @@ With Secure Boot already disabled, the validated path normally uses seven script
 The exact Public Beta v1.0 sources are preserved under [`releases/Public-Beta-v1.0`](releases/Public-Beta-v1.0/).
 
 Release files are immutable. Proposed changes should target a future version rather than silently modifying v1.0.
+
+
+## Help fund testing on more handhelds
+
+Public Beta v1.0 was developed and validated on hardware personally available
+to the project. Expanding support to another Ryzen Z1 Extreme handheld requires
+access to that exact device for package analysis, recovery testing, repeated
+reboots, and a complete end-to-end validation run.
+
+Donations can help fund:
+
+- Additional handhelds for dedicated testing
+- Storage, adapters, replacement parts, and recovery media
+- Shipping and other direct hardware-testing expenses
+- Continued driver research and validation work
+
+A donation does **not** purchase support for a device, guarantee compatibility,
+establish a release date, or create priority access. A model will be described
+as supported only after the complete workflow has passed on that exact
+hardware.
+
+Devices acquired with project funds remain available as project test hardware
+so later driver releases and regressions can be evaluated on them.
+
+See [Funding and donations](FUNDING.md) and the
+[hardware funding tracker](docs/HARDWARE-FUNDING.md).
+
+**Support hardware testing on Ko-fi:**
+[ko-fi.com/dontdomuch](https://ko-fi.com/dontdomuch)
+
+GitHub also displays this Ko-fi page through the repository's **Sponsor**
+button.
 
 ## Documentation
 
