@@ -1,0 +1,502 @@
+﻿LEGION GO AMD 26.6.2 TOOLKIT
+PUBLIC BETA v1.1 - INSTALLATION INSTRUCTIONS
+============================================================
+
+READ THIS FILE COMPLETELY BEFORE STARTING.
+
+
+1. PUBLIC BETA STATUS AND RISK
+------------------------------
+
+This toolkit is an independent community project. It is not produced,
+endorsed, or supported by Lenovo, AMD, or Microsoft.
+
+Public Beta v1.1 has completed a full end-to-end installation and
+post-restart persistence test on an original Lenovo Legion Go after more than
+seven days of hands-on development and alpha testing. That does not guarantee
+the same result on every Windows installation.
+
+The scripts modify the display-driver package, Driver Store, local certificate
+trust, catalog registration, AMD Software, AppX registration/provisioning,
+AMD/Lenovo compatibility metadata, and Windows Test Signing configuration.
+
+Use the toolkit at your own risk. Back up important files first. Keep the
+Legion Go connected to power. If Windows Device Encryption or BitLocker is
+enabled, make sure the recovery key is available before changing Secure Boot
+or boot configuration.
+
+
+2. SUPPORTED CONFIGURATION
+--------------------------
+
+This Public Beta is intended only for:
+
+- The original Lenovo Legion Go.
+- GPU hardware identity:
+  PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA
+- 64-bit Windows 11, build 22000 or newer.
+- The validated Lenovo OEM display-driver baseline:
+  32.0.23017.1001
+- At least 12 GB free on the C: drive/workspace volume.
+- The exact official AMD 26.6.2 Windows 11 "-c" installer listed below.
+
+Do not use this toolkit on another Legion model, another AMD device, or a
+different GPU hardware identity. Script 1 performs its own hardware and
+platform checks and must pass before any later script is run.
+
+
+3. REQUIRED AMD INSTALLER
+-------------------------
+
+The AMD installer is not included in this toolkit and should not be
+redistributed with it.
+
+Obtain this exact installer from an official AMD source and place it in the
+same folder as the four PowerShell scripts:
+
+Filename:
+whql-amd-software-adrenalin-edition-26.6.2-win11-c.exe
+
+Expected size:
+1,630,707,976 bytes
+
+Expected SHA-256:
+3FD0073C74E0D043558087511F5624ED42D1241E852C2A9ED5AC5C80F158F893
+
+Script 1 and Script 3 independently verify the filename, size, SHA-256, and
+digital signature. A renamed, incomplete, modified, or different AMD package
+will be rejected.
+
+
+4. REQUIRED TOOLKIT FILES
+-------------------------
+
+Extract the toolkit to:
+
+C:\Users\<YOUR USERNAME>\Downloads\LeGo-toolkit
+
+The folder must contain:
+
+01-Prepare-Build-Sign-And-Enter-Test-Signing.ps1
+02-Install-Driver-And-Verify-Normal-Signing.ps1
+03-Install-AMD-Software-And-Reboot.ps1
+04-Final-Persistence-Audit.ps1
+Instructions.txt
+whql-amd-software-adrenalin-edition-26.6.2-win11-c.exe
+
+Expected Public Beta v1.1 script SHA-256 values:
+
+01-Prepare-Build-Sign-And-Enter-Test-Signing.ps1
+BDB22718D81326B60DCA1358551CEEE1D447EE7B34AC3B820E6D6F09D40E58C6
+
+02-Install-Driver-And-Verify-Normal-Signing.ps1
+EFFF626EE42DA2456DCF4EE0007E525F16E83B0057A112279FF1E35F05D155B6
+
+03-Install-AMD-Software-And-Reboot.ps1
+28C8E2A30D348BFC27EE1336AFD2E4A301E8424FF32AD9FA1DBB3EF2C47A87AA
+
+04-Final-Persistence-Audit.ps1
+5DFA3E65529DDE78A2AEA03AA41A7C1B4D344578C1EEA0643638004477668CEF
+
+To display the hashes after opening an elevated Windows PowerShell window:
+
+Get-FileHash "$env:USERPROFILE\Downloads\LeGo-toolkit\*.ps1" -Algorithm SHA256
+Get-FileHash "$env:USERPROFILE\Downloads\LeGo-toolkit\whql-amd-software-adrenalin-edition-26.6.2-win11-c.exe" -Algorithm SHA256
+
+
+5. BEFORE RUNNING SCRIPT 1
+--------------------------
+
+1. Start from the validated Lenovo OEM display driver 32.0.23017.1001.
+
+2. Save all work and close unnecessary applications.
+
+3. Connect the Legion Go to AC power.
+
+4. Keep all toolkit files together. Do not rename, move, replace, or edit them
+   while the workflow is in progress.
+
+5. Do not run DDU as part of this procedure.
+
+6. Do not manually install another AMD driver or AMD Software package during
+   the workflow.
+
+7. Do not manually enable or disable Test Signing between script runs.
+
+8. Do not delete either of these working/state folders while the workflow is
+   in progress:
+
+   C:\AMD\LegionGo-26.6.2
+   C:\ProgramData\LegionGo-AMD-26.6.2
+
+9. Open WINDOWS POWERSHELL as Administrator.
+
+   Right-click Start, choose Windows PowerShell (Admin) or Terminal (Admin),
+   and open a Windows PowerShell 5.1 tab.
+
+10. Do not use "Run with PowerShell" from the script's right-click menu.
+    Launch every script with the exact command shown in this guide.
+
+The -ExecutionPolicy Bypass option used below applies only to that PowerShell
+process. It does not permanently change the computer's execution policy.
+
+
+6. PREREQUISITES AND INTERNET USE
+---------------------------------
+
+Script 1 checks for:
+
+- PowerShell 7.4 or newer.
+- 7-Zip command-line tools.
+- Matching Windows SDK and WDK tools at build 10.0.28000 or newer.
+- The supported Windows and Legion Go hardware.
+- At least 12 GB free space.
+
+When a required tool is missing, Script 1 lists the exact WinGet packages and
+asks for permission before installing anything:
+
+- Microsoft.PowerShell
+- 7zip.7zip
+- Microsoft.WindowsSDK.10.0.28000
+- Microsoft.WindowsWDK.10.0.28000
+
+Internet access may be needed only for approved missing-prerequisite
+installation through WinGet. The toolkit does not download the AMD installer
+and does not accept AMD's license agreement on the user's behalf.
+
+
+7. EXPECTED RUN COUNT AND RESTARTS
+----------------------------------
+
+With Secure Boot already disabled:
+
+- Script 1: two runs
+- Script 2: two runs
+- Script 3: two runs
+- Script 4: one run
+- Total: seven script launches
+- Expected Windows restarts: three
+
+With Secure Boot initially enabled:
+
+- Script 1 may require one additional run and one firmware/UEFI restart.
+- Total: normally eight script launches.
+- Expected restarts: one firmware/UEFI restart plus three Windows restarts.
+
+Every restart is presented for confirmation. The public scripts do not force
+applications closed. If a restart is declined, restart Windows manually and
+rerun the same numbered script before continuing.
+
+
+8. SCRIPT 1 - PREPARE AND SIGN THE DRIVER PACKAGE
+--------------------------------------------------
+
+Run:
+
+PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\Downloads\LeGo-toolkit\01-Prepare-Build-Sign-And-Enter-Test-Signing.ps1"
+
+Script 1:
+
+- Checks Windows, hardware, disk space, and required tools.
+- Can install missing prerequisites through WinGet after confirmation.
+- Verifies and extracts the exact user-supplied AMD installer.
+- Reproduces the validated corrected 125-file driver package.
+- Builds the corrected INF and canonical amdgcf.dat.
+- Creates and locally signs a unique corrected-driver catalog.
+- Verifies all package, catalog, certificate, and payload identities.
+- Prepares Windows Test Signing.
+- Does not install or bind the corrected display driver.
+
+IF SECURE BOOT IS ENABLED:
+
+Script 1 will report that Secure Boot must be disabled and may ask:
+
+Restart into UEFI firmware settings now? [Y/N]
+
+Enter Y when ready. In UEFI, manually disable Secure Boot, save the setting,
+and start Windows. The script cannot change the Secure Boot setting itself.
+
+After Windows starts, run Script 1 again with the same command.
+
+WHEN TEST SIGNING MUST BE ACTIVATED:
+
+Script 1 may ask:
+
+Restart Windows now? [Y/N]
+
+Enter Y after saving work. After Windows restarts and you sign in, run Script 1
+again with the same command.
+
+DO NOT RUN SCRIPT 2 until Script 1 ends with:
+
+SCRIPT 1 PASS: True
+Ready for Script 2: True
+
+
+9. SCRIPT 2 - INSTALL AND VERIFY THE CORRECTED DRIVER
+------------------------------------------------------
+
+First run:
+
+PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\Downloads\LeGo-toolkit\02-Install-Driver-And-Verify-Normal-Signing.ps1"
+
+Script 2 first-run actions include:
+
+- Revalidating all required Script 1 state.
+- Showing the currently active display-driver state.
+- Asking before changing the installed driver.
+- Installing and force-binding the corrected AMD 26.6.2 display package.
+- Verifying the active corrected INF and loaded AMD kernel.
+- Importing the per-user public certificate into the required local trust
+  stores.
+- Registering AMD's official Microsoft-signed catalog.
+- Configuring Test Signing OFF for the next boot.
+
+When asked:
+
+Install the corrected driver now? [Y/N]
+
+Enter Y to continue.
+
+The display may flash, reset, or briefly go dark while the driver is bound.
+
+When asked:
+
+Restart Windows now? [Y/N]
+
+Save all work, then enter Y.
+
+After Windows restarts and you sign in, run Script 2 again with the exact same
+command.
+
+The second run verifies normal-signing persistence, including:
+
+- Driver version 32.0.31021.1015.
+- Corrected INF hash.
+- Loaded amdkmdag.sys hash and running kernel service.
+- GPU status OK and problem code 0.
+- Test Signing disabled.
+- Corrected package and local catalog persistence.
+- Official AMD catalog registration and kernel-policy validation.
+- Lenovo display extension attachment.
+- AMDUWP health.
+- Relevant startup and Code Integrity events.
+
+DO NOT RUN SCRIPT 3 until Script 2 ends with:
+
+SCRIPT 2 PASS: True
+Ready for Script 3: True
+
+
+10. SCRIPT 3 - INSTALL AND VALIDATE AMD SOFTWARE
+-------------------------------------------------
+
+First run:
+
+PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\Downloads\LeGo-toolkit\03-Install-AMD-Software-And-Reboot.ps1"
+
+Script 3:
+
+- Verifies the corrected driver and normal-signing state.
+- Verifies the exact AMD installer beside the script.
+- Extracts and verifies the exact native AMD Settings .2099 MSI.
+- Installs or repairs native AMD Software .2099.
+- Installs and verifies native RSXCM 22.10.0.0.
+- Retires the conflicting legacy .2089 MSI and Store AppX state.
+- Restores the validated Lenovo compatibility metadata.
+- Preserves AMDUWP 32.2530.0.0.
+- Refreshes shell associations without terminating Explorer.
+- Opens native AMD Software for visual confirmation.
+- Does not require Microsoft Store.
+
+When asked:
+
+Continue with Script 3 installed-system changes? [Y/N]
+
+Enter Y to continue.
+
+When AMD Software opens, confirm BOTH of these before typing YES:
+
+1. AMD Software shows the normal dashboard.
+2. Right-clicking an empty area of the Windows desktop shows exactly one
+   "AMD: Radeon Software" entry.
+
+Type the full word:
+
+YES
+
+Do not type YES unless both conditions are true.
+
+Script 3 then records its installation result and asks:
+
+Restart Windows now? [Y/N]
+
+Save all work, then enter Y.
+
+After Windows restarts and you sign in, run Script 3 again with the exact same
+command.
+
+The second run checks the saved result against the live post-restart system.
+It should not reinstall AMD Software when the saved and live states both pass.
+
+DO NOT RUN SCRIPT 4 until Script 3 ends with:
+
+SCRIPT 3 PASS: True
+Ready for Script 4: True
+
+
+11. SCRIPT 4 - FINAL PERSISTENCE AUDIT
+--------------------------------------
+
+Run:
+
+PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\Downloads\LeGo-toolkit\04-Final-Persistence-Audit.ps1"
+
+Script 4 is the final read-only audit. It does not install, remove, repair, or
+reconfigure the driver, AMD Software, AppX packages, certificates, registry,
+Secure Boot, or Test Signing.
+
+It verifies:
+
+- Script 3's exact handoff and post-restart boundary.
+- Test Signing is off.
+- Secure Boot state can be read.
+- Corrected driver, INF, GPU health, and loaded kernel.
+- Local corrected-driver catalog and signer trust.
+- AMD's official Microsoft-signed catalog source and CatRoot registration.
+- Kernel-policy verification against the registered official catalog.
+- Lenovo display extension and AMDUWP.
+- Native AMD Settings .2099 MSI and RadeonSoftware.exe.
+- Native RSXCM 22.10.0.0.
+- Complete absence of the legacy .2089 MSI/AppX/context handler.
+- Lenovo CN metadata and ReleaseVersion stability.
+- DxDiag driver version.
+- Relevant GPU and Code Integrity events since boot.
+
+AMD Software opens again for final visual confirmation. Confirm BOTH:
+
+1. AMD Software shows the normal dashboard.
+2. The desktop right-click menu contains exactly one
+   "AMD: Radeon Software" entry.
+
+Then type:
+
+YES
+
+A successful final result ends with:
+
+SCRIPT 4 PASS: True
+Failed checks: 0
+TOOLKIT COMPLETE: True
+
+Script 4 writes:
+
+C:\ProgramData\LegionGo-AMD-26.6.2\final-audit-result.json
+C:\Users\<YOUR USERNAME>\Desktop\LegionGo-AMD-26.6.2-Final-Report.txt
+
+Script 4 is read-only and may be rerun later to perform another persistence
+check.
+
+
+12. COMPLETE NORMAL RUN ORDER
+-----------------------------
+
+When Secure Boot is already disabled:
+
+1. Run Script 1.
+2. Approve the Windows restart.
+3. Run Script 1 again.
+4. Confirm "Ready for Script 2: True."
+5. Run Script 2.
+6. Approve driver installation.
+7. Approve the Windows restart.
+8. Run Script 2 again.
+9. Confirm "Ready for Script 3: True."
+10. Run Script 3.
+11. Approve installed-system changes.
+12. Confirm the dashboard and exactly one context-menu entry with YES.
+13. Approve the Windows restart.
+14. Run Script 3 again.
+15. Confirm "Ready for Script 4: True."
+16. Run Script 4.
+17. Confirm the dashboard and exactly one context-menu entry with YES.
+18. Confirm "TOOLKIT COMPLETE: True."
+
+When Secure Boot is enabled, Script 1 adds a firmware/UEFI restart and one
+additional Script 1 run before the Windows Test Signing restart.
+
+
+13. IF A SCRIPT FAILS OR IS INTERRUPTED
+---------------------------------------
+
+- Stop at the current numbered script.
+- Do not skip to the next script.
+- Read the terminating error and the last [FAIL] line.
+- Rerun the same script after correcting the reported problem.
+- The scripts reuse valid completed work and compare saved state with the live
+  system before skipping an operation.
+- Do not delete state files merely to force a rerun.
+- Do not manually substitute another driver, MSI, AppX package, certificate,
+  or catalog.
+
+Logs are stored under:
+
+C:\ProgramData\LegionGo-AMD-26.6.2\Logs
+
+Workflow state is stored under:
+
+C:\ProgramData\LegionGo-AMD-26.6.2
+
+Driver build and extracted source data are stored under:
+
+C:\AMD\LegionGo-26.6.2
+
+When requesting help, preserve and provide the relevant transcript and the
+complete console output from the failed run.
+
+
+14. SECURE BOOT AFTER COMPLETION
+--------------------------------
+
+Secure Boot must be disabled while Test Signing is being activated for the
+temporary installation phase. Script 2 turns Test Signing off, but the toolkit
+does not automatically re-enable Secure Boot.
+
+For the simplest validated workflow, leave Secure Boot unchanged until all
+four scripts report success.
+
+After the toolkit is complete, Secure Boot may be re-enabled manually if
+desired. After doing so, start Windows and rerun Script 4 to audit the resulting
+state. Script 4 accepts either Secure Boot OFF or ON, but Test Signing must
+remain OFF.
+
+
+15. EXPECTED FINAL STATE
+------------------------
+
+A successful Public Beta v1.1 installation should have:
+
+- AMD display driver 32.0.31021.1015.
+- Corrected INF SHA-256:
+  39BD11386ABFE8CB964902B18159801A486AB22FCFA9C622622F4E6B9B9D901E
+- Loaded amdkmdag.sys SHA-256:
+  EC5E1DF54FEA3A307BD69D5E091E6841A6E9AF2780F0C8C919350A9627D9F6A9
+- GPU status OK and problem code 0.
+- Test Signing OFF.
+- AMD's official Microsoft-signed catalog registered and validated.
+- Lenovo display extension 32.0.23017.1001 attached.
+- AMDUWP 32.2530.0.0 healthy.
+- Native AMD Software .2099 installed.
+- Native RSXCM 22.10.0.0 installed.
+- Legacy AMD Software .2089 MSI and Store AppX absent.
+- Normal native AMD Software dashboard.
+- Exactly one desktop "AMD: Radeon Software" context-menu entry.
+- Lenovo-compatible metadata:
+  CNVersion 25.30.17.01
+  DriverVersion 32.0.23017.1001
+- No Microsoft Store dependency.
+- No relevant GPU or Code Integrity errors in the final audit.
+- A final desktop report showing:
+  SCRIPT 4 PASS: True
+  Failed checks: 0
+  TOOLKIT COMPLETE: True
