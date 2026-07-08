@@ -1,6 +1,6 @@
 # Installation
 
-This page summarizes the tested Public Beta v1.0 workflow. The authoritative release guide is [`releases/Public-Beta-v1.0/Instructions.txt`](../releases/Public-Beta-v1.0/Instructions.txt).
+This page summarizes the tested Public Beta v1.1 workflow. The authoritative release guide is [`releases/Public-Beta-v1.1/Instructions.txt`](../releases/public-Beta-v1.1/Instructions.txt).
 
 ## Before starting
 
