@@ -79,7 +79,7 @@ With Secure Boot already disabled, the validated path normally uses seven script
 
 ## Frozen release files
 
-The exact Public Beta v1.1 sources are preserved under [`releases/Public-Beta-v1.1`](releases/Public-Beta-v1.1/).
+The exact Public Beta v1.1 sources are preserved under [`releases/public-beta-v1.1`](releases/public-beta-v1.1/).
 
 Release files are immutable. Proposed changes should target a future version rather than silently modifying v1.1.
 
