@@ -3,11 +3,11 @@
 A community-built, hardware-gated PowerShell workflow for installing the AMD Software: Adrenalin Edition 26.6.2 display stack on the **original Lenovo Legion Go** while retaining the validated Lenovo integration layer.
 
 > [!WARNING]
-> This is **Public Beta v1.0**, not a universal AMD driver installer. It modifies the display-driver package, Driver Store, certificate trust, catalog registration, AppX state, AMD Software, compatibility metadata, and temporary Windows Test Signing configuration. Read the complete installation guide and back up important data before starting.
+> This is **Public Beta v1.1**, not a universal AMD driver installer. It modifies the display-driver package, Drier Store, certificate trust, catalog registration, AppX state, AMD Software, compatibility metadata, and temporary Windows Test Signing configuration. Read the complete installation guide and back up important data before starting.
 
 ## Project status
 
-Public Beta v1.0 completed a full fresh-OEM, end-to-end installation and post-restart persistence test on an original Legion Go on **July 7, 2026**.
+Public Beta v1.1 completed a full fresh-OEM, end-to-end installation and post-restart persistence test on an original Legion Go on **July 8, 2026**.
 
 The validated final state included:
 
@@ -29,7 +29,7 @@ Validation on one device does not guarantee the same result on every Windows ins
 
 ## Supported target
 
-Public Beta v1.0 is intentionally restricted to:
+Public Beta v1.1 is intentionally restricted to:
 
 - Original Lenovo Legion Go
 - GPU hardware identity `PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA`
@@ -57,8 +57,8 @@ Scripts 1 and 3 independently verify the installer's filename, size, SHA-256, an
 
 ## Start here
 
-1. Download the `Public Beta v1.0` release asset.
-2. Verify its SHA-256: `46B9F4FE778B7661E984008A20961A8FF5B3E7B6596FF9E2EB927AF80AA16469`.
+1. Download the `Public Beta v1.1` release asset.
+2. Verify its SHA-256: `CF315CB840D2AD914405B312965F01C6F643BE1AF2D06912B1941834C2F82413`.
 3. Extract it to `C:\Users\<YOUR USERNAME>\Downloads\LeGo-toolkit`.
 4. Place the exact AMD installer beside the four scripts.
 5. Read `Instructions.txt` completely.
@@ -79,14 +79,14 @@ With Secure Boot already disabled, the validated path normally uses seven script
 
 ## Frozen release files
 
-The exact Public Beta v1.0 sources are preserved under [`releases/Public-Beta-v1.0`](releases/Public-Beta-v1.0/).
+The exact Public Beta v1.0 sources are preserved under [`releases/Public-Beta-v1.1`](releases/Public-Beta-v1.1/).
 
-Release files are immutable. Proposed changes should target a future version rather than silently modifying v1.0.
+Release files are immutable. Proposed changes should target a future version rather than silently modifying v1.1.
 
 
 ## Help fund testing on more handhelds
 
-Public Beta v1.0 was developed and validated on hardware personally available
+Public Beta v1.1 was developed and validated on hardware personally available
 to the project. Expanding support to another Ryzen Z1 Extreme handheld requires
 access to that exact device for package analysis, recovery testing, repeated
 reboots, and a complete end-to-end validation run.
