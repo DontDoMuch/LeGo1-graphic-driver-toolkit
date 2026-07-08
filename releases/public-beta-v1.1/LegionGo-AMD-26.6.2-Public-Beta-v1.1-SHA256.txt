@@ -1,0 +1,21 @@
+Legion Go AMD 26.6.2 Toolkit — Public Beta v1.1
+
+ZIP SHA-256: CF315CB840D2AD914405B312965F01C6F643BE1AF2D06912B1941834C2F82413
+ZIP size: 113811 bytes
+
+File SHA-256 values:
+BDB22718D81326B60DCA1358551CEEE1D447EE7B34AC3B820E6D6F09D40E58C6     216840  LeGo-toolkit/01-Prepare-Build-Sign-And-Enter-Test-Signing.ps1
+EFFF626EE42DA2456DCF4EE0007E525F16E83B0057A112279FF1E35F05D155B6     141261  LeGo-toolkit/02-Install-Driver-And-Verify-Normal-Signing.ps1
+28C8E2A30D348BFC27EE1336AFD2E4A301E8424FF32AD9FA1DBB3EF2C47A87AA      84590  LeGo-toolkit/03-Install-AMD-Software-And-Reboot.ps1
+5DFA3E65529DDE78A2AEA03AA41A7C1B4D344578C1EEA0643638004477668CEF      63167  LeGo-toolkit/04-Final-Persistence-Audit.ps1
+6A9332A01EA91B35094B21E64EC9E53C55CDD11495702DA4057842CDF670D4C1      16461  LeGo-toolkit/Instructions.txt
+
+Release integration checks:
+- Script 1 unchanged from Public Beta v1.0: PASS
+- Script 2 equals validated Public Candidate R3: PASS
+- Script 3 unchanged from Public Beta v1.0: PASS
+- Script 4 unchanged from Public Beta v1.0: PASS
+- Procedural instruction text unchanged: PASS
+- Release references updated from v1.0 to v1.1: PASS
+- Script 2 checksum updated in Instructions.txt: PASS
+- Package contains exactly one root folder and five files: PASS
