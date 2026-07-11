@@ -95,11 +95,10 @@ A normal run with Secure Boot already disabled uses seven script launches and th
 
 ## Completion condition
 
-```text
 SCRIPT 4 PASS: True
 Failed checks: 0
 TOOLKIT COMPLETE: True
-```
+
 
 ## Release history
 
