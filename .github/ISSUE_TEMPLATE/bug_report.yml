@@ -1,5 +1,5 @@
 name: Bug report
-description: Report a reproducible failure in the documented Public Beta workflow
+description: Report a reproducible failure in a published Legion Go 1 toolkit release
 title: "[Bug]: "
 labels:
   - bug
@@ -14,7 +14,8 @@ body:
     attributes:
       label: Release
       options:
-        - Public Beta v1.0
+        - Public Beta v2.0 (AMD 26.6.4)
+        - AMD 26.6.2 Public Beta v1.1
         - Modified or development build
     validations:
       required: true
@@ -22,7 +23,7 @@ body:
   - type: dropdown
     id: script
     attributes:
-      label: Failed script
+      label: Failed stage
       options:
         - Script 1
         - Script 2
@@ -52,7 +53,15 @@ body:
     id: baseline
     attributes:
       label: Starting display-driver version and INF
-      placeholder: "32.0.23017.1001 / oemXX.inf"
+      placeholder: "32.0.x.x / oemXX.inf"
+    validations:
+      required: true
+
+  - type: input
+    id: installer
+    attributes:
+      label: AMD installer filename and SHA-256
+      placeholder: "filename.exe / SHA-256"
     validations:
       required: true
 
@@ -99,14 +108,14 @@ body:
     id: log
     attributes:
       label: Relevant transcript or log excerpt
-      description: "Logs are under C:\\ProgramData\\LegionGo-AMD-26.6.2\\Logs. Redact personal data."
+      description: "Use the release-specific Logs folder under C:\\ProgramData. Redact personal data."
       render: text
 
   - type: textarea
     id: changes
     attributes:
       label: Changes from the documented workflow
-      placeholder: Different installer, edited script, DDU use, manual package changes, or none
+      placeholder: Different target version, edited script, DDU use, manual package changes, or none
     validations:
       required: true
 
