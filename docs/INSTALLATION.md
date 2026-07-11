@@ -4,7 +4,7 @@ This guide covers **Public Beta v2.0** for the original Lenovo Legion Go / Legio
 
 ## Required files
 
-Download and verify: 
+**Download and verify**: 
 
 LegionGo1-Graphics-Driver-Toolkit-Public-Beta-v2.0.zip 
 
@@ -12,11 +12,11 @@ SHA-256: D2DA30DD76B9460C14D96FB09824D727D13B7D24BA327263E6FAA8ACC751CBD4
 
  
 
-Extract it so this folder exists:
+**Extract it so this folder exists**:
 
 C:\Users\<YOUR USERNAME>\Downloads\LeGo-toolkit
 
-Place one official AMD-signed Windows 11 installer for AMD 26.6.4 beside the four scripts. The validated reference container is:
+**Place one official AMD-signed Windows 11 installer for AMD 26.6.4 beside the four scripts. The validated reference container is**:
 
 
 whql-amd-software-adrenalin-edition-26.6.4-win11-b.exe 
