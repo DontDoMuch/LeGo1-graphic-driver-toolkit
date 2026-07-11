@@ -1,0 +1,11 @@
+﻿LEGION GO AMD 26.6.2 TOOLKIT
+PUBLIC BETA v1.0 - ZIP SHA-256
+============================================================
+
+46B9F4FE778B7661E984008A20961A8FF5B3E7B6596FF9E2EB927AF80AA16469  LegionGo-AMD-26.6.2-Public-Beta-v1.0.zip
+
+ZIP size: 112,827 bytes
+
+Windows PowerShell verification command:
+
+Get-FileHash ".\LegionGo-AMD-26.6.2-Public-Beta-v1.0.zip" -Algorithm SHA256
