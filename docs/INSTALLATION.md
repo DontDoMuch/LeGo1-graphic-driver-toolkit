@@ -13,16 +13,15 @@ SHA-256: D2DA30DD76B9460C14D96FB09824D727D13B7D24BA327263E6FAA8ACC751CBD4
 
 Extract it so this folder exists:
 
-```text
 C:\Users\<YOUR USERNAME>\Downloads\LeGo-toolkit
-```
 
 Place one official AMD-signed Windows 11 installer for AMD 26.6.4 beside the four scripts. The validated reference container is:
 
-```text
-whql-amd-software-adrenalin-edition-26.6.4-win11-b.exe
+
+whql-amd-software-adrenalin-edition-26.6.4-win11-b.exe 
+
 SHA-256: E83A1B0E0F62BC7B171D5CA1F5EA38A12A3F9C221F5386853937645A66AD9C29
-```
+
 
 Read `Instructions.txt` completely before starting.
 
@@ -54,11 +53,13 @@ PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\Downlo
 
 The installation is complete only when Script 4 reports:
 
-```text
-SCRIPT 4 PASS: True
-Failed checks: 0
-TOOLKIT COMPLETE: True
-```
+
+SCRIPT 4 PASS: True 
+
+Failed checks: 0 
+
+TOOLKIT COMPLETE: True 
+
 
 ## Do not
 
