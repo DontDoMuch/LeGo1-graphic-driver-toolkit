@@ -7,6 +7,7 @@ This guide covers **Public Beta v2.0** for the original Lenovo Legion Go / Legio
 Download and verify: 
 
 LegionGo1-Graphics-Driver-Toolkit-Public-Beta-v2.0.zip 
+
 SHA-256: D2DA30DD76B9460C14D96FB09824D727D13B7D24BA327263E6FAA8ACC751CBD4
 
 
