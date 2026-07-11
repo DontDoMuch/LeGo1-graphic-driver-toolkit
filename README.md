@@ -96,9 +96,7 @@ A normal run with Secure Boot already disabled uses seven script launches and th
 ## Completion condition
 
 SCRIPT 4 PASS: True
-
 Failed checks: 0
-
 TOOLKIT COMPLETE: True
 
 
