@@ -81,6 +81,9 @@ Get-FileHash "$env:USERPROFILE\Downloads\LegionGo1-Graphics-Driver-Toolkit-Publi
 ```
 
 The AMD installer is not included. Public Beta v2.0 uses an official AMD-signed 26.6.4 Windows 11 installer placed beside the scripts.
+```text
+https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-7000-series/amd-ryzen-7-7840u.html
+```
 
 ## Four-stage workflow
 
