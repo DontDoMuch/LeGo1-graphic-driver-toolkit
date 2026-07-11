@@ -1,5 +1,5 @@
-# User-supplied AMD installer and proprietary binaries
-whql-amd-software-adrenalin-edition-26.6.2-win11-c.exe
+# User-supplied AMD installers and proprietary binaries
+whql-amd-software-adrenalin-edition-*-win11-*.exe
 *.exe
 *.msi
 *.msix

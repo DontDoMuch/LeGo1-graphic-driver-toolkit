@@ -1,31 +1,21 @@
 # Support
 
-This is a community project with no guaranteed response time and no affiliation with Lenovo, AMD, or Microsoft.
+## Supported release
 
-## Supported requests
+Public Beta v2.0 is the current supported release. Public Beta v1.1 is retained as a historical AMD 26.6.2 release and may receive best-effort support.
 
-Support discussions should concern the original Lenovo Legion Go, the documented Public Beta v1.0 files, the exact AMD 26.6.2 `-c` installer, the documented Lenovo OEM baseline, a failure produced by one of the four numbered scripts, or verification of release hashes/final audit output.
+## Before opening an issue
 
-## Outside project scope
+- Stop at the failed script.
+- Verify the release ZIP and script hashes.
+- Preserve the complete console output and the first failed check.
+- Record the Windows build, starting driver version and INF, AMD installer filename and hash, Secure Boot state, and Test Signing state.
+- Remove personal information, recovery keys, and private certificate material.
 
-- Other Legion models
-- Other AMD GPUs or APUs
-- Windows versions below the documented minimum
-- Different AMD installer variants or hashes
-- Modified release scripts
-- DDU-based workflows
-- General Windows repair
-- Firmware modification
-- Performance tuning, undervolting, or overclocking
-- Compatibility guarantees for particular games or third-party software
+Logs are stored under:
 
-## Before requesting help
+```text
+C:\ProgramData\LegionGo-AMD-26.6.4\Logs
+```
 
-1. Stop at the failed script.
-2. Do not skip ahead.
-3. Preserve the complete console output.
-4. Locate the corresponding log under `C:\ProgramData\LegionGo-AMD-26.6.2\Logs`.
-5. Redact usernames or other personal information if desired.
-6. Use the bug-report issue form.
-
-Do not post BitLocker recovery keys, private certificate material, account tokens, or other secrets.
+Use the GitHub bug-report form so the required details are not omitted.

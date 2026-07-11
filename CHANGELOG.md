@@ -1,51 +1,25 @@
 # Changelog
 
-All notable public releases are documented here.
+## Public Beta v2.0 — 2026-07-10
 
-## Public Beta v1.0 — 2026-07-07
+### Major changes
 
-First public beta release of the four-script workflow.
+- Moved the validated target from AMD 26.6.2 to AMD 26.6.4.
+- Reframed the repository around the Legion Go 1 hardware and workflow rather than a single AMD version.
+- Replaced one exact starting-driver requirement with healthy compatible starting-stack validation.
+- Replaced exact Lenovo extension version/hash gating with semantic validation and exact active-device attachment checks.
+- Added support for healthy structurally compatible Microsoft-signed AMDUWP packages.
+- Replaced one exact outer AMD installer filename/hash gate with signature, version, extraction, and exact target-payload validation.
+- Changed the extracted source-tree file count from a hard gate to telemetry while retaining exact canonical dependency and output contracts.
+- Added capability-based Windows Kit discovery for a functional Inf2Cat and SignTool pair.
+- Preserved strict Legion Go 1 hardware gating, exact target identities, catalog verification, normal-signing restoration, and final persistence auditing.
+- Completed the full workflow from a fresh Lenovo OEM graphics installation with zero failed final-audit checks.
 
-### Added
+## Public Beta v1.1 — 2026-07-06
 
-- Hardware-gated original Legion Go validation
-- Exact AMD 26.6.2 `-c` installer identity verification
-- Reproducible corrected 125-file driver-package construction
-- Readable plain-text PowerShell sources
-- Per-installation local catalog signing and trust validation
-- Temporary Test Signing workflow with explicit restart handling
-- Corrected display-driver binding and normal-signing persistence checks
-- Official AMD Microsoft-signed catalog registration and kernel-policy validation
-- Native AMD Software `.2099` and RSXCM `22.10.0.0`
-- Legacy `.2089` MSI/AppX retirement
-- Lenovo extension, AMDUWP, CN metadata, and ReleaseVersion preservation
-- Safe shell-association refresh without terminating Explorer
-- Live-state checks that prevent stale JSON from skipping required work
-- Read-only final persistence audit and desktop report
-- SHA-256 manifest for all release files
+- Published the coherent AMD 26.6.2 public-beta update.
+- Improved the installation and final-audit workflow over v1.0.
 
-### Validated result
+## Public Beta v1.0 — 2026-07-05
 
-```text
-SCRIPT 4 PASS: True
-Failed checks: 0
-TOOLKIT COMPLETE: True
-```
-
-
-### Repository documentation
-
-- Added a transparent funding policy for future hardware acquisition
-- Added a hardware funding and validation tracker
-- Activated the official Ko-fi funding link:
-  `https://ko-fi.com/dontdomuch`
-- Configured GitHub's Sponsor button through `.github/FUNDING.yml`
-- Clarified that donations do not guarantee device support or release dates
-
-### Release integrity
-
-```text
-LegionGo-AMD-26.6.2-Public-Beta-v1.0.zip
-SHA-256:
-46B9F4FE778B7661E984008A20961A8FF5B3E7B6596FF9E2EB927AF80AA16469
-```
+- First public-beta repository release of the four-script Legion Go workflow.

@@ -7,8 +7,8 @@
 *.ps1 text eol=crlf
 *.txt text eol=crlf
 
-# Preserve the exact byte identities of the frozen tested release.
-releases/Public-Beta-v1.0/*.ps1 -text
-releases/Public-Beta-v1.0/*.txt -text
+# Frozen release snapshots must retain exact byte identities.
+releases/**/*.ps1 -text
+releases/**/*.txt -text
 
 *.zip binary
