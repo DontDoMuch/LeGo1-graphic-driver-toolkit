@@ -1,104 +1,89 @@
-# GitHub Publishing Guide
+# GitHub publishing guide
 
-This repository package is prepared for a normal multi-file upload or a local Git push.
+## Repository identity
 
-## Recommended repository name
-
-```text
-LeGo-AMD-driver-toolkit
-```
-
-## Repository description
+Recommended repository name:
 
 ```text
-Community PowerShell toolkit for installing and validating AMD 26.6.2 on the original Lenovo Legion Go.
+LeGo1-graphic-driver-toolkit
 ```
 
-## Suggested topics
+Recommended description:
+
+```text
+Compatibility-focused AMD graphics-driver toolkit for the original Lenovo Legion Go (Legion Go 1).
+```
+
+Suggested topics:
 
 ```text
 legion-go
+legion-go-1
 amd
 radeon
 powershell
 windows-11
-driver
+graphics-driver
 handheld-gaming
 ```
 
-## Initial publication
+## Publish the repository overhaul
 
-1. Create an empty public repository without an auto-generated README, license, or `.gitignore`.
-2. Upload the complete contents of this repository folder, preserving all paths.
-3. Commit with: `Publish Legion Go AMD 26.6.2 Public Beta v1.0`.
-4. Confirm that `README.md` renders and local documentation links work.
-5. Enable GitHub private vulnerability reporting when available.
+1. Back up or clone the current repository.
+2. Replace the repository contents with the contents of the overhaul ZIP, preserving all paths.
+3. Confirm `README.md` renders correctly.
+4. Confirm the frozen `public-beta-v1.0` and `public-beta-v1.1` snapshots remain present.
+5. Confirm `releases/public-beta-v2.0/` and the SHA-256 manifests are present.
+6. Commit and push the update.
 
-## Create the release
+Suggested commit message:
+
+```text
+Publish Public Beta v2.0 compatibility workflow
+```
+
+## Create the GitHub release
 
 Tag:
 
 ```text
-public-beta-v1.0
+public-beta-v2.0
 ```
 
 Release title:
 
 ```text
-Legion Go AMD 26.6.2 Toolkit — Public Beta v1.0
+Legion Go 1 Graphics Driver Toolkit — Public Beta v2.0
 ```
-
-Use `releases/Public-Beta-v1.0/RELEASE-NOTES.md` as the release description.
 
 Attach:
 
 ```text
-LegionGo-AMD-26.6.2-Public-Beta-v1.0.zip
+LegionGo1-Graphics-Driver-Toolkit-Public-Beta-v2.0.zip
 ```
 
 Published SHA-256:
 
 ```text
-46B9F4FE778B7661E984008A20961A8FF5B3E7B6596FF9E2EB927AF80AA16469
+D2DA30DD76B9460C14D96FB09824D727D13B7D24BA327263E6FAA8ACC751CBD4
 ```
 
-Also attach or paste the standalone ZIP hash record.
+Use `releases/public-beta-v2.0/RELEASE-NOTES.md` as the release description. Mark the release as a **pre-release** because the project is still in public beta, and set it as the repository's latest release.
 
+Do not commit the release ZIP into the source tree unless there is a deliberate archival reason. GitHub Releases is the appropriate location for the downloadable asset.
 
-## Ko-fi and the GitHub Sponsor button
+## Repository settings
 
-The repository is already configured with:
-
-```yaml
-ko_fi: dontdomuch
-```
-
-in `.github/FUNDING.yml`.
-
-After the files are committed to the default branch:
-
-1. Open the repository on GitHub.
-2. Open **Settings**.
-3. Under **General → Features**, enable **Sponsorships** if it is not already
-   enabled.
-4. Confirm that the repository displays a **Sponsor** button.
-5. Open the button and verify that it leads to:
-   `https://ko-fi.com/dontdomuch`
-
-The README and `FUNDING.md` also contain the direct Ko-fi link.
-
-Keep the language in `FUNDING.md` and
-`docs/HARDWARE-FUNDING.md`: donations fund access to hardware and research,
-not guaranteed device support or release dates.
-
-Do not publish payment credentials, API keys, recovery information, or a
-donation link controlled by an unrelated third party.
+- Keep Issues enabled.
+- Enable private vulnerability reporting.
+- Add the recommended topics.
+- Confirm `.github/FUNDING.yml` resolves correctly if funding is enabled.
+- Enable Discussions only when support capacity exists.
 
 ## Do not upload
 
-- AMD's installer
-- Extracted AMD binaries
+- AMD's installer or extracted AMD binaries
 - Driver Store copies
 - Local certificates or private keys
 - Logs containing private information
-- Development snapshots not intended for release
+- Unvalidated development snapshots presented as public releases

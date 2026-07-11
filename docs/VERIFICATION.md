@@ -1,77 +1,63 @@
-# Release Verification
+# Verification
 
-## Public Beta v1.0 release ZIP
+## Public Beta v2.0 release asset
 
 ```text
-LegionGo-AMD-26.6.2-Public-Beta-v1.0.zip
+LegionGo1-Graphics-Driver-Toolkit-Public-Beta-v2.0.zip
+Size: 133,793 bytes
 SHA-256:
-46B9F4FE778B7661E984008A20961A8FF5B3E7B6596FF9E2EB927AF80AA16469
+D2DA30DD76B9460C14D96FB09824D727D13B7D24BA327263E6FAA8ACC751CBD4
 ```
-
-Verify:
 
 ```powershell
-Get-FileHash ".\LegionGo-AMD-26.6.2-Public-Beta-v1.0.zip" -Algorithm SHA256
+Get-FileHash ".\LegionGo1-Graphics-Driver-Toolkit-Public-Beta-v2.0.zip" -Algorithm SHA256
 ```
 
-## Frozen script hashes
+The ZIP contains exactly one `LeGo-toolkit` root folder with four scripts and `Instructions.txt`.
 
-```text
-BDB22718D81326B60DCA1358551CEEE1D447EE7B34AC3B820E6D6F09D40E58C6  01-Prepare-Build-Sign-And-Enter-Test-Signing.ps1
-29DBCB7AC750AAF47815915AEC7C01211F4934AB330DEDDF8A13EEF524ED9A66  02-Install-Driver-And-Verify-Normal-Signing.ps1
-28C8E2A30D348BFC27EE1336AFD2E4A301E8424FF32AD9FA1DBB3EF2C47A87AA  03-Install-AMD-Software-And-Reboot.ps1
-5DFA3E65529DDE78A2AEA03AA41A7C1B4D344578C1EEA0643638004477668CEF  04-Final-Persistence-Audit.ps1
-BBBAA6932FDF216CA212C5AA5C047C32968ADBCE1022863EE2111B77B46E2530  Instructions.txt
+## Public Beta v2.0 file hashes
+
+| File | SHA-256 |
+|---|---|
+| `01-Prepare-Build-Sign-And-Enter-Test-Signing.ps1` | `C70BA0B4AEEF103AD46D163FEDCC137C68FF327331CEC9AE172F215C30937E2F` |
+| `02-Install-Driver-And-Verify-Normal-Signing.ps1` | `C0C16CB4285BD69CD9EF0B23A54E551F903511A197DA364F7973EB458ED45174` |
+| `03-Install-AMD-Software-And-Reboot.ps1` | `A8CDAC8CD6639F0572DA56D6B08EFD7650D86895C8C3569BDFC00D797EBDEB5A` |
+| `04-Final-Persistence-Audit.ps1` | `8377151D2D618258AE3E3F9B69AC893B0F9DE875A0F9250479C8EBA41C726F5B` |
+| `Instructions.txt` | `19BEA25563356048BD2F3F6BB01F5D90EB9FAF9A80D25D6D1AFB9FD76CEABE88` |
+
+
+Verify the scripts:
+
+```powershell
+Get-FileHash "$env:USERPROFILE\Downloads\LeGo-toolkit\*.ps1" -Algorithm SHA256
 ```
 
-Compare against the included `SHA256-MANIFEST.txt`.
-
-## Required external AMD installer
-
-Not included:
+## AMD installer reference
 
 ```text
-whql-amd-software-adrenalin-edition-26.6.2-win11-c.exe
-Size: 1,630,707,976 bytes
+whql-amd-software-adrenalin-edition-26.6.4-win11-b.exe
+Size: 890,946,264 bytes
 SHA-256:
-3FD0073C74E0D043558087511F5624ED42D1241E852C2A9ED5AC5C80F158F893
+E83A1B0E0F62BC7B171D5CA1F5EA38A12A3F9C221F5386853937645A66AD9C29
 ```
 
-## Expected corrected stack
+Public Beta v2.0 also verifies the AMD signature, file/product version, and exact extracted target payload.
 
-```text
-Display driver:
-32.0.31021.1015
+## Expected installed identities
 
-Corrected INF SHA-256:
-39BD11386ABFE8CB964902B18159801A486AB22FCFA9C622622F4E6B9B9D901E
+| Item | Expected value |
+|---|---|
+| Display driver | `32.0.31021.5001` |
+| Corrected INF SHA-256 | `73E8AE95849354D3D52DCB2A583CCB458D33DF22ACCCD0F0C1EE7626FDBD3034` |
+| `amdkmdag.sys` SHA-256 | `3253532B1D397A18E221E6AB0CE7113724C4A45DE7797C7112E06A0D5F0AD10F` |
+| Official AMD catalog SHA-256 | `F3077CF13DDE0673D39D03F56A99AF583BA18CCCDC617FCC2E042121BD4F737C` |
+| Native RSXCM | `22.10.0.0` |
 
-Loaded amdkmdag.sys SHA-256:
-EC5E1DF54FEA3A307BD69D5E091E6841A6E9AF2780F0C8C919350A9627D9F6A9
+The locally generated catalog and certificate hashes are unique per installation and must match the state recorded by Script 1.
 
-Native AMD Settings .2099 MSI SHA-256:
-74C6B6CE196F331E48BE374C954377601EC1EC472FA55CAD41899B87297E08A4
+## Final verification
 
-RadeonSoftware.exe SHA-256:
-A2FD02C6D1DC49DB2901E0AC53425FA5AB1A9A18F6342FB424EDD7D1024E1F75
-
-Native RSXCM package SHA-256:
-19299BE2DEF88FBF8350F274C6AC59E996BF04F223175EB963B871266B6B4531
-
-AMDUWP INF SHA-256:
-2910267F4608F15FB8714157EFE9FC8A279205E1A4F4B475C7719F9C5F7021EB
-```
-
-## Final proof
-
-The final audit should write:
-
-```text
-C:\ProgramData\LegionGo-AMD-26.6.2\final-audit-result.json
-C:\Users\<YOUR USERNAME>\Desktop\LegionGo-AMD-26.6.2-Final-Report.txt
-```
-
-A complete result ends with:
+Script 4 is the authoritative installed-state audit. Success requires:
 
 ```text
 SCRIPT 4 PASS: True
