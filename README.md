@@ -23,6 +23,9 @@
 
 > [!WARNING]
 > This toolkit changes the display-driver package, Driver Store, certificate trust, catalog registration, AMD Software, AppX state, Lenovo compatibility metadata, and temporary Windows Test Signing configuration. Back up important data, preserve the BitLocker or Device Encryption recovery key, and read the included instructions before starting.
+>
+> [!WARNING]
+Update: Multiple external users have reported safe Script 1 integrity-check stops during the public beta 2.0 installation. The original runtime-proven installation remains valid. Logs are being collected to determine whether the reports share a source-package variant, environmental cause, or toolkit compatibility issue. For now, use v1.1 until a fix is pushed. Expect a delay as i am currently on vacation and will be back on July 18th.
 
 ## Project identity
 
