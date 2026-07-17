@@ -38,6 +38,8 @@ PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA
 
 The project is intentionally identified by the hardware and workflow rather than one AMD version. Each public release documents the AMD target it has actually validated.
 
+https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-7000-series/amd-ryzen-7-7840u.html
+
 ## What Public Beta v2.1 includes
 
 Public Beta v2.1 is the corrected and revalidated successor to v2.0.
