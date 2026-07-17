@@ -1,0 +1,15 @@
+Legion Go AMD 26.6.4 Graphics Driver Toolkit — Public Beta v2.1
+
+Release ZIP:
+LegionGo-AMD-26.6.4-Public-Beta-v2.1.zip
+
+SHA-256:
+DE3A7FD534BB136881D8685F17AD5F7FD3CCDC46597487465D0966C2A365038C
+
+Contents:
+LeGo-toolkit/01-Prepare-Build-Sign-And-Enter-Test-Signing.ps1
+LeGo-toolkit/02-Install-Driver-And-Verify-Normal-Signing.ps1
+LeGo-toolkit/03-Install-AMD-Software-And-Reboot.ps1
+LeGo-toolkit/04-Final-Persistence-Audit.ps1
+LeGo-toolkit/Instructions.txt
+LeGo-toolkit/SHA256SUMS.txt
