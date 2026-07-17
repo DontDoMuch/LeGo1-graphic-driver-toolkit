@@ -21,7 +21,7 @@ Explain effects on hardware gating, target payload identity, hashes, signatures,
 - [ ] Fresh-OEM end-to-end validation completed before public release
 - [ ] Documentation and manifests updated
 - [ ] No proprietary AMD/Lenovo/Microsoft binaries added
-- [ ] Frozen release files were not modified in place
+- [ ] Published release scripts and instructions were not modified in place
 
 ## Evidence
 
