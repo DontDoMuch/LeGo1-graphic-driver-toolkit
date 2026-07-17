@@ -1,6 +1,15 @@
 # Validation
 
-The complete Public Beta v2.0 workflow passed on July 10, 2026 from a fresh Lenovo OEM graphics installation on an original Lenovo Legion Go.
+The final Public Beta v2.1 artifact completed end-to-end validation on the original Lenovo Legion Go on July 17, 2026.
+
+## Validated regression paths
+
+| Starting state | Target | Result |
+|---|---|---|
+| Fresh Lenovo OEM graphics installation | Public Beta v2.1 / AMD 26.6.4 | Passed |
+| Fresh Lenovo OEM → Public Beta v1.1 / AMD 26.6.2 | Public Beta v2.1 / AMD 26.6.4 | Passed |
+
+## Final installed state
 
 | Check | Result |
 |---|---|
@@ -20,4 +29,4 @@ The complete Public Beta v2.0 workflow passed on July 10, 2026 from a fresh Leno
 | Test Signing after installation | Off |
 | Relevant GPU or Code Integrity errors since boot | `0` |
 
-Validation on one device does not guarantee identical behavior on every Windows installation.
+Validation on one physical device and the documented starting states does not guarantee identical behavior on every Windows installation. The scripts remain fail-closed when the live state does not meet the release contract.

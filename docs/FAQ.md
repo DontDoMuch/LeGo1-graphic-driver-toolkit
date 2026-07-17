@@ -2,15 +2,19 @@
 
 ## Is this project only for AMD 26.6.4?
 
-The repository is a Legion Go 1 workflow project, not an AMD-version-named project. Public Beta v2.0 uses AMD 26.6.4 because that is the target validated for this release. Later public versions may target later AMD packages after separate testing.
+The repository is a Legion Go 1 workflow project, not an AMD-version-named project. Public Beta v2.1 uses AMD 26.6.4 because that is the target validated for this release. Later public versions may target later AMD packages after separate testing.
 
 ## Does compatibility mean any AMD installer works?
 
-No. Public Beta v2.0 accepts legitimate packaging and host-state variations, but it still proves the exact 26.6.4 target payload before installation.
+No. Public Beta v2.1 supports the validated AMD 26.6.4 reference installer and still proves the exact target payload before installation. A renamed or different AMD release is not accepted as a supported substitute.
+
+## Which starting states are supported?
+
+Public Beta v2.1 supports fresh Lenovo OEM, a validated Public Beta v1.1 / AMD 26.6.2 state, and an existing validated AMD 26.6.4 state for repair or idempotent reruns.
 
 ## Why not require one exact Lenovo OEM driver first?
 
-Public Beta v2.0 records and validates the live starting display stack. A healthy compatible prior toolkit state or OEM state can qualify without pretending every machine must begin from one package number.
+Public Beta v2.1 records and validates the live starting display stack. A healthy compatible prior toolkit state or OEM state can qualify without pretending every machine must begin from one published INF name.
 
 ## Why is the Lenovo extension important?
 
@@ -30,4 +34,8 @@ The workflow requires Secure Boot off while temporary Test Signing is enabled. S
 
 ## Why are there multiple runs of Scripts 1, 2, and 3?
 
-Each crosses a reboot boundary. The second run verifies the live state after Windows starts again rather than trusting stale saved JSON from the previous boot.
+Each crosses a reboot boundary. The next run verifies the live state after Windows starts again rather than trusting stale saved data from the previous boot.
+
+## Should I use Public Beta v2.0?
+
+No. Public Beta v2.1 supersedes v2.0 and is the supported AMD 26.6.4 release.

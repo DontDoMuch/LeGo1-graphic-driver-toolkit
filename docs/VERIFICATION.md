@@ -1,36 +1,37 @@
 # Verification
 
-## Public Beta v2.0 release asset
+## Public Beta v2.1 release asset
 
 ```text
-LegionGo1-Graphics-Driver-Toolkit-Public-Beta-v2.0.zip
-Size: 133,793 bytes
+LegionGo-AMD-26.6.4-Public-Beta-v2.1.zip
 SHA-256:
-D2DA30DD76B9460C14D96FB09824D727D13B7D24BA327263E6FAA8ACC751CBD4
+DE3A7FD534BB136881D8685F17AD5F7FD3CCDC46597487465D0966C2A365038C
 ```
 
 ```powershell
-Get-FileHash ".\LegionGo1-Graphics-Driver-Toolkit-Public-Beta-v2.0.zip" -Algorithm SHA256
+Get-FileHash ".\LegionGo-AMD-26.6.4-Public-Beta-v2.1.zip" -Algorithm SHA256
 ```
 
-The ZIP contains exactly one `LeGo-toolkit` root folder with four scripts and `Instructions.txt`.
+The ZIP contains exactly one `LeGo-toolkit` root folder with four scripts, `Instructions.txt`, and `SHA256SUMS.txt`.
 
-## Public Beta v2.0 file hashes
+## Public Beta v2.1 file hashes
 
 | File | SHA-256 |
 |---|---|
-| `01-Prepare-Build-Sign-And-Enter-Test-Signing.ps1` | `C70BA0B4AEEF103AD46D163FEDCC137C68FF327331CEC9AE172F215C30937E2F` |
-| `02-Install-Driver-And-Verify-Normal-Signing.ps1` | `C0C16CB4285BD69CD9EF0B23A54E551F903511A197DA364F7973EB458ED45174` |
-| `03-Install-AMD-Software-And-Reboot.ps1` | `A8CDAC8CD6639F0572DA56D6B08EFD7650D86895C8C3569BDFC00D797EBDEB5A` |
+| `01-Prepare-Build-Sign-And-Enter-Test-Signing.ps1` | `A2122D471B99FDAF680935BB724792BA06D9337204BEFA59499685CB3178854B` |
+| `02-Install-Driver-And-Verify-Normal-Signing.ps1` | `86615E66A6B95FB25A6869F86B00D875A28F791514F7B7B0EA3EA28BD6AD5002` |
+| `03-Install-AMD-Software-And-Reboot.ps1` | `9614C68902C64E08D4746EC9842D5A26AB5D227CC5FDA00713E0966A3195D83C` |
 | `04-Final-Persistence-Audit.ps1` | `8377151D2D618258AE3E3F9B69AC893B0F9DE875A0F9250479C8EBA41C726F5B` |
-| `Instructions.txt` | `19BEA25563356048BD2F3F6BB01F5D90EB9FAF9A80D25D6D1AFB9FD76CEABE88` |
+| `Instructions.txt` | `04CADD2E26F64DAF690E3460F7F60E44731A4B3654CD4BDAB4D59B0F1AEDA3A0` |
+| `SHA256SUMS.txt` | `0A1F72D83AF8EE28D7D542DA3C1B052A5DD4DEA07A11E79A54DE3938E1C7DDA7` |
 
-
-Verify the scripts:
+Verify the release files from inside `LeGo-toolkit`:
 
 ```powershell
-Get-FileHash "$env:USERPROFILE\Downloads\LeGo-toolkit\*.ps1" -Algorithm SHA256
+Get-FileHash .\*.ps1, .\Instructions.txt, .\SHA256SUMS.txt -Algorithm SHA256
 ```
+
+`SHA256SUMS.txt` lists the four scripts and `Instructions.txt`. Its own hash is documented above.
 
 ## AMD installer reference
 
@@ -39,9 +40,11 @@ whql-amd-software-adrenalin-edition-26.6.4-win11-b.exe
 Size: 890,946,264 bytes
 SHA-256:
 E83A1B0E0F62BC7B171D5CA1F5EA38A12A3F9C221F5386853937645A66AD9C29
+File/Product version: 26.6.4.0
+Signer: Advanced Micro Devices
 ```
 
-Public Beta v2.0 also verifies the AMD signature, file/product version, and exact extracted target payload.
+Public Beta v2.1 also verifies the AMD signature, reported version, extraction result, and exact target payload.
 
 ## Expected installed identities
 
@@ -64,3 +67,15 @@ SCRIPT 4 PASS: True
 Failed checks: 0
 TOOLKIT COMPLETE: True
 ```
+
+## Historical Public Beta v2.0 asset
+
+Public Beta v2.0 is superseded. Its historical release asset was:
+
+```text
+LegionGo1-Graphics-Driver-Toolkit-Public-Beta-v2.0.zip
+Size: 133,793 bytes
+SHA-256: D2DA30DD76B9460C14D96FB09824D727D13B7D24BA327263E6FAA8ACC751CBD4
+```
+
+Do not use v2.0 for a new installation.

@@ -6,7 +6,9 @@ The workflow is gated to the original Legion Go GPU identity. Repository brandin
 
 ## Compatibility validation
 
-Public Beta v2.0 records the live starting display stack and validates required properties instead of comparing every host component to one frozen package identity. This applies to the starting display driver, Lenovo extension, AMDUWP component, AMD installer container, and Windows Kit discovery.
+Public Beta v2.1 records the live starting display stack and validates required properties instead of comparing every host component to one frozen published INF name. This applies to the starting display driver, Lenovo extension, AMDUWP component, and Windows Kit discovery.
+
+The supported public source is the validated AMD 26.6.4 reference installer. Script 1 additionally verifies the AMD signature, version, extraction result, and exact target payload.
 
 ## Exact target construction
 
@@ -18,11 +20,11 @@ The corrected local catalog is generated and signed with a unique per-installati
 
 ## Reboot boundaries
 
-Scripts 1, 2, and 3 each write state before a restart and then compare it with the next live boot. Saved state alone is never accepted as proof that the operation persisted.
+Scripts 1, 2, and 3 write state before a restart and then compare it with the next live boot. Saved state alone is never accepted as proof that the operation persisted.
 
 ## Release-specific state roots
 
-Public Beta v2.0 uses:
+Public Beta v2.1 uses:
 
 ```text
 C:\AMD\LegionGo-26.6.4

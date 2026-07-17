@@ -6,7 +6,7 @@ Do not skip ahead, delete state, run a later script, use DDU, or manually replac
 
 ## Confirm the release
 
-Use Public Beta v2.0 and verify the ZIP and script hashes in [Verification](VERIFICATION.md). Edited scripts are outside the validated release contract.
+Use Public Beta v2.1 and verify the ZIP and script hashes in [Verification](VERIFICATION.md). Edited scripts are outside the validated release contract. Public Beta v2.0 is superseded.
 
 ## Hardware rejection
 
@@ -20,11 +20,18 @@ A different subsystem ID is a hard stop.
 
 ## Starting stack rejected
 
-Public Beta v2.0 accepts multiple healthy starting versions, but it still requires a healthy active GPU and a compatible Lenovo extension attached to that exact live GPU instance. A stale package merely present in the Driver Store does not qualify.
+Public Beta v2.1 supports fresh Lenovo OEM, a validated Public Beta v1.1 / AMD 26.6.2 state, and an existing validated AMD 26.6.4 state. It still requires a healthy active GPU and a compatible Lenovo extension attached to that exact live GPU instance. A stale package merely present in the Driver Store does not qualify.
 
 ## AMD installer rejected
 
-The installer must be AMD-signed, report version `26.6.4.0`, extract successfully, and contain the exact target dependencies. Renaming another AMD release cannot make it compatible.
+Use the supported reference installer:
+
+```text
+whql-amd-software-adrenalin-edition-26.6.4-win11-b.exe
+SHA-256: E83A1B0E0F62BC7B171D5CA1F5EA38A12A3F9C221F5386853937645A66AD9C29
+```
+
+The installer must also be AMD-signed, report version `26.6.4.0`, extract successfully, and contain the exact target dependencies. Renaming another AMD release cannot make it compatible.
 
 ## Missing prerequisites
 

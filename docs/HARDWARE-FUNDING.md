@@ -21,7 +21,7 @@ A device is not supported unless its status explicitly says **Released**.
 
 | Device | Status | Note |
 |---|---|---|
-| Original Lenovo Legion Go / Legion Go 1 | Released | Public Beta v2.0 is current; validated target AMD 26.6.4 |
+| Original Lenovo Legion Go / Legion Go 1 | Released | Public Beta v2.1 is current; validated target AMD 26.6.4 |
 
 ## Additional targets
 
