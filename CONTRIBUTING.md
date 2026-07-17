@@ -8,9 +8,9 @@ The repository identity is version-neutral, but each executable release is targe
 
 ## Release immutability
 
-Files under `releases/` are frozen source snapshots. Do not alter an existing release in place.
+Published executable files under `releases/` are frozen byte-for-byte. Do not alter an existing release script or instruction file in place.
 
-A change to executable behavior, expected hashes, target payload, supported platform, prerequisites, state contracts, or audit criteria belongs in a new release directory and changelog entry.
+Documentation-only release metadata may be corrected when it does not alter or misrepresent the published asset. A change to executable behavior, expected hashes, target payload, supported platform, prerequisites, state contracts, or audit criteria belongs in a new release directory and changelog entry.
 
 ## Before opening a pull request
 
@@ -34,7 +34,7 @@ A change to executable behavior, expected hashes, target payload, supported plat
 4. Interrupted-run and rerun behavior
 5. Reboot-boundary behavior
 6. Live original-Legion-Go validation
-7. Fresh-OEM end-to-end end-to-end validation
+7. Fresh-OEM end-to-end validation
 8. Final read-only persistence audit
 
 A build is not release-ready until the complete numbered workflow passes end to end on the documented hardware.

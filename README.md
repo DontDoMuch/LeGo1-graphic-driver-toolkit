@@ -4,7 +4,7 @@
 
 ### A compatibility-focused AMD graphics-driver workflow for the original Lenovo Legion Go
 
-![Release](https://img.shields.io/badge/release-Public%20Beta%20v2.0-2EA44F?style=for-the-badge)
+![Release](https://img.shields.io/badge/release-Public%20Beta%20v2.1-2EA44F?style=for-the-badge)
 ![Target](https://img.shields.io/badge/current%20target-AMD%2026.6.4-ED1C24?style=for-the-badge)
 ![Device](https://img.shields.io/badge/device-Legion%20Go%201-111111?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/platform-Windows%2011-0078D4?style=for-the-badge)
@@ -19,12 +19,14 @@
 ---
 
 > [!IMPORTANT]
-> **Current release: Public Beta v2.0.** It uses AMD 26.6.4 and passed the complete fresh-OEM workflow and final persistence audit on July 10, 2026.
+> **Current release: Public Beta v2.1.** It targets AMD 26.6.4 and supersedes Public Beta v2.0. Use v2.1 for all new installations and repair runs.
+>
+> The final v2.1 artifact passed the complete workflow and final persistence audit through both validated regression paths on July 17, 2026:
+> - Fresh Lenovo OEM graphics installation → AMD 26.6.4
+> - Fresh Lenovo OEM → Public Beta v1.1 / AMD 26.6.2 → Public Beta v2.1 / AMD 26.6.4
 
 > [!WARNING]
 > This toolkit changes the display-driver package, Driver Store, certificate trust, catalog registration, AMD Software, AppX state, Lenovo compatibility metadata, and temporary Windows Test Signing configuration. Back up important data, preserve the BitLocker or Device Encryption recovery key, and read the included instructions before starting.
->
-Update: Multiple external users have reported safe Script 1 integrity-check stops during the public beta 2.0 installation. The original runtime-proven installation remains valid. Logs are being collected to determine whether the reports share a source-package variant, environmental cause, or toolkit compatibility issue. For now, use v1.1 until a fix is pushed. Expect a delay as i am currently on vacation and will be back on July 18th.
 
 ## Project identity
 
@@ -36,20 +38,20 @@ PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA
 
 The project is intentionally identified by the hardware and workflow rather than one AMD version. Each public release documents the AMD target it has actually validated.
 
-## What Public Beta v2.0 changes
+## What Public Beta v2.1 includes
 
-Public Beta v2.0 is a major workflow update, not a simple driver-number replacement.
+Public Beta v2.1 is the corrected and revalidated successor to v2.0.
 
-| Area | Public Beta v2.0 behavior |
+| Area | Public Beta v2.1 behavior |
 |---|---|
-| Starting display stack | Accepts a healthy compatible Legion Go stack instead of one hard-coded OEM version |
-| Lenovo extension | Validates required semantics and active attachment instead of one exact version/hash |
-| AMDUWP | Accepts a healthy structurally compatible Microsoft-signed component |
-| AMD installer | Accepts legitimate AMD-signed 26.6.4 container variations after exact extracted-payload proof |
-| Windows Kit | Finds a functional Inf2Cat/SignTool pair by capability instead of one mandatory kit version |
+| Starting display stack | Supports a fresh Lenovo OEM state, a validated Public Beta v1.1 / AMD 26.6.2 state, or an existing validated AMD 26.6.4 state for repair and idempotent reruns |
+| Lenovo extension | Validates required semantics, signature state, target identity, and active attachment instead of relying on one fixed published INF name |
+| AMDUWP | Accepts a healthy, structurally compatible Microsoft-signed component |
+| AMD source | Uses the validated AMD 26.6.4 Windows 11 installer and proves the exact extracted target payload before continuing |
+| Windows Kit | Finds a functional Inf2Cat and SignTool pair by capability instead of requiring one installed kit version |
 | Safety boundaries | Retains exact hardware gating, signature checks, payload verification, reboot boundaries, and final auditing |
 
-This release uses AMD 26.6.4 as its validated target. Compatibility refers to supported host and package variations; it does not mean an arbitrary AMD version can be substituted without a separately validated release.
+Compatibility does not mean an arbitrary AMD version can be substituted. A different AMD release requires separate inspection, adaptation, and end-to-end validation.
 
 ## Validated final state
 
@@ -71,21 +73,30 @@ This release uses AMD 26.6.4 as its validated target. Compatibility refers to su
 
 Download the latest release asset:
 
-LegionGo1-Graphics-Driver-Toolkit-Public-Beta-v2.0.zip
+```text
+LegionGo-AMD-26.6.4-Public-Beta-v2.1.zip
+```
 
 SHA-256:
-D2DA30DD76B9460C14D96FB09824D727D13B7D24BA327263E6FAA8ACC751CBD4
+
+```text
+DE3A7FD534BB136881D8685F17AD5F7FD3CCDC46597487465D0966C2A365038C
+```
 
 Verify it in PowerShell:
 
 ```powershell
-Get-FileHash "$env:USERPROFILE\Downloads\LegionGo1-Graphics-Driver-Toolkit-Public-Beta-v2.0.zip" -Algorithm SHA256
+Get-FileHash "$env:USERPROFILE\Downloads\LegionGo-AMD-26.6.4-Public-Beta-v2.1.zip" -Algorithm SHA256
 ```
 
-The AMD installer is not included. Public Beta v2.0 uses an official AMD-signed 26.6.4 Windows 11 installer placed beside the scripts.
+The AMD installer is not included. The supported reference installer is:
+
 ```text
-https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-7000-series/amd-ryzen-7-7840u.html
+whql-amd-software-adrenalin-edition-26.6.4-win11-b.exe
+SHA-256: E83A1B0E0F62BC7B171D5CA1F5EA38A12A3F9C221F5386853937645A66AD9C29
 ```
+
+Obtain it from AMD's official support site and place it beside the toolkit scripts.
 
 ## Four-stage workflow
 
@@ -96,33 +107,33 @@ https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-700
 | **3** | `03-Install-AMD-Software-And-Reboot.ps1` | Install native AMD Software, preserve compatible components, retire conflicting legacy state, and verify the next boot |
 | **4** | `04-Final-Persistence-Audit.ps1` | Perform the final read-only driver, software, catalog, metadata, event-log, and visual audit |
 
-A normal run with Secure Boot already disabled uses seven script launches and three Windows restarts. The scripts explicitly tell you when to rerun the same stage or continue.
+Follow the restart and rerun instructions printed by each script. Do not advance until the current script reports that the next stage is ready.
 
 ## Completion condition
 
-SCRIPT 4 PASS: True 
-
-Failed checks: 0 
-
-TOOLKIT COMPLETE: True 
-
+```text
+SCRIPT 4 PASS: True
+Failed checks: 0
+TOOLKIT COMPLETE: True
+```
 
 ## Release history
 
-- [Public Beta v2.0](releases/public-beta-v2.0/) — compatibility-focused workflow, AMD 26.6.4
+- [Public Beta v2.1](releases/public-beta-v2.1/) — current corrected release, AMD 26.6.4
+- [Public Beta v2.0](../../releases/tag/public-beta-v2.0) — superseded AMD 26.6.4 release
 - [Public Beta v1.1](releases/public-beta-v1.1/) — AMD 26.6.2
 - [Public Beta v1.0](releases/public-beta-v1.0/) — AMD 26.6.2
 
-Frozen release snapshots are not edited after publication.
+Published release assets are immutable. Corrections to executable files require a new public version and new hashes.
 
 ## Documentation
 
 | Guide | Purpose |
 |---|---|
 | [Installation](docs/INSTALLATION.md) | Required files, commands, run order, and restart boundaries |
-| [Compatibility](docs/COMPATIBILITY.md) | Flexible inputs, exact safety gates, and supported hardware |
+| [Compatibility](docs/COMPATIBILITY.md) | Supported starting states, exact safety gates, and hardware scope |
 | [Verification](docs/VERIFICATION.md) | Release, script, installer, and installed-state hashes |
-| [Validation](docs/VALIDATION.md) | Public Beta v2.0 final result |
+| [Validation](docs/VALIDATION.md) | Public Beta v2.1 regression results |
 | [Technical notes](docs/TECHNICAL-NOTES.md) | Package architecture and implementation details |
 | [Troubleshooting](docs/TROUBLESHOOTING.md) | Safe recovery guidance |
 | [FAQ](docs/FAQ.md) | Common project and compatibility questions |

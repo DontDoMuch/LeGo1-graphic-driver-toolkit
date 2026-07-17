@@ -1,5 +1,19 @@
 # Changelog
 
+## Public Beta v2.1 — 2026-07-17
+
+### Corrected public release
+
+- Superseded Public Beta v2.0 after external users reported safe Script 1 integrity-check stops.
+- Published the corrected and revalidated AMD 26.6.4 workflow as Public Beta v2.1.
+- Confirmed the final release artifact through two complete regression paths:
+  - Fresh Lenovo OEM graphics installation → AMD 26.6.4.
+  - Fresh Lenovo OEM → Public Beta v1.1 / AMD 26.6.2 → Public Beta v2.1 / AMD 26.6.4.
+- Confirmed Script 4 completed with `SCRIPT 4 PASS: True`, `Failed checks: 0`, and `TOOLKIT COMPLETE: True`.
+- Retained support for safe repair and idempotent reruns from an existing validated AMD 26.6.4 state.
+- Added `SHA256SUMS.txt` to the release artifact for direct file verification.
+- Updated repository documentation, issue forms, support policy, release metadata, and manifests to identify v2.1 as current.
+
 ## Public Beta v2.0 — 2026-07-10
 
 ### Major changes
