@@ -1,0 +1,57 @@
+Legion Go AMD 26.6.4 Graphics Driver Toolkit — Public Beta v2.1
+
+SUPPORTED STARTING STATES
+- Fresh Lenovo OEM graphics installation on the original Lenovo Legion Go (83E1).
+- A validated Legion Go AMD 26.6.2 toolkit installation.
+- An existing validated 26.6.4 installation, including repair or idempotent reruns.
+
+REQUIRED AMD INSTALLER
+Place AMD's official installer beside these scripts using its canonical filename:
+  whql-amd-software-adrenalin-edition-26.6.4-win11-b.exe
+
+Expected installer SHA-256:
+  E83A1B0E0F62BC7B171D5CA1F5EA38A12A3F9C221F5386853937645A66AD9C29
+
+Run all commands from an elevated Windows PowerShell window. Do not rename or edit the scripts.
+PowerShell 7 is required by the workflow, but launch the numbered wrappers with Windows PowerShell as shown below.
+
+RUN ORDER
+1. Prepare, build, sign, and enter Test Signing:
+
+PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File `
+    ".\01-Prepare-Build-Sign-And-Enter-Test-Signing.ps1"
+
+Follow the prompts and restart Windows when directed. Rerun Script 1 after the restart if instructed.
+
+2. Install and verify the corrected display driver:
+
+PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File `
+    ".\02-Install-Driver-And-Verify-Normal-Signing.ps1"
+
+Follow the prompts and restart Windows when directed. Rerun Script 2 after the restart if instructed.
+
+3. Install and validate AMD Software:
+
+PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File `
+    ".\03-Install-AMD-Software-And-Reboot.ps1"
+
+Script 3 detects and removes a conflicting non-target native .2099 AMD Software MSI before installing the validated target build. Follow any restart prompt.
+
+4. After the final restart, run the persistence audit:
+
+PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File `
+    ".\04-Final-Persistence-Audit.ps1"
+
+A successful installation requires all four scripts to report PASS and Script 4 to report:
+  TOOLKIT COMPLETE: True
+
+VERIFY RELEASE FILES
+From inside the LeGo-toolkit folder, compare the script and instruction hashes with SHA256SUMS.txt. Example:
+
+Get-FileHash .\*.ps1, .\Instructions.txt -Algorithm SHA256
+
+IMPORTANT
+- Network download of the AMD installer is disabled; supply the official installer locally.
+- Do not interrupt driver installation, certificate operations, or restarts.
+- Follow the scripts' Secure Boot and Test Signing prompts exactly.
+- Preserve the generated logs and final desktop report if reporting a failure.
