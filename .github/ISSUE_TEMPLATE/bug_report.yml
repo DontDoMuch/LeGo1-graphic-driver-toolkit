@@ -14,9 +14,22 @@ body:
     attributes:
       label: Release
       options:
-        - Public Beta v2.0 (AMD 26.6.4)
-        - AMD 26.6.2 Public Beta v1.1
+        - Public Beta v2.1 (AMD 26.6.4; current)
+        - Public Beta v2.0 (AMD 26.6.4; superseded)
+        - Public Beta v1.1 (AMD 26.6.2; historical)
         - Modified or development build
+    validations:
+      required: true
+
+  - type: dropdown
+    id: starting_state
+    attributes:
+      label: Starting state
+      options:
+        - Fresh Lenovo OEM graphics installation
+        - Public Beta v1.1 / AMD 26.6.2
+        - Existing AMD 26.6.4 toolkit installation
+        - Other or unknown
     validations:
       required: true
 
