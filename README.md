@@ -38,8 +38,6 @@ PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA
 
 The project is intentionally identified by the hardware and workflow rather than one AMD version. Each public release documents the AMD target it has actually validated.
 
-https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-7000-series/amd-ryzen-7-7840u.html
-
 ## What Public Beta v2.1 includes
 
 Public Beta v2.1 is the corrected and revalidated successor to v2.0.
@@ -98,7 +96,9 @@ whql-amd-software-adrenalin-edition-26.6.4-win11-b.exe
 SHA-256: E83A1B0E0F62BC7B171D5CA1F5EA38A12A3F9C221F5386853937645A66AD9C29
 ```
 
-Obtain it from AMD's official support site and place it beside the toolkit scripts.
+Obtain it from AMD's official support site and place it beside the toolkit scripts. 
+
+https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-7000-series/amd-ryzen-7-7840u.html
 
 ## Four-stage workflow
 
