@@ -1,0 +1,40 @@
+LEGION GO AMD 26.7.1 - PUBLIC BETA v3.1
+============================================================
+
+Scope
+-----
+Validated for the original Lenovo Legion Go 83E1 internal Radeon 780M path.
+eGPU configurations remain unvalidated.
+
+Required AMD installer
+----------------------
+Place this exact installer in Downloads:
+
+whql-amd-software-adrenalin-edition-26.7.1-win11-b.exe
+
+Expected SHA256:
+116C6269B7676C3E76F85A8CF0CAC82D7DF3E85051C0594E18B4B1EA41BE9E3D
+
+Secure Boot
+-----------
+Secure Boot must be disabled for the local catalog-signing architecture.
+
+Public Beta v3.1 fixes valid Lenovo OEM histories where multiple generations
+of amduw23e remain staged. Same-Lineage version history is no longer treated
+as automatic origin ambiguity, and a historical extension DriverVer mismatch
+is no longer automatically treated as proof of an invalid origin.
+
+Recognized same-lineage extension packages are individually exported for
+rollback before removal. Different applicable ExtensionIds remain fail-closed.
+
+No compatibility/support claim is made for unvalidated external driver projects.
+
+Launch
+------
+Verify the ZIP SHA256, unblock the ZIP before extraction, extract it, then run:
+
+Start-LegionGo-AMD-26.7.1.cmd
+
+If the independent PowerShell parser gate ever fails before the launcher starts,
+Public Beta v3.1 now leaves a Parser-Gate transcript in Downloads and keeps the
+failure console open until Enter is pressed.

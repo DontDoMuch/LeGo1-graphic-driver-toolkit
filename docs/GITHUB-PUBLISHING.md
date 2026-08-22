@@ -14,20 +14,20 @@ Description:
 Compatibility-focused AMD graphics-driver toolkit for the original Lenovo Legion Go (Legion Go 1).
 ```
 
-## Publish Public Beta v3.0
+## Publish Public Beta v3.1
 
-1. Back up or clone the current repository.
-2. Apply the Public Beta v3.0 repository update while preserving history.
-3. Confirm `README.md` identifies Public Beta v3.0 / AMD 26.7.1 as current.
-4. Confirm all historical release records remain present.
-5. Confirm `releases/public-beta-v3.0/toolkit/` matches `TOOLKIT-SHA256SUMS.txt`.
-6. Confirm `REPOSITORY-SHA256-MANIFEST.txt`.
-7. Commit and push.
+1. Preserve the existing repository and all historical release records.
+2. Add only `releases/public-beta-v3.1/` for the new executable publication record.
+3. Update current-version documentation from Public Beta v3.0 to v3.1 where required.
+4. Confirm `releases/public-beta-v3.1/toolkit/` is byte-identical to the frozen release ZIP contents.
+5. Confirm `TOOLKIT-SHA256SUMS.txt` and the ZIP's internal `SHA256SUMS.txt`.
+6. Regenerate and confirm `REPOSITORY-SHA256-MANIFEST.txt`.
+7. Commit and push as one atomic publication change.
 
-Suggested commit:
+Commit:
 
 ```text
-Publish Public Beta v3.0 for AMD 26.7.1
+Publish Public Beta v3.1 for AMD 26.7.1
 ```
 
 ## GitHub Release
@@ -35,43 +35,42 @@ Publish Public Beta v3.0 for AMD 26.7.1
 Tag:
 
 ```text
-public-beta-v3.0
+public-beta-v3.1
 ```
 
 Title:
 
 ```text
-Legion Go 1 Graphics Driver Toolkit — Public Beta v3.0
+Legion Go 1 Graphics Driver Toolkit — Public Beta v3.1
 ```
 
-Attach:
+Attach exactly one custom asset:
 
 ```text
-LegionGo-AMD-26.7.1-Public-Beta-v3.0.zip
+LegionGo-AMD-26.7.1-Public-Beta-v3.1.zip
 ```
 
 SHA-256:
 
 ```text
-E946D1F981A435B9C8F8E94542649FA48970F7C56F85138E399411E5C2496DAF
+ECAED23350E6C58139FDBE6C587BF30F4F931AD5086CBBD33A46B33E68107328
 ```
 
-Use `releases/public-beta-v3.0/RELEASE-NOTES.md` as the release description
-base and set it as the repository's latest release.
+Use `releases/public-beta-v3.1/RELEASE-NOTES.md` as the release-description base. Add the download hash, required official AMD source, launch steps, hardware scope, and validation summary from the v3.1 publication record.
 
-Keep the release marked as a **pre-release** while the project remains in the
-Public Beta sequence.
+Publish the release rather than leaving it as a draft. Keep it marked as a **pre-release** while the project remains in the Public Beta sequence.
 
 ## Do not upload
 
 - AMD's installer or extracted AMD binaries;
 - Driver Store copies;
 - private keys or local certificates;
-- private logs/evidence;
+- private logs, workflow state, or field evidence;
+- internal publication-audit archives;
 - unvalidated development snapshots presented as public releases.
 
 ## Provenance note
 
-Several files inside the v3.0 executable snapshot retain `RC2zk` internally.
-Do not rename them in the published executable snapshot. The public tag,
-release title, asset name, and documentation all use Public Beta v3.0.
+The corrected v3.1 package preserves required RC2zp implementation identifiers. The first unpublished broad substitution attempt changed internal type identifiers and was rejected by the independent parser gate before the launcher or any driver stage ran.
+
+Public entrypoint filenames, workflow/result schemas, signer identity, evidence names, tag, release title, asset name, and repository documentation use Public Beta v3.1.

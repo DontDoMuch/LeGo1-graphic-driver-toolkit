@@ -2,7 +2,7 @@
 
 ## Current release
 
-Public Beta v3.0 targets AMD Adrenalin 26.7.1 on the original Lenovo Legion Go.
+Public Beta v3.1 targets AMD Adrenalin 26.7.1 on the original Lenovo Legion Go.
 
 ## Requirements
 
@@ -16,9 +16,14 @@ Public Beta v3.0 targets AMD Adrenalin 26.7.1 on the original Lenovo Legion Go.
 
 ## Required downloads
 
-1. `LegionGo-AMD-26.7.1-Public-Beta-v3.0.zip`
-2. AMD's official:
-   `whql-amd-software-adrenalin-edition-26.7.1-win11-b.exe`
+1. `LegionGo-AMD-26.7.1-Public-Beta-v3.1.zip`
+2. AMD's official `whql-amd-software-adrenalin-edition-26.7.1-win11-b.exe`
+
+Required toolkit ZIP SHA-256:
+
+```text
+ECAED23350E6C58139FDBE6C587BF30F4F931AD5086CBBD33A46B33E68107328
+```
 
 Required AMD installer SHA-256:
 
@@ -31,14 +36,14 @@ Leave the AMD installer anywhere under `Downloads`.
 ## Verify the toolkit ZIP
 
 ```powershell
-Get-FileHash "$env:USERPROFILE\Downloads\LegionGo-AMD-26.7.1-Public-Beta-v3.0.zip" -Algorithm SHA256
+Get-FileHash "$env:USERPROFILE\Downloads\LegionGo-AMD-26.7.1-Public-Beta-v3.1.zip" -Algorithm SHA256
 ```
 
-Required result is listed in `docs/VERIFICATION.md` and the GitHub Release.
+The required result must exactly match the hash above and the GitHub Release.
 
 ## Run
 
-Extract the toolkit ZIP, then run:
+Unblock and extract the toolkit ZIP, then run:
 
 ```text
 Start-LegionGo-AMD-26.7.1.cmd
@@ -47,7 +52,8 @@ Start-LegionGo-AMD-26.7.1.cmd
 The supported public workflow asks exactly two Y/N questions at the beginning.
 
 After both are accepted, the workflow automatically handles:
-- package preflight;
+
+- package and independent parser preflight;
 - lightweight dependency preparation;
 - exact source extraction and hashing;
 - local catalog build/signing;
@@ -59,11 +65,15 @@ After both are accepted, the workflow automatically handles:
 - matching AMD Software / DVR installation;
 - final persistence audit.
 
+If the independent parser gate fails before launcher logging begins, v3.1 writes a `LegionGo-AMD-26.7.1-Public-Beta-v3.1-Parser-Gate-*.txt` transcript under Downloads and keeps the failure console open until Enter is pressed.
+
 ## Do not
 
 During a managed run:
+
 - do not manually run the numbered stage scripts;
 - do not remove Driver Store packages;
+- do not manually delete staged `amduw23e` generations;
 - do not delete workflow state;
 - do not toggle Test Signing yourself;
 - do not rerun a failed stage repeatedly.
@@ -80,12 +90,8 @@ FailedChecks: 0
 Workflow Stage: Complete
 ```
 
-The final audit evidence is written under Downloads. The evidence directory
-is authoritative even if a ZIP wrapper is not automatically produced.
+The final audit evidence is written under Downloads. The evidence directory is authoritative even if a ZIP wrapper is not automatically produced.
 
 ## Failure
 
-Stop at the first hard failure and preserve the generated failure-evidence
-bundle/folder. The managed launcher removes resume authorization and returns
-boot-integrity policy to normal when recovery requires it. It does not
-automatically retry a failed stage.
+Stop at the first hard failure and preserve the generated parser transcript or failure-evidence bundle/folder. The managed launcher removes resume authorization and returns boot-integrity policy to normal when recovery requires it. It does not automatically retry a failed stage.

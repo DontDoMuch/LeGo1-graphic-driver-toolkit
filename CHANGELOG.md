@@ -1,6 +1,19 @@
 
 # Changelog
 
+## Public Beta v3.1 — 2026-08-22
+
+- Published the corrected AMD 26.7.1 bugfix release over Public Beta v3.0 without changing the frozen merged target payload.
+- Corrected valid Lenovo OEM origins that previously failed with `Multiple standalone Lenovo amduw23e packages are present; origin is ambiguous.`
+- Corrected valid historical Lenovo extension generations that previously failed solely because their `DriverVer` differed from the active OEM display package.
+- Treats multiple exact-Go `amduw23e` generations sharing ExtensionId `{07A2A561-D001-4503-B239-EF2FE0379EFB}` as one versioned Lenovo lineage.
+- Exports every recognized same-lineage member before removal for the merged 26.7.1 target while continuing to fail closed on distinct applicable ExtensionIds.
+- Field-validated the dirty Lenovo OEM two-generation origin through Stages 2, 3, and 4 with zero failed final checks.
+- Regressed the corrected Public Beta v3.1 package from exact merged 26.7.1 to exact merged 26.7.1 through Stages 2, 3, and 4 with zero failed final checks.
+- Rejected an unpublished broad RC-to-public substitution attempt at the independent parser gate before any launcher or driver stage ran.
+- Preserved required internal RC2zp class/type identifiers and passed the corrected public-package static audit 16/16.
+- Published `LegionGo-AMD-26.7.1-Public-Beta-v3.1.zip` with SHA-256 `ECAED23350E6C58139FDBE6C587BF30F4F931AD5086CBBD33A46B33E68107328`.
+
 ## Public Beta v3.0 — AMD 26.7.1
 
 - Added the one-command managed installer with exactly two initial consent prompts.

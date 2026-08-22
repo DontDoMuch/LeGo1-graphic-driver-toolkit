@@ -1,17 +1,20 @@
 # Verification
 
-## Public Beta v3.0 release asset
+## Public Beta v3.1 release asset
 
 ```text
-LegionGo-AMD-26.7.1-Public-Beta-v3.0.zip
-SHA-256: E946D1F981A435B9C8F8E94542649FA48970F7C56F85138E399411E5C2496DAF
+LegionGo-AMD-26.7.1-Public-Beta-v3.1.zip
+SHA-256: ECAED23350E6C58139FDBE6C587BF30F4F931AD5086CBBD33A46B33E68107328
+Size: 124377 bytes
 ```
 
 PowerShell:
 
 ```powershell
-Get-FileHash "$env:USERPROFILE\Downloads\LegionGo-AMD-26.7.1-Public-Beta-v3.0.zip" -Algorithm SHA256
+Get-FileHash "$env:USERPROFILE\Downloads\LegionGo-AMD-26.7.1-Public-Beta-v3.1.zip" -Algorithm SHA256
 ```
+
+The ZIP contains one top-level `LegionGo-AMD-26.7.1-Public-Beta-v3.1` directory with 18 files. Its internal `SHA256SUMS.txt` contains 17 entries and verifies every other packaged file.
 
 ## Official AMD source
 
@@ -58,25 +61,33 @@ RSXCM:
 ## Required final policy state
 
 ```text
-GPU Status           = OK
-ProblemCode          = 0
-HasProblem           = False
-standalone amduw23e  = absent
-Test Signing         = OFF
-nointegritychecks    = OFF
-ShowRSOverlay        = true
-ColorVibrance_ENABLE_DEF = 1
+GPU Status                = OK
+ProblemCode               = 0
+HasProblem                = False
+standalone amduw23e       = absent
+Test Signing              = OFF
+nointegritychecks         = OFF
+ShowRSOverlay             = true
+ColorVibrance_ENABLE_DEF  = 1
+Stage 2/3/4               = Passed
+FailedChecks              = 0
+Workflow Stage            = Complete
 ```
 
 ## Executable provenance
 
-The executable files in `releases/public-beta-v3.0/toolkit/` are the exact
-final field-proven RC2zk candidate snapshot.
+The 18 files in `releases/public-beta-v3.1/toolkit/` are byte-identical to the contents of the frozen release ZIP.
 
-Candidate archive SHA-256:
+The corrected package audit records:
 
 ```text
-4E55DEF4E892A6BA4314911B2797018A03E871F83EFB4D95022CB1FD90EC4B4A
+Static audit: 16/16 PASS
 ```
 
-Internal RC2zk names are provenance identifiers, not the public release name.
+Required internal RC2zp class/type identifiers remain intact. Public entrypoints, workflow/result schemas, signer identity, evidence names, and primary release headers use Public Beta v3.1.
+
+The package's internal file hashes are published in:
+
+```text
+releases/public-beta-v3.1/TOOLKIT-SHA256SUMS.txt
+```

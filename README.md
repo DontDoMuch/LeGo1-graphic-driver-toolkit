@@ -4,7 +4,7 @@
 
 ### A compatibility-focused AMD graphics-driver workflow for the original Lenovo Legion Go
 
-![Release](https://img.shields.io/badge/release-Public%20Beta%20v3.0-2EA44F?style=for-the-badge)
+![Release](https://img.shields.io/badge/release-Public%20Beta%20v3.1-2EA44F?style=for-the-badge)
 ![Target](https://img.shields.io/badge/current%20target-AMD%2026.7.1-ED1C24?style=for-the-badge)
 ![Device](https://img.shields.io/badge/device-Legion%20Go%201-111111?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/platform-Windows%2011-0078D4?style=for-the-badge)
@@ -12,16 +12,16 @@
 
 **Build, install, and verify newer AMD graphics packages while preserving the Lenovo-specific integration required by the Legion Go 1.**
 
-[Latest release](../../releases/latest) · [Installation](docs/INSTALLATION.md) · [Compatibility](docs/COMPATIBILITY.md) · [Verification](docs/VERIFICATION.md) · [Troubleshooting](docs/TROUBLESHOOTING.md)
+[Latest release](../../releases/tag/public-beta-v3.1) · [Installation](docs/INSTALLATION.md) · [Compatibility](docs/COMPATIBILITY.md) · [Verification](docs/VERIFICATION.md) · [Troubleshooting](docs/TROUBLESHOOTING.md)
 
 </div>
 
 ---
 
 > [!IMPORTANT]
-> **Current release: Public Beta v3.0.** It targets AMD 26.7.1 and supersedes Public Beta v2.1.
+> **Current release: Public Beta v3.1.** It targets AMD 26.7.1 and supersedes Public Beta v3.0.
 >
-> The final 26.6.4 → 26.7.1 regression completed the full one-command workflow with **65/65 final-audit checks passing**. The clean Lenovo OEM → 26.7.1 path was also physically field-proven immediately before the final upgrade-path hardening.
+> v3.1 corrects valid Lenovo OEM histories containing multiple generations of the same original-Legion-Go `amduw23e` ExtensionId lineage. The dirty Lenovo OEM multi-generation path and the final Public Beta v3.1 merged-to-merged regression both completed Stages 2, 3, and 4 with **zero failed final checks**. The corrected public package also passed its independent **16/16 static audit**.
 
 > [!WARNING]
 > This toolkit changes the display-driver package, Driver Store, certificate trust, AMD Software, scheduled tasks, and temporary Windows Test Signing configuration. Back up important data, preserve the BitLocker or Device Encryption recovery key, and read the included instructions before starting.
@@ -36,20 +36,20 @@ PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA
 
 It is not a generic AMD installer and is not intended for Legion Go S.
 
-## What Public Beta v3.0 includes
+## What Public Beta v3.1 includes
 
-| Area | Public Beta v3.0 behavior |
+| Area | Public Beta v3.1 behavior |
 |---|---|
 | AMD target | Adrenalin 26.7.1 / display `32.0.31035.1003` |
 | Public workflow | One command, exactly two initial Y/N confirmations, automatic required reboot/resume boundaries |
-| Starting stacks | Microsoft Basic, Lenovo OEM, exact Public Beta v1.1 / 26.6.2, exact Public Beta v2.1 / 26.6.4, exact final 26.7.1 |
-| Lenovo integration | Lenovo-required graphics semantics are merged into the final 26.7.1 display package |
-| Standalone `amduw23e` | Preserved/exported as rollback material for older architectures, then removed when the merged 26.7.1 target supersedes it |
+| Starting stacks | Microsoft Basic, Lenovo OEM, exact Public Beta v1.1 / 26.6.2, exact Public Beta v2.1 / 26.6.4, and exact merged 26.7.1 states |
+| Lenovo extension lineage | One or more structurally valid original-Go `amduw23e` generations sharing ExtensionId `{07A2A561-D001-4503-B239-EF2FE0379EFB}` are treated as one versioned lineage |
+| Standalone `amduw23e` | Every recognized lineage member is exported as rollback material before removal when the merged 26.7.1 target supersedes it; distinct applicable ExtensionIds remain fatal |
 | Catalog handling | Resolves the catalog declared by the active Driver Store INF; fails closed on missing/ambiguous/invalid declarations |
-| Rollback | Preserves the starting display package and applicable Lenovo extension before destructive transition |
+| Rollback | Preserves the starting display package and every applicable validated Lenovo extension member before destructive transition |
 | AMD Software | Installs and validates the matching AMD Settings/DVR runtime |
 | Boot policy | Secure Boot front-gated; temporary Test Signing must finish OFF; `nointegritychecks` must finish OFF |
-| Final audit | 65 persistent-state checks |
+| Final audit | Stage 2/3/4 result contracts must pass and `FailedChecks` must equal `0` |
 
 Compatibility does not mean an arbitrary AMD release can be substituted. New AMD releases require their own payload inspection, semantic delta, exact identities, and regression validation.
 
@@ -70,31 +70,32 @@ Compatibility does not mean an arbitrary AMD release can be substituted. New AMD
 | `ShowRSOverlay` | `true` |
 | Test Signing after completion | Off |
 | `nointegritychecks` after completion | Off |
-| Final field audit | `65/65 PASS` |
+| Final Public Beta v3.1 run | Stages 2/3/4 PASS; `FailedChecks=0` |
+| Corrected package audit | `16/16 PASS` |
 
 ## Download and verify
 
 Release asset:
 
 ```text
-LegionGo-AMD-26.7.1-Public-Beta-v3.0.zip
+LegionGo-AMD-26.7.1-Public-Beta-v3.1.zip
 ```
 
 SHA-256:
 
 ```text
-E946D1F981A435B9C8F8E94542649FA48970F7C56F85138E399411E5C2496DAF
+ECAED23350E6C58139FDBE6C587BF30F4F931AD5086CBBD33A46B33E68107328
 ```
 
 Verify in PowerShell:
 
 ```powershell
-Get-FileHash "$env:USERPROFILE\Downloads\LegionGo-AMD-26.7.1-Public-Beta-v3.0.zip" -Algorithm SHA256
+Get-FileHash "$env:USERPROFILE\Downloads\LegionGo-AMD-26.7.1-Public-Beta-v3.1.zip" -Algorithm SHA256
 ```
 
 The AMD installer is not included. Download AMD's official package:
 
-https://www.amd.com/en/support/downloads/previous-drivers.html/processors/ryzen/ryzen-7000-series/amd-ryzen-7-7840u.html - locate the 26.7.1 and download
+https://www.amd.com/en/support/downloads/previous-drivers.html/processors/ryzen/ryzen-7000-series/amd-ryzen-7-7840u.html - locate 26.7.1 and download
 
 ```text
 whql-amd-software-adrenalin-edition-26.7.1-win11-b.exe
@@ -109,7 +110,7 @@ Right-click ZIP → Properties → Unblock
 
 Extract ZIP
 
-Run Start-LegionGo-AMD-26.7.1.cmd
+Run `Start-LegionGo-AMD-26.7.1.cmd`
 
 The launcher asks exactly two initial Y/N questions. Once accepted, the managed workflow handles preparation, temporary signing configuration, driver changes, matching AMD Software, required reboots, resume, and final audit.
 
@@ -125,7 +126,8 @@ Workflow Stage: Complete
 
 ## Release history
 
-- [Public Beta v3.0](releases/public-beta-v3.0/) — current release, AMD 26.7.1
+- [Public Beta v3.1](releases/public-beta-v3.1/) — current release, AMD 26.7.1 bugfix
+- [Public Beta v3.0](releases/public-beta-v3.0/) — AMD 26.7.1
 - [Public Beta v2.1](releases/public-beta-v2.1/) — AMD 26.6.4
 - [Public Beta v2.0](../../releases/tag/public-beta-v2.0) — superseded AMD 26.6.4 release
 - [Public Beta v1.1](releases/public-beta-v1.1/) — AMD 26.6.2
@@ -140,7 +142,7 @@ Published release assets are immutable. Corrections to executable behavior requi
 | [Installation](docs/INSTALLATION.md) | Required files, one-command workflow, and reboot behavior |
 | [Compatibility](docs/COMPATIBILITY.md) | Supported origins, hardware scope, and fail-closed rules |
 | [Verification](docs/VERIFICATION.md) | Release, source-installer, and installed-state hashes |
-| [Validation](docs/VALIDATION.md) | Public Beta v3.0 field and regression evidence |
+| [Validation](docs/VALIDATION.md) | Public Beta v3.1 field, package, and regression evidence |
 | [Technical notes](docs/TECHNICAL-NOTES.md) | Driver architecture, rollback, signing, and origin classifier |
 | [Troubleshooting](docs/TROUBLESHOOTING.md) | Safe recovery guidance |
 | [FAQ](docs/FAQ.md) | Common questions |
@@ -151,6 +153,7 @@ Published release assets are immutable. Corrections to executable behavior requi
 - Do not use DDU as part of the documented workflow unless a future release explicitly requires it.
 - Do not manually run numbered stages during the normal managed workflow.
 - Do not manually replace the INF, MSI, catalog, certificate, or workflow state.
+- Do not manually delete staged `amduw23e` generations to bypass origin classification.
 - Do not manually toggle Test Signing while a managed run is active.
 - Keep the Legion Go connected to AC power.
 - Preserve BitLocker or Device Encryption recovery information before changing boot-security settings.

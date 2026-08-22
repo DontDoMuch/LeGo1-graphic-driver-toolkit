@@ -1,38 +1,36 @@
 # Validation
 
-## Public Beta v3.0
+## Public Beta v3.1
 
-Public Beta v3.0 targets AMD 26.7.1.
+Public Beta v3.1 targets AMD 26.7.1 and preserves the frozen merged target payload from v3.0.
 
-## Final field regression: Public Beta v2.1 / 26.6.4 → v3.0 / 26.7.1
+## Dirty Lenovo OEM multi-generation origin
 
-Starting state:
+The corrected classifier mechanics were physically field-run from a Lenovo OEM display stack with two applicable `amduw23e` generations still staged.
+
+Starting display:
 
 ```text
-DriverVersion:
-  32.0.31021.5001
-
-Active original INF:
-  u0202082.inf
-
-INF SHA-256:
-  73E8AE95849354D3D52DCB2A583CCB458D33DF22ACCCD0F0C1EE7626FDBD3034
-
-Origin:
-  VerifiedPriorToolkitWithStandaloneExtension
+DriverVersion: 32.0.23017.1001
+PreviousOriginKind: LegacyStandaloneExtension
+PreviousStandaloneExtensionCount: 2
+PreviousExtensionDisposition: ExportThenRemove
 ```
 
-The workflow proved:
-- target GPU healthy before mutation;
-- exact 26.6.4 base identity;
-- compatible attached Lenovo extension despite expected cross-version DriverVer;
-- current 26.6.4 display exported for rollback;
-- Lenovo extension exported for rollback;
-- standalone extension removed for the merged 26.7.1 target;
-- exact 26.7.1 package staged and bound;
-- normal signing policy restored after reboot;
-- matching AMD Software sealed;
-- final persistence audit completed.
+Both extension packages targeted the original Legion Go and shared:
+
+```text
+ExtensionId: {07A2A561-D001-4503-B239-EF2FE0379EFB}
+```
+
+Observed lineage generations:
+
+```text
+32.0.23017.1001 — 2026-01-08
+31.0.24028.1001 — 2024-04-22
+```
+
+Both packages were individually exported for rollback before removal.
 
 Result:
 
@@ -41,39 +39,45 @@ Stage 2 = Passed
 Stage 3 = Passed
 Stage 4 = Passed
 FailedChecks = 0
-Final Audit = 65/65 PASS
 Workflow Stage = Complete
 ```
 
-Audit archive SHA-256:
+## Merged 26.7.1 → corrected Public Beta v3.1
+
+The final corrected public package was then physically run from the exact merged AMD 26.7.1 state.
+
+Starting state:
 
 ```text
-B9ECEB363EE353076E9F16A869A7BBB8DF39FAA598B0929045C7D9A622978508
+PreviousOriginKind: MergedEmbedded
+PreviousDriverVersion: 32.0.31035.1003
+PreviousInfHash: 9C9A8471BC433B93ED7DECD1EBC40A6D9AF619B68C49B3E91421D70D12AB0409
+PreviousStandaloneExtensionCount: 0
 ```
 
-## Lenovo OEM → 26.7.1
+The workflow retained the exact healthy pre-existing merged package as the active binding while exercising the public v3.1 parser, package, workflow, software, reboot/resume, and final-audit contracts.
 
-The clean Lenovo OEM → 26.7.1 path was physically field-proven immediately
-before the final 26.6.x classifier expansion using the same frozen target
-payload and retained OEM-origin logic:
+Result:
 
 ```text
-Final Audit = 65/65 PASS
+Release = Public-Beta-v3.1
+Stage 2 = Passed
+Stage 3 = Passed
+Stage 4 = Passed
+FailedChecks = 0
+Workflow Stage = Complete
 ```
 
-## Public Beta v1.1 / 26.6.2 → 26.7.1
+## Public packaging correction
 
-v3.0 contains exact-identity acceptance and rejection fixtures for:
+The first unpublished v3.1 transformation performed a broad RC-to-public text substitution that modified internal C#/PowerShell type identifiers. The independent parser gate rejected it before the launcher or any driver stage started.
 
-```text
-DriverVersion: 32.0.31021.1015
-INF SHA-256:   39BD11386ABFE8CB964902B18159801A486AB22FCFA9C622622F4E6B9B9D901E
-```
+The corrected package:
 
-with the required standalone Lenovo extension.
-
-The project does not claim that this exact v3.0 transition received a
-separate physical field run.
+- preserves the field-proven RC2zp internal class/type identifiers;
+- uses Public Beta v3.1 for public entrypoints, workflow/result schemas, signer identity, evidence names, and primary headers;
+- writes a Downloads transcript if the pre-launch parser gate fails;
+- passed the corrected package static audit `16/16`.
 
 ## Final target
 
@@ -82,10 +86,13 @@ DriverVersion: 32.0.31035.1003
 GPU Status: OK
 ProblemCode: 0
 HasProblem: False
-Final audit: 65/65 PASS
+Final INF SHA-256: 9C9A8471BC433B93ED7DECD1EBC40A6D9AF619B68C49B3E91421D70D12AB0409
+Final amdgcf.dat SHA-256: DD7B29271E068BE01F5FE4F55A136F0049F60822E0D789B9AAF9152E58A9D766
+Loaded amdkmdag.sys SHA-256: D8B1ECBB9169259E6D65D38A5CD53D7D6F0606F60471D2BA779B9C7B5F36E4D5
 ```
 
-## Provenance
+## Validated scope
 
-The public toolkit snapshot is byte-identical to the final field-proven
-`v3.0-RC2zk` candidate. RC2zk remains only as an internal provenance label.
+The validated hardware scope is the original Legion Go 83E1 internal Radeon 780M path. eGPU configurations and external driver projects remain unvalidated.
+
+Private field logs, workflow state, certificates, and evidence archives are not release assets.
