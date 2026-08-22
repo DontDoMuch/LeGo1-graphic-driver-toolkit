@@ -94,6 +94,8 @@ Get-FileHash "$env:USERPROFILE\Downloads\LegionGo-AMD-26.7.1-Public-Beta-v3.0.zi
 
 The AMD installer is not included. Download AMD's official package:
 
+https://drivers.amd.com/drivers/whql-amd-software-adrenalin-edition-26.7.1-win11-b.exe
+
 ```text
 whql-amd-software-adrenalin-edition-26.7.1-win11-b.exe
 SHA-256: 116C6269B7676C3E76F85A8CF0CAC82D7DF3E85051C0594E18B4B1EA41BE9E3D
