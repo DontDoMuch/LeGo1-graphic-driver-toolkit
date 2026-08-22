@@ -94,7 +94,7 @@ Get-FileHash "$env:USERPROFILE\Downloads\LegionGo-AMD-26.7.1-Public-Beta-v3.0.zi
 
 The AMD installer is not included. Download AMD's official package:
 
-https://drivers.amd.com/drivers/whql-amd-software-adrenalin-edition-26.7.1-win11-b.exe
+https://www.amd.com/en/support/downloads/previous-drivers.html/processors/ryzen/ryzen-7000-series/amd-ryzen-7-7840u.html - locate the 26.7.1 and download
 
 ```text
 whql-amd-software-adrenalin-edition-26.7.1-win11-b.exe
