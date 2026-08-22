@@ -1,41 +1,53 @@
 # FAQ
 
-## Is this project only for AMD 26.6.4?
+## Is this for the Legion Go S?
 
-The repository is a Legion Go 1 workflow project, not an AMD-version-named project. Public Beta v2.1 uses AMD 26.6.4 because that is the target validated for this release. Later public versions may target later AMD packages after separate testing.
+No. Public Beta v3.0 is for the original Legion Go / Legion Go 1 hardware
+identity documented in `COMPATIBILITY.md`.
 
-## Does compatibility mean any AMD installer works?
+## Why does the ZIP contain a few filenames that say RC2zk?
 
-No. Public Beta v2.1 supports the validated AMD 26.6.4 reference installer and still proves the exact target payload before installation. A renamed or different AMD release is not accepted as a supported substitute.
+RC2zk is the internal identifier of the final field-proven candidate. Those
+executable files were deliberately kept byte-identical when publishing
+Public Beta v3.0. RC2zk is provenance, not the public release name.
 
-## Which starting states are supported?
+## Why not rename those internal scripts?
 
-Public Beta v2.1 supports fresh Lenovo OEM, a validated Public Beta v1.1 / AMD 26.6.2 state, and an existing validated AMD 26.6.4 state for repair or idempotent reruns.
+Renaming/relabeling the tested executable set would require another package
+mutation and another full field certification for cosmetic gain. The public
+entrypoint, release asset, GitHub tag, documentation, and repository record
+all use Public Beta v3.0.
 
-## Why not require one exact Lenovo OEM driver first?
+## Does v3.0 need Lenovo's amduw23e extension?
 
-Public Beta v2.1 records and validates the live starting display stack. A healthy compatible prior toolkit state or OEM state can qualify without pretending every machine must begin from one published INF name.
+It depends on the starting architecture.
 
-## Why is the Lenovo extension important?
+Lenovo OEM and the public 26.6.2/26.6.4 toolkit releases use the standalone
+Lenovo extension. v3.0 validates and exports it for rollback, then removes it
+because the final 26.7.1 package incorporates the required Lenovo semantics.
 
-It carries Legion Go-specific compatibility metadata and must be valid, Microsoft hardware-signed, semantically compatible, and attached to the active GPU instance.
+## Does the extension version need to match the 26.6.x display driver?
 
-## Does the toolkit include AMD files?
+No. For the exact known public 26.6.2/26.6.4 toolkit architectures, the
+OEM-generation standalone extension is intentional. v3.0 recognizes this
+only for the exact known base identities and a compatible attached extension.
 
-No. The user supplies the official AMD installer. The repository contains original scripts and documentation, not redistributed AMD or Lenovo driver payloads.
+## Can I use a different AMD release?
 
-## Is Microsoft Store required?
+No. A different AMD release needs separate analysis, adaptation, and
+validation. Do not substitute a different installer.
 
-No. The validated final arrangement uses native AMD Software and RSXCM without a Store dependency.
+## Does v3.0 spoof Radeon Software ReleaseVersion?
 
-## Is Secure Boot permanently disabled?
+No.
 
-The workflow requires Secure Boot off while temporary Test Signing is enabled. Script 2 returns Test Signing to off. Secure Boot can be re-enabled manually after completion and Script 4 can be rerun to audit the resulting state.
+## How many prompts are there?
 
-## Why are there multiple runs of Scripts 1, 2, and 3?
+The normal public launcher asks exactly two Y/N questions at the beginning.
+Required managed reboots afterward are automatic.
 
-Each crosses a reboot boundary. The next run verifies the live state after Windows starts again rather than trusting stale saved data from the previous boot.
+## What proves success?
 
-## Should I use Public Beta v2.0?
-
-No. Public Beta v2.1 supersedes v2.0 and is the supported AMD 26.6.4 release.
+Stage 2/3/4 must pass, `FailedChecks` must be zero, and workflow state must be
+`Complete`. The final installed hashes/policy state are listed in
+`VERIFICATION.md`.

@@ -1,58 +1,60 @@
 # Troubleshooting
 
-## Stop at the first failure
+## First rule: stop at a hard failure
 
-Do not skip ahead, delete state, run a later script, use DDU, or manually replace packages. Preserve the first failed check and terminating error.
+Do not repeatedly rerun a failed stage or manually delete workflow state.
 
-## Confirm the release
+Preserve the generated failure-evidence folder/ZIP under Downloads and the
+visible console error.
 
-Use Public Beta v2.1 and verify the ZIP and script hashes in [Verification](VERIFICATION.md). Edited scripts are outside the validated release contract. Public Beta v2.0 is superseded.
+## Test Signing after a failure
 
-## Hardware rejection
+Managed hard-failure recovery inspects the current boot policy. When required,
+it configures Test Signing and `nointegritychecks` OFF, removes resume
+authorization, and reboots without retrying the failed stage.
 
-The toolkit supports only:
+If the machine has rebooted after recovery, verify current state before
+attempting another release candidate or manual repair.
 
-```text
-PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA
-```
+## Unknown starting driver
 
-A different subsystem ID is a hard stop.
+Public Beta v3.0 intentionally fails closed on arbitrary AMD display origins.
+Do not bypass the origin classifier by manually editing state or metadata.
 
-## Starting stack rejected
+Supported origins are documented in `COMPATIBILITY.md`.
 
-Public Beta v2.1 supports fresh Lenovo OEM, a validated Public Beta v1.1 / AMD 26.6.2 state, and an existing validated AMD 26.6.4 state. It still requires a healthy active GPU and a compatible Lenovo extension attached to that exact live GPU instance. A stale package merely present in the Driver Store does not qualify.
+## AMD installer not found or rejected
 
-## AMD installer rejected
-
-Use the supported reference installer:
-
-```text
-whql-amd-software-adrenalin-edition-26.6.4-win11-b.exe
-SHA-256: E83A1B0E0F62BC7B171D5CA1F5EA38A12A3F9C221F5386853937645A66AD9C29
-```
-
-The installer must also be AMD-signed, report version `26.6.4.0`, extract successfully, and contain the exact target dependencies. Renaming another AMD release cannot make it compatible.
-
-## Missing prerequisites
-
-Script 1 requires PowerShell 7.4 or newer, 7-Zip, and a functional paired x86 Inf2Cat and x64 SignTool installation. The listed SDK/WDK packages are fallback installers, not the only acceptable kit build.
-
-## Secure Boot and Test Signing
-
-Secure Boot may need to be disabled manually in UEFI before temporary Test Signing can activate. Do not toggle Test Signing yourself between runs. Script 2 must turn it off and verify the next normal-signing boot.
-
-## Script 3 software failure
-
-Do not manually reinstall legacy `.2089` MSI or Store AppX packages. Preserve the Script 3 output and logs.
-
-## Final audit failure
-
-Script 4 is read-only and does not repair drift. Its failed check identifies the state that did not persist.
-
-Useful locations:
+Required source:
 
 ```text
-C:\ProgramData\LegionGo-AMD-26.6.4\Logs
-C:\ProgramData\LegionGo-AMD-26.6.4\final-audit-result.json
-C:\Users\<YOUR USERNAME>\Desktop\LegionGo-AMD-26.6.4-Final-Report.txt
+whql-amd-software-adrenalin-edition-26.7.1-win11-b.exe
+SHA-256: 116C6269B7676C3E76F85A8CF0CAC82D7DF3E85051C0594E18B4B1EA41BE9E3D
 ```
+
+Leave it under your Downloads folder. A same-named but different file is not
+accepted.
+
+## Secure Boot
+
+Secure Boot must be disabled for this local-catalog signing architecture.
+Enabled or unknown Secure Boot state is a hard front gate.
+
+## Final audit folder exists but ZIP does not
+
+The final evidence directory is authoritative. Some runs may leave the
+complete audit directory without an automatically packaged ZIP. This does not
+by itself indicate audit failure; Stage 4 result status and `FailedChecks`
+remain authoritative.
+
+## Should I use DDU?
+
+DDU is not part of the documented Public Beta v3.0 workflow. Do not insert it
+into a normal upgrade/repair run unless a future documented recovery path
+explicitly calls for it.
+
+## Code 43
+
+Do not try to repair Code 43 by spoofing `ReleaseVersion`. Preserve evidence
+and restore a known-good package/state. Public Beta v3.0 deliberately avoids
+that older metadata workaround.

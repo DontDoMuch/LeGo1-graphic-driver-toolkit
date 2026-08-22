@@ -2,90 +2,76 @@
 
 ## Repository identity
 
-Recommended repository name:
+Repository:
 
 ```text
 LeGo1-graphic-driver-toolkit
 ```
 
-Recommended description:
+Description:
 
 ```text
 Compatibility-focused AMD graphics-driver toolkit for the original Lenovo Legion Go (Legion Go 1).
 ```
 
-Suggested topics:
-
-```text
-legion-go
-legion-go-1
-amd
-radeon
-powershell
-windows-11
-graphics-driver
-handheld-gaming
-```
-
-## Publish the Public Beta v2.1 repository update
+## Publish Public Beta v3.0
 
 1. Back up or clone the current repository.
-2. Replace the repository contents with the cleaned repository ZIP, preserving all paths.
-3. Confirm `README.md` renders correctly and identifies Public Beta v2.1 as current.
-4. Confirm the frozen `public-beta-v1.0` and `public-beta-v1.1` snapshots remain present.
-5. Confirm `releases/public-beta-v2.0/README.md` is a historical pointer and contains no mislabeled executable files.
-6. Confirm `releases/public-beta-v2.1/` contains the exact released scripts, instructions, checksum file, and release metadata.
-7. Verify `REPOSITORY-SHA256-MANIFEST.txt` against the repository files.
-8. Commit and push the update.
+2. Apply the Public Beta v3.0 repository update while preserving history.
+3. Confirm `README.md` identifies Public Beta v3.0 / AMD 26.7.1 as current.
+4. Confirm all historical release records remain present.
+5. Confirm `releases/public-beta-v3.0/toolkit/` matches `TOOLKIT-SHA256SUMS.txt`.
+6. Confirm `REPOSITORY-SHA256-MANIFEST.txt`.
+7. Commit and push.
 
-Suggested commit message:
+Suggested commit:
 
 ```text
-Publish Public Beta v2.1 and refresh repository documentation
+Publish Public Beta v3.0 for AMD 26.7.1
 ```
 
-## Create the GitHub release
+## GitHub Release
 
 Tag:
 
 ```text
-public-beta-v2.1
+public-beta-v3.0
 ```
 
-Release title:
+Title:
 
 ```text
-Legion Go 1 Graphics Driver Toolkit — Public Beta v2.1
+Legion Go 1 Graphics Driver Toolkit — Public Beta v3.0
 ```
 
 Attach:
 
 ```text
-LegionGo-AMD-26.6.4-Public-Beta-v2.1.zip
+LegionGo-AMD-26.7.1-Public-Beta-v3.0.zip
 ```
 
-Published SHA-256:
+SHA-256:
 
 ```text
-DE3A7FD534BB136881D8685F17AD5F7FD3CCDC46597487465D0966C2A365038C
+E946D1F981A435B9C8F8E94542649FA48970F7C56F85138E399411E5C2496DAF
 ```
 
-Use `releases/public-beta-v2.1/RELEASE-NOTES.md` as the release description. Mark the release as a **pre-release** because the project remains in public beta, and set it as the repository's latest release.
+Use `releases/public-beta-v3.0/RELEASE-NOTES.md` as the release description
+base and set it as the repository's latest release.
 
-Do not commit the release ZIP into the source tree unless there is a deliberate archival reason. GitHub Releases is the appropriate location for the downloadable asset.
-
-## Repository settings
-
-- Keep Issues enabled.
-- Enable private vulnerability reporting.
-- Add the recommended topics.
-- Confirm `.github/FUNDING.yml` resolves correctly if funding is enabled.
-- Enable Discussions only when support capacity exists.
+Keep the release marked as a **pre-release** while the project remains in the
+Public Beta sequence.
 
 ## Do not upload
 
-- AMD's installer or extracted AMD binaries
-- Driver Store copies
-- Local certificates or private keys
-- Logs containing private information
-- Unvalidated development snapshots presented as public releases
+- AMD's installer or extracted AMD binaries;
+- Driver Store copies;
+- private keys or local certificates;
+- private logs/evidence;
+- unvalidated development snapshots presented as public releases.
+
+## Provenance note
+
+Several files inside the v3.0 executable snapshot retain `RC2zk` internally.
+Do not rename them in the published executable snapshot. The public tag,
+release title, asset name, and documentation all use Public Beta v3.0.

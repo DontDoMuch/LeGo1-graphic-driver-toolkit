@@ -1,60 +1,78 @@
 # Compatibility
 
-## Supported hardware
+## Hardware scope
 
-The toolkit supports only the original Lenovo Legion Go / Legion Go 1 with this GPU identity:
+Public Beta v3.0 is designed only for the original Lenovo Legion Go:
 
 ```text
 PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA
 ```
 
-A different Legion model, subsystem ID, or AMD device is outside the supported contract.
+Legion Go S and unrelated AMD systems are outside this release's scope.
 
-## Supported starting states in Public Beta v2.1
+## Supported starting architectures
 
-Public Beta v2.1 supports these starting states:
+The v3.0 origin classifier explicitly recognizes:
 
-- Fresh Lenovo OEM graphics installation on the original Lenovo Legion Go.
-- A validated Public Beta v1.1 / AMD 26.6.2 toolkit installation.
-- An existing validated AMD 26.6.4 toolkit installation for repair or idempotent reruns.
+### Microsoft Basic Display Adapter
+The physical target GPU may be bound to Microsoft's in-box Basic Display
+driver. The classifier requires Microsoft provider/service identity and does
+not attempt to delete the in-box package.
 
-The final v2.1 artifact completed end-to-end regression testing through the first two paths on July 17, 2026.
+### Lenovo OEM graphics
+A healthy Lenovo OEM display stack with the compatible standalone Lenovo
+`amduw23e` extension is supported. The display/extension pair is validated
+before transition.
 
-## Compatibility validation
-
-Public Beta v2.1 validates required characteristics instead of assuming one exact host configuration:
-
-- The active starting display stack may use different healthy driver versions and published INF names when the state meets the release contract.
-- The Lenovo extension may vary in version and file hash when it remains Microsoft hardware-signed, targets the correct GPU, carries the required extension identity and directives, and is attached to the active GPU instance.
-- AMDUWP may vary when it remains Microsoft hardware-signed, healthy, and structurally compatible.
-- A functional paired x86 Inf2Cat and x64 SignTool installation is accepted by capability rather than one required Windows Kit version.
-
-## AMD source contract
-
-The supported reference installer is:
+### Public Beta v1.1 / AMD 26.6.2
+Exact display identity:
 
 ```text
-whql-amd-software-adrenalin-edition-26.6.4-win11-b.exe
-SHA-256: E83A1B0E0F62BC7B171D5CA1F5EA38A12A3F9C221F5386853937645A66AD9C29
+DriverVersion: 32.0.31021.1015
+INF SHA-256:   39BD11386ABFE8CB964902B18159801A486AB22FCFA9C622622F4E6B9B9D901E
 ```
 
-The toolkit also verifies the AMD signature, reported version, extraction behavior, and exact target payload. Renaming or substituting a different AMD release does not make it compatible.
+This architecture intentionally uses the Lenovo standalone extension.
+v3.0 requires that compatible extension to be present before accepting the
+origin.
 
-## What remains exact
+### Public Beta v2.1 / AMD 26.6.4
+Exact display identity:
 
-Compatibility is not the removal of safety checks. Public Beta v2.1 still requires:
+```text
+DriverVersion: 32.0.31021.5001
+INF SHA-256:   73E8AE95849354D3D52DCB2A583CCB458D33DF22ACCCD0F0C1EE7626FDBD3034
+```
 
-- The Legion Go 1 hardware identity.
-- Windows 11 x64 build 22000 or newer.
-- A healthy live GPU state.
-- Valid Microsoft and AMD signatures where required.
-- The exact AMD 26.6.4 target payload used by this release.
-- Exact rebuilt INF and kernel identities.
-- Exact canonical package dependencies and output contracts.
-- A coherent saved-to-live state handoff across every restart.
-- Test Signing off before completion.
-- A passing final read-only audit.
+This architecture also intentionally uses the Lenovo standalone extension.
 
-## Future AMD versions
+### Exact Public Beta v3.0 / AMD 26.7.1 target
+The exact final target is supported for repair/idempotent reruns when its
+package identity and health are consistent.
 
-The repository itself is not tied to AMD 26.6.4. A future public release can target a later AMD package without renaming the project. That future target must still be inspected, adapted, and validated before it can be claimed as supported.
+## Why the extension versions do not match 26.6.x
+
+Public Beta v1.1 and v2.1 intentionally retain Lenovo's OEM-generation
+standalone `amduw23e` while running a newer AMD base display driver. That is
+a known toolkit architecture, not automatically "stale residue."
+
+Public Beta v3.0 recognizes that cross-version pairing only for the exact
+known 26.6.2/26.6.4 bases and a semantically compatible attached Lenovo
+extension.
+
+The same mismatch on an unknown AMD base remains fatal.
+
+## 26.7.1 merged transition
+
+v3.0 exports the prior display and applicable Lenovo extension as rollback
+material first. The standalone extension is then removed because its required
+semantics are incorporated into the verified 26.7.1 merged target.
+
+## Unsupported origins
+
+An arbitrary side-loaded AMD display package is not considered compatible
+merely because it can bind to the GPU. Unknown, unhealthy, or inconsistent
+origins fail closed.
+
+New AMD releases require separate source inspection, semantic delta work,
+exact identity definitions, and regression validation.

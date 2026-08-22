@@ -1,34 +1,79 @@
 # Technical notes
 
-## Hardware-first design
+## v3.0 architecture
 
-The workflow is gated to the original Legion Go GPU identity. Repository branding is version-neutral, while each public release defines its own validated AMD target and installed-state contract.
+Public Beta v3.0 separates three concepts that older iterations tended to
+blur together:
 
-## Compatibility validation
+1. the active AMD base display package;
+2. Lenovo-specific integration semantics;
+3. Radeon Software / CN metadata.
 
-Public Beta v2.1 records the live starting display stack and validates required properties instead of comparing every host component to one frozen published INF name. This applies to the starting display driver, Lenovo extension, AMDUWP component, and Windows Kit discovery.
+The active Driver Store package and physical target-device binding are the
+primary authority. CN metadata is supplemental and is never used to spoof a
+newer driver identity.
 
-The supported public source is the validated AMD 26.6.4 reference installer. Script 1 additionally verifies the AMD signature, version, extraction result, and exact target payload.
+## Starting-origin classifier
 
-## Exact target construction
+The classifier is architecture-aware.
 
-Flexible input validation does not weaken the output contract. The canonical dependency manifest, rebuilt INF, generated `amdgcf.dat`, expected kernel, package structure, official AMD catalog, and final installed identities remain exact for the release target.
+- Lenovo OEM expects the Lenovo standalone extension as part of the OEM pair.
+- Public 26.6.2 and 26.6.4 are exact known toolkit architectures that also
+  intentionally retain the OEM-generation Lenovo extension.
+- Public 26.7.1 moves required Lenovo semantics into the merged display
+  package and removes the standalone extension after rollback capture.
+- Unknown AMD bases do not inherit the 26.6.x mismatch exception.
 
-## Catalog model
+## Rollback
 
-The corrected local catalog is generated and signed with a unique per-installation certificate. Its hash therefore differs between installations. AMD's official Microsoft-signed catalog is separately registered and verified for kernel-policy continuity.
+Before a destructive Stage 2 transition, the workflow records and exports
+the starting display package. When the starting architecture includes the
+Lenovo standalone extension, that extension is also exported.
 
-## Reboot boundaries
+The prior display package is retained rather than globally purged. This makes
+rollback origin-aware and avoids assuming there should be only one AMD
+Display-class package in the Driver Store.
 
-Scripts 1, 2, and 3 write state before a restart and then compare it with the next live boot. Saved state alone is never accepted as proof that the operation persisted.
+## Catalog resolution
 
-## Release-specific state roots
+The active catalog is resolved from the active Driver Store INF rather than
+by hardcoding the final target catalog filename while inspecting older
+origins.
 
-Public Beta v2.1 uses:
+On x64 Windows, an applicable `CatalogFile.NTamd64` declaration takes
+precedence. Missing, conflicting, path-traversing, non-CAT, or physically
+absent catalog declarations fail closed.
+
+## Signing
+
+The final merged display catalog is locally signed. The workflow temporarily
+enables Test Signing only after validating the exact built package and its
+catalog/INF membership.
+
+Final completion requires:
+- Test Signing OFF;
+- `nointegritychecks` OFF;
+- active catalog/signature identity matching the Stage 2 checkpoint.
+
+## Payload preservation
+
+The build protects a frozen 190-file unchanged manifest, restores all nine
+field-observed official AMD companion catalogs after Inf2Cat, and rehashes
+protected content after build/signing operations.
+
+## AMD defaults
+
+v3.0 intentionally preserves:
 
 ```text
-C:\AMD\LegionGo-26.6.4
-C:\ProgramData\LegionGo-AMD-26.6.4
+ColorVibrance_ENABLE_DEF = 1
+ShowRSOverlay            = true
 ```
 
-Those are implementation paths for this release, not the permanent name of the project.
+## No ReleaseVersion spoofing
+
+Live registry `ReleaseVersion` spoofing is not part of v3.0. Earlier testing
+demonstrated that making the live Radeon Software metadata claim an identity
+that did not match the installed display package could lead to Code 43 after
+reboot. v3.0 instead makes the driver package and software stack internally
+consistent.

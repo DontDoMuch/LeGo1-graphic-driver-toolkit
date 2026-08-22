@@ -2,42 +2,61 @@
 
 ## Naming convention
 
-Public releases use one simple sequence:
+Public releases continue the existing sequence:
 
 ```text
 Public Beta v1.0
 Public Beta v1.1
 Public Beta v2.0
 Public Beta v2.1
+Public Beta v3.0
 ```
 
-The release tag and repository record use the lowercase form:
+Release tags use lowercase:
 
 ```text
-public-beta-v2.1
+public-beta-v3.0
 ```
 
-Internal development labels are not public release names.
+Internal engineering labels such as RC2zk are not public release names.
 
 ## Current release
 
-**Public Beta v2.1** is the current release. It uses AMD 26.6.4 and supersedes Public Beta v2.0.
+**Public Beta v3.0** is current. It targets AMD 26.7.1 and supersedes Public
+Beta v2.1.
 
-## Release assets
-
-The current release asset is:
+## Release asset
 
 ```text
-LegionGo-AMD-26.6.4-Public-Beta-v2.1.zip
+LegionGo-AMD-26.7.1-Public-Beta-v3.0.zip
 ```
 
-The target AMD version belongs in release notes and verification documentation rather than defining the permanent repository identity.
+The AMD target belongs in release metadata and asset naming while the
+permanent repository identity remains Legion Go 1 Graphics Driver Toolkit.
 
 ## Publication records
 
-Directories under `releases/` are publication records. They may contain exact immutable executable snapshots or a historical pointer to the authoritative GitHub Release asset.
+Directories under `releases/` are immutable publication records.
 
-- Never place unverified or mislabeled executable files under a public release path.
-- Never edit a published executable file in place.
-- A correction to executable behavior requires a new public version, new hashes, and new release notes.
-- Documentation-only metadata may be corrected when it does not alter or misrepresent the published asset.
+Public Beta v3.0 uses:
+
+```text
+releases/public-beta-v3.0/
+  README.md
+  RELEASE-NOTES.md
+  VALIDATION-SUMMARY.md
+  PUBLIC-BETA-v3.0-ZIP-SHA256.txt
+  TOOLKIT-SHA256SUMS.txt
+  toolkit/
+```
+
+`toolkit/` contains the byte-identical final executable snapshot. Internal
+candidate labels are preserved only where required for provenance.
+
+## Rules
+
+- Never edit a published executable in place.
+- Functional corrections require a new public version and new hashes.
+- Documentation-only clarification may be corrected when it does not alter or
+  misrepresent the release asset.
+- Do not commit AMD installers or extracted AMD binaries.
