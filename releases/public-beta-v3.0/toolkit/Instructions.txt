@@ -1,0 +1,112 @@
+LEGION GO AMD 26.7.1 v3.0 RC2zk - VALIDATION CANDIDATE
+
+PURPOSE
+-------
+RC2zk preserves the field-proven graphics payload and prior recovery/origin
+hardening, while correcting active Driver Store catalog discovery. Stage 2
+must inspect the catalog declared by the currently active INF: a Lenovo OEM
+u0198040.inf repository must not be expected to contain the final merged
+u0202643.cat. RC2zk resolves CatalogFile/CatalogFile.NTamd64 from the exact
+active Driver Store INF and fails closed on missing or ambiguous declarations.
+Final audit uses the same resolver and still requires the exact final merged
+INF to resolve to u0202643.cat.
+
+PUBLIC ONE-CLICK ENTRYPOINT
+---------------------------
+Run:
+
+  Start-LegionGo-AMD-26.7.1.cmd
+
+The CMD entrypoint continues to route through the independent Windows PowerShell
+parser gate before the elevated one-command launcher is allowed to run.
+
+SECURE BOOT REQUIREMENT
+-----------------------
+Secure Boot MUST be disabled for this local-signer architecture.
+
+RC2zk checks Secure Boot before the two installation confirmations. If Secure
+Boot is enabled, the installer stops before installation and prints the Windows
+Recovery / UEFI Firmware Settings path for disabling it. This is a blocking
+instruction, not a third Y/N question. The installer never changes firmware
+Secure Boot settings itself.
+
+Stage 1 checks Secure Boot again before local signing/Test Signing work, Stage 2
+checks again immediately before the driver transaction, and Stage 4 audits that
+Secure Boot is still disabled.
+
+EXACTLY TWO Y/N CONFIRMATIONS IN THE MANAGED ONE-CLICK PATH
+------------------------------------------------------------
+A fresh managed run asks exactly twice, near the beginning:
+
+1. This is a one-click installer that will install AMD graphics driver 26.7.1
+   on the Lenovo Legion Go. Proceed? [Y/N]
+
+2. This installer will automatically restart your device as required and
+   continue installation after each reboot. Close all applications and save
+   your work before continuing. Ready to begin the installation? [Y/N]
+
+If either answer is No, installation does not begin.
+
+After the second Yes, the authorization is persisted only for this resumable
+RC2zk workflow. Dependency preparation, required driver/software changes,
+temporary Test Signing transitions, and workflow-required reboots proceed
+automatically. The resume task consumes the saved authorization after each
+reboot. The authorization is removed on final completion or launcher failure.
+
+Direct/manual execution of an individual stage script remains a diagnostic path
+and may still ask before a destructive action. The supported public CMD path is
+the exactly-two-Y/N path.
+
+VISIBLE PROGRESS / NO UNEXPLAINED WHITE TIME
+---------------------------------------------
+RC2zk uses three deliberately separate console concepts:
+
+  [OVERALL] Stage 2/4 :: Driver binding
+
+  [TASK]     [############----------------]  45% VERIFYING :: current operation
+
+  [LIVE]     [############----------------]  45% STILL WORKING :: current operation
+             :: elapsed 00:08 :: current: exact blocking sub-operation
+
+[OVERALL] is informational only. It never becomes the liveness percentage.
+[TASK] always refers to the operation currently being executed. Determinate
+work owns a local 0-to-100 scale. Windows operations that expose no trustworthy
+completion fraction use a moving ACTIVE bar instead of a fabricated percent.
+[LIVE] repeats only the current TASK after about two seconds without visible
+output and continues about every two seconds while the call remains blocked.
+
+Section headings are labels only. They do not create a synthetic 0% task.
+Therefore a Stage 2 operation cannot repeatedly show 25%, Stage 3 cannot
+repeatedly show 50%, and PRE-REBOOT SOFTWARE SEAL cannot repeatedly show 0%
+merely because those are the stage/section entry points.
+
+The 190-file guards retain real completed-file percentage and identify the
+exact file/path/size currently being hashed during a long individual hash.
+The Stage 2 current-GPU/Driver Store/catalog/bind path and the Stage 3 software
+seal are decomposed into explicit local tasks. Active catalog verification
+shows visible local 0/20/50/75/100 phase checkpoints. Driver Store enumeration
+and the native GPU bind use ACTIVE because Windows exposes no real percent.
+
+
+
+FAILURE / ROLLBACK CODE-INTEGRITY SAFETY
+----------------------------------------
+RC2zk treats Test Signing as temporary state. On any hard managed-launcher
+failure, the parent independently queries BCD. If testsigning or
+nointegritychecks is enabled, it removes any resume task, configures both flags
+OFF, proves both read OFF, packages failure evidence, and then reboots Windows.
+The recovery reboot never automatically retries the failed installer.
+
+Stage 2 also has its own invocation-bound stage2-result.json contract so the
+launcher can distinguish a real Stage-2 result from an unexplained process exit.
+The failure evidence bundle includes this contract whenever it exists.
+
+IMPORTANT
+---------
+This archive is still a validation candidate. Run the Windows PowerShell 5.1
+parser + read-only package preflight before a full RC2zk regression.
+
+Do not bypass package hashes, catalog checks, Secure Boot checks, result
+contracts, or origin/rollback guards.
+
+RC2zk additionally recognizes the exact public 26.6.2 (`32.0.31021.1015`, INF SHA256 `39BD11386ABFE8CB964902B18159801A486AB22FCFA9C622622F4E6B9B9D901E`) and public 26.6.4 (`32.0.31021.5001`, INF SHA256 `73E8AE95849354D3D52DCB2A583CCB458D33DF22ACCCD0F0C1EE7626FDBD3034`) toolkit architectures with their required standalone Lenovo extension. The extension is exported for rollback and removed only for the 26.7.1 merged transition.
