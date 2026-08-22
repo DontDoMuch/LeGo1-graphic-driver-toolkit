@@ -1,4 +1,20 @@
+
 # Changelog
+
+## Public Beta v3.0 — AMD 26.7.1
+
+- Added the one-command managed installer with exactly two initial consent prompts.
+- Added bounded automatic reboot/resume orchestration and invocation-bound stage contracts.
+- Moved Lenovo-required graphics semantics into the merged 26.7.1 display package.
+- Added exact Lenovo OEM, Public 26.6.2, and Public 26.6.4 origin architectures.
+- Added rollback export for the starting display package and applicable Lenovo extension.
+- Replaced fixed catalog-name assumptions with active-INF catalog resolution.
+- Preserved AMD `ColorVibrance_ENABLE_DEF=1` and `ShowRSOverlay=true`.
+- Removed live `ReleaseVersion` spoofing from the architecture.
+- Added temporary Test Signing recovery normalization and fail-closed failure evidence.
+- Final Public 26.6.4 → 26.7.1 regression completed 65/65 final checks successfully.
+- Clean Lenovo OEM → 26.7.1 path also completed 65/65 in the immediate predecessor.
+- Published the exact final RC2zk executable snapshot under the Public Beta v3.0 identity.
 
 ## Public Beta v2.1 — 2026-07-17
 
