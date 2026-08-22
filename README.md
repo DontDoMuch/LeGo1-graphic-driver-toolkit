@@ -104,8 +104,11 @@ SHA-256: 116C6269B7676C3E76F85A8CF0CAC82D7DF3E85051C0594E18B4B1EA41BE9E3D
 ## Run
 
 Download ZIP
+
 Right-click ZIP → Properties → Unblock
+
 Extract ZIP
+
 Run Start-LegionGo-AMD-26.7.1.cmd
 
 The launcher asks exactly two initial Y/N questions. Once accepted, the managed workflow handles preparation, temporary signing configuration, driver changes, matching AMD Software, required reboots, resume, and final audit.
