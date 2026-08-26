@@ -1,81 +1,102 @@
 # Technical notes
 
-## v3.1 architecture
+## v4.0 architecture
 
-Public Beta v3.1 retains the v3.0 merged AMD 26.7.1 architecture and corrects starting-origin classification for valid Lenovo extension history.
+Public Beta v4.0 moves the merged Legion Go target to AMD 26.8.1 while retaining the architecture developed through the 26.7.1 public releases:
 
-The architecture separates:
+1. exact AMD base display payload;
+2. Lenovo-required integration semantics merged into the target INF/DAT architecture;
+3. explicit origin/rollback modeling;
+4. separately validated Radeon Software runtime;
+5. fail-closed signing/catalog/persistence contracts.
 
-1. the active AMD base display package;
-2. Lenovo-specific integration semantics;
-3. Radeon Software / CN metadata.
+The physical target-device binding and active Driver Store package remain primary authority. CN/Radeon metadata is supplemental and is never used to spoof a driver identity.
 
-The active Driver Store package and physical target-device binding are the primary authority. CN metadata is supplemental and is never used to spoof a newer driver identity.
+## Hardware-scoped extension ownership
 
-## Starting-origin classifier
+A major v4.0 correction is the separation of **inventory** from **destructive ownership**.
 
-The classifier is architecture-aware.
-
-- Lenovo OEM expects applicable Lenovo standalone extension lineage material as part of the OEM architecture.
-- Public 26.6.2 and 26.6.4 are exact known toolkit architectures that also intentionally retain OEM-generation Lenovo extension material.
-- Public 26.7.1 moves required Lenovo semantics into the merged display package and removes the standalone extension lineage after rollback capture.
-- Unknown AMD bases do not inherit exceptions from known origins.
-
-### ExtensionId lineage authority
-
-Raw staged-package count is not origin authority. Windows may retain several versions of the same extension lineage.
-
-v3.1 groups applicable `amduw23e` packages by ExtensionId and accepts multiple generations only when they all belong to the validated original-Go Lenovo-derived lineage:
+All staged `amduw23e.inf` packages are inventoried, but filename/class/ExtensionId do not prove that the package belongs to the original Go. A package enters the Go 1 lineage only when its readable INF model directive actually targets:
 
 ```text
-{07A2A561-D001-4503-B239-EF2FE0379EFB}
+PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA
 ```
 
-Each member must be an Extension-class package applicable to the exact original Legion Go hardware. The authoritative member is selected by version/date ordering, but every recognized member is preserved in provenance evidence and exported for rollback.
+This matters because the field-observed ASUS ROG Ally package used the same `amduw23e.inf` filename, `Class=Extension`, and historical ExtensionId while targeting ASUS `...1043` subsystem IDs. v4.0 preserves that foreign package.
 
-A different applicable ExtensionId, missing/unparseable lineage identity, or package that does not target the exact Go remains fatal. Historical `DriverVer` and semantic-marker differences inside the structurally validated lineage are evidence, not automatic origin failure.
+Applicable same-lineage historical Go generations remain supported; distinct applicable ExtensionIds or unreadable applicability fail closed.
 
 ## Rollback
 
-Before a destructive Stage 2 transition, the workflow records and exports the starting display package. When the starting architecture includes Lenovo standalone extension lineage material, every recognized lineage member is individually exported.
+Before destructive Stage 2 work, the workflow records and exports the starting Display package. When the starting architecture contains Go-applicable standalone Lenovo extension lineage material, each recognized member is individually exported.
 
-The prior display package is retained rather than globally purged. This makes rollback origin-aware and avoids assuming there should be only one AMD Display-class package in the Driver Store.
+The prior Display package is retained rather than globally purged. Rollback therefore remains origin-aware and does not require the Driver Store to contain only one AMD Display package.
 
-## Catalog resolution
+Rollback outcome status is derived from proof of prior Display restoration plus any required extension-lineage restoration. An unproven rollback stays on a recovery-only route.
 
-The active catalog is resolved from the active Driver Store INF rather than by hardcoding the final target catalog filename while inspecting older origins.
+## Recovery state machine
 
-On x64 Windows, an applicable `CatalogFile.NTamd64` declaration takes precedence. Missing, conflicting, path-traversing, non-CAT, or physically absent catalog declarations fail closed.
+Final v4.0 hardening adds explicit transaction-aware behavior:
 
-## Signing
+- pre-driver Test Signing boundary failures and pre-destructive `ReadyForInstall` failures can rewind to `SignedPackageReady` for a fresh managed re-arm;
+- `DriverTransactionInProgress` remains reserved for rollback recovery;
+- `DriverInstalledPreReboot` remains preserved so target binding cannot repeat;
+- interrupted recovery is evaluated before the ordinary Test Signing prerequisite;
+- proven rollback cannot fall straight back into normal Stage 2;
+- if rollback proof was saved but parent checkpoint normalization was interrupted, the public launcher self-heals back to `SignedPackageReady`;
+- no failed destructive stage automatically retries.
 
-The final merged display catalog is locally signed. The workflow temporarily enables Test Signing only after validating the exact built package and its catalog/INF membership.
+## Concurrency
 
-Final completion requires:
+All v4.0 public/resume entry routes share the machine-wide named mutex:
 
-- Test Signing OFF;
-- `nointegritychecks` OFF;
-- active catalog/signature identity matching the Stage 2 checkpoint.
+```text
+Global\LegionGo-AMD-Driver-Toolkit-Installer
+```
 
-## Payload preservation
+A second v4.0 session is rejected before persistent workflow mutation. Registered `LegionGo-AMD-*-Resume` tasks belonging to another release are also a fail-closed conflict.
 
-The build protects a frozen 190-file unchanged manifest, restores all nine field-observed official AMD companion catalogs after Inf2Cat, and rehashes protected content after build/signing operations.
+## Dual-catalog trust
 
-Public Beta v3.1 does not change the frozen merged AMD 26.7.1 INF, DAT, or kernel target hashes from v3.0.
+The adapted Display INF requires its locally generated/signed catalog. The unchanged AMD 26.8.1 kernel/UMD payload is additionally covered by the exact original Microsoft WHCP catalog:
+
+```text
+u0203304.cat
+SHA-256: 23D62651554AA6AF3A9194457AC84B9881649E7C4E34BD7A0CBD51512A484A48
+```
+
+Stage 2 registers that catalog through Windows catalog-management APIs under the managed name:
+
+```text
+LegionGo-AMD-26.8.1-Official-WHCP.cat
+```
+
+Both local and official catalogs must cover all 14 frozen targets. Registration is idempotent for the exact managed catalog, rechecked after reboot, and independently audited by Stage 4.
+
+## Frozen payload preservation
+
+The build protects a frozen 190-file unchanged manifest and exact v4 INF/DAT builders. The final deterministic identities are:
+
+```text
+Driver:       32.0.31041.1004
+INF SHA-256:  F882C8E66D6EFC42AB9254D55E1B7DD7C3A23E772E854897C0EB9BFB1A214C42
+DAT SHA-256:  83C3A9D7A3E524135FFCA89A3971A788670CDF14898C85FD504B2ED284C61953
+Kernel SHA:   92A83D34ADB17A8C419A153B62E94E2CF3C478E260571AF6699574800AF3F3DF
+```
 
 ## AMD defaults
 
-v3.1 intentionally preserves:
+v4.0 intentionally preserves:
 
 ```text
 ColorVibrance_ENABLE_DEF = 1
 ShowRSOverlay            = true
 ```
 
-## Internal provenance identifiers
+## Complete-state revalidation
 
-The corrected public package deliberately retains required RC2zp C#/PowerShell type names and some internal audit/provenance tokens. A broad substitution changed those type identifiers in an unpublished package attempt and was rejected immediately by the independent parser gate.
+A saved `Complete` checkpoint is not blindly trusted forever. Rerunning the public launcher executes the full Stage 4 audit read-only. Drift produces evidence/failure without automatic repair or state clearing.
 
 ## No ReleaseVersion spoofing
 
-Live registry `ReleaseVersion` spoofing is not part of v3.1. Earlier testing demonstrated that making live Radeon Software metadata claim an identity that did not match the installed display package could lead to Code 43 after reboot. v3.1 instead makes the driver package and software stack internally consistent.
+Live Radeon Software `ReleaseVersion` spoofing is not part of v4.0. The driver package and software stack are validated against their real exact identities.

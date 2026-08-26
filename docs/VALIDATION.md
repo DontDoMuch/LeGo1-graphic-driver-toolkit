@@ -1,38 +1,12 @@
 # Validation
 
-## Public Beta v3.1
+## Public Beta v4.0
 
-Public Beta v3.1 targets AMD 26.7.1 and preserves the frozen merged target payload from v3.0.
+Public Beta v4.0 targets AMD Adrenalin 26.8.1 / display driver `32.0.31041.1004` on the original Legion Go 83E1 internal Radeon 780M path.
 
-## Dirty Lenovo OEM multi-generation origin
+## Core target-device proof
 
-The corrected classifier mechanics were physically field-run from a Lenovo OEM display stack with two applicable `amduw23e` generations still staged.
-
-Starting display:
-
-```text
-DriverVersion: 32.0.23017.1001
-PreviousOriginKind: LegacyStandaloneExtension
-PreviousStandaloneExtensionCount: 2
-PreviousExtensionDisposition: ExportThenRemove
-```
-
-Both extension packages targeted the original Legion Go and shared:
-
-```text
-ExtensionId: {07A2A561-D001-4503-B239-EF2FE0379EFB}
-```
-
-Observed lineage generations:
-
-```text
-32.0.23017.1001 — 2026-01-08
-31.0.24028.1001 — 2024-04-22
-```
-
-Both packages were individually exported for rollback before removal.
-
-Result:
+The 26.8.1 candidate completed the managed workflow on the original Legion Go from a healthy merged 26.7.1 origin:
 
 ```text
 Stage 2 = Passed
@@ -42,57 +16,100 @@ FailedChecks = 0
 Workflow Stage = Complete
 ```
 
-## Merged 26.7.1 → corrected Public Beta v3.1
+The final device state proved the exact 26.8.1 INF, DAT, kernel, AMD Software, normal-signing, and persistence contracts.
 
-The final corrected public package was then physically run from the exact merged AMD 26.7.1 state.
+## Dual-catalog trust field proof
 
-Starting state:
+The first 26.8.1 install exposed a user-mode trust regression despite a healthy Device Manager state:
 
-```text
-PreviousOriginKind: MergedEmbedded
-PreviousDriverVersion: 32.0.31035.1003
-PreviousInfHash: 9C9A8471BC433B93ED7DECD1EBC40A6D9AF619B68C49B3E91421D70D12AB0409
-PreviousStandaloneExtensionCount: 0
-```
+- Gears 5 loaded AMD's `amdxc64.dll`, then hit `0x8007045A` and fell back to software/WARP;
+- Destiny 2 / BattlEye blocked `amdxx64.dll` from the 26.8.1 Driver Store repository.
 
-The workflow retained the exact healthy pre-existing merged package as the active binding while exercising the public v3.1 parser, package, workflow, software, reboot/resume, and final-audit contracts.
+The causal correction separately registered the exact original Microsoft WHCP `u0203304.cat`. Field evidence changed official catalog coverage from `0/14` to `14/14` while local coverage remained `14/14`. The managed catalog survived reboot and the registration path proved idempotent.
 
-Result:
+After the correction, Gears 5 and Destiny 2 were physically retested successfully. The integrated workflow then completed the final 72-check audit with:
 
 ```text
-Release = Public-Beta-v3.1
-Stage 2 = Passed
-Stage 3 = Passed
-Stage 4 = Passed
-FailedChecks = 0
-Workflow Stage = Complete
+Local catalog coverage    = 14/14
+Official catalog coverage = 14/14
+FailedChecks              = 0
+Warnings                  = 0
 ```
 
-## Public packaging correction
+## Third-party ASUS-origin proof
 
-The first unpublished v3.1 transformation performed a broad RC-to-public text substitution that modified internal C#/PowerShell type identifiers. The independent parser gate rejected it before the launcher or any driver stage started.
+A real ASUS ROG Ally Z1 Extreme graphics package, version `32.0.31007.6002`, was examined and then installed on the Legion Go for field validation.
 
-The corrected package:
+Its `amduw23e.inf`:
 
-- preserves the field-proven RC2zp internal class/type identifiers;
-- uses Public Beta v3.1 for public entrypoints, workflow/result schemas, signer identity, evidence names, and primary headers;
-- writes a Downloads transcript if the pre-launch parser gate fails;
-- passed the corrected package static audit `16/16`.
+- is `Class=Extension`;
+- shares ExtensionId `{07A2A561-D001-4503-B239-EF2FE0379EFB}` with the historical Go lineage;
+- targets ASUS subsystem IDs (`...1043`);
+- does **not** target Legion Go `SUBSYS_381217AA`.
 
-## Final target
+Extracted ASUS extension SHA-256:
 
 ```text
-DriverVersion: 32.0.31035.1003
-GPU Status: OK
-ProblemCode: 0
-HasProblem: False
-Final INF SHA-256: 9C9A8471BC433B93ED7DECD1EBC40A6D9AF619B68C49B3E91421D70D12AB0409
-Final amdgcf.dat SHA-256: DD7B29271E068BE01F5FE4F55A136F0049F60822E0D789B9AAF9152E58A9D766
-Loaded amdkmdag.sys SHA-256: D8B1ECBB9169259E6D65D38A5CD53D7D6F0606F60471D2BA779B9C7B5F36E4D5
+52AE97D82E973058A0F47512346982BE9C6861CDF509C8F4CE257779A28D75D9
 ```
 
-## Validated scope
+The live origin classified as `ThirdPartyDisplay / GenericAmd / Acceptable=True`. Public Beta v4.0 exported the active ASUS Display package for rollback, installed 26.8.1, completed Stage 2/3/4 with zero failed checks, and left the ASUS-only extension staged unchanged. This physically proves the foreign/non-applicable preservation path.
 
-The validated hardware scope is the original Legion Go 83E1 internal Radeon 780M path. eGPU configurations and external driver projects remain unvalidated.
+The ASUS identity is a field fixture, not a whitelist.
 
-Private field logs, workflow state, certificates, and evidence archives are not release assets.
+## Dirty ASUS → Lenovo mixed-origin proof
+
+A later stress case installed the ASUS graphics package and then Lenovo graphics **without rebooting between those installs**, then launched the 26.8.1 v4.0 workflow. The transition completed successfully.
+
+This test strengthens confidence in the hardware-scoped origin model when Driver Store history contains mixed vendor material. It does not weaken fail-closed behavior for unreadable or actually Go-applicable foreign lineages.
+
+## Recovery and concurrency hardening proof
+
+The final release candidate underwent a dedicated state-machine audit and Windows PowerShell 5.1 preflight covering:
+
+- transaction-aware failed-checkpoint normalization;
+- interrupted Stage 2 recovery before the ordinary Test Signing prerequisite;
+- proof-derived rollback success/failure states;
+- recovery-only routing for unproven rollback;
+- prevention of direct Stage 2 bypass after proven rollback;
+- startup self-heal if parent checkpoint normalization was interrupted;
+- foreign resume-task detection;
+- machine-wide mutex identity;
+- saved-`Complete` read-only revalidation.
+
+The exact final package then passed Windows PowerShell 5.1 with `Passed=True`, `FailedChecks=0`, and process exit `0`.
+
+### Physical mutex test
+
+A test process deliberately held the exact machine-wide installer mutex while a second v4.0 launcher was started.
+
+Observed result:
+
+```text
+[BLOCKED] Another Legion Go AMD installer session is already active. No changes were made.
+Second launcher exit code: 4
+```
+
+The workflow-state hash, workflow log count, ProgramData workflow file inventory, and resume-task inventory were unchanged.
+
+### Physical Complete-state revalidation
+
+With the saved workflow already `Complete`, the final launcher reran Stage 4 read-only.
+
+Observed result:
+
+```text
+Launcher exit code: 0
+Stage 4 Status: Passed
+Stage 4 FailedChecks: 0
+Audit ReadOnly: True
+Audit checks: 72
+Audit failed: 0
+WorkflowStage: Complete
+```
+
+The workflow-state file remained byte-identical; GPU identity and BCD code-integrity policy were unchanged; no resume task was created.
+
+## Scope limits
+
+Windows 11 is the officially supported platform. Windows 10 is not officially supported and is intentionally not hard-blocked. eGPU and other Legion Go variants remain unvalidated. No generic certification is claimed for every historical third-party AMD package.

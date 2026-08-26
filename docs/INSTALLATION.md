@@ -2,85 +2,125 @@
 
 ## Current release
 
-Public Beta v3.1 targets AMD Adrenalin 26.7.1 on the original Lenovo Legion Go.
+Public Beta v4.0 targets AMD Adrenalin 26.8.1 on the original Lenovo Legion Go.
 
 ## Requirements
 
-- Original Legion Go / Legion Go 1:
-  `PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA`
-- Windows 11 x64
+- Original Legion Go / Legion Go 1: `PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA`
+- Windows 11 x64 (officially supported target)
 - Administrator access
 - AC power recommended
 - Secure Boot disabled
-- BitLocker / Device Encryption recovery information preserved
+- **BitLocker / Device Encryption recovery information preserved before changing Secure Boot**
+
+Windows 10 is not officially supported by this project. The installer intentionally does not hard-block it, but such runs are unvalidated.
 
 ## Required downloads
 
-1. `LegionGo-AMD-26.7.1-Public-Beta-v3.1.zip`
-2. AMD's official `whql-amd-software-adrenalin-edition-26.7.1-win11-b.exe`
+1. `LegionGo-AMD-26.8.1-Public-Beta-v4.0.zip`
+2. AMD's official `whql-amd-software-adrenalin-edition-26.8.1-win11-b.exe`
 
-Required toolkit ZIP SHA-256:
-
-```text
-ECAED23350E6C58139FDBE6C587BF30F4F931AD5086CBBD33A46B33E68107328
-```
-
-Required AMD installer SHA-256:
+Toolkit ZIP SHA-256:
 
 ```text
-116C6269B7676C3E76F85A8CF0CAC82D7DF3E85051C0594E18B4B1EA41BE9E3D
+8AC6A3A0ADE321860D20C958B47053EBC4BEB27A94EB177E30EC59450EEA2B07
 ```
 
-Leave the AMD installer anywhere under `Downloads`.
+AMD installer SHA-256:
 
-## Verify the toolkit ZIP
+```text
+47272E13BD537C5796F1C760AF036D011B41684737BCDAF30B158D3BAB6740F3
+```
+
+Keep the AMD installer somewhere under your Downloads folder. It is not included in the toolkit release asset.
+
+## Recommended fail-closed verify, unblock, extract, and run
+
+The block below verifies **both** downloaded files before launching anything. A hash mismatch throws and stops.
 
 ```powershell
-Get-FileHash "$env:USERPROFILE\Downloads\LegionGo-AMD-26.7.1-Public-Beta-v3.1.zip" -Algorithm SHA256
+$ErrorActionPreference = 'Stop'
+
+$Downloads = "$env:USERPROFILE\Downloads"
+$Zip = Join-Path $Downloads 'LegionGo-AMD-26.8.1-Public-Beta-v4.0.zip'
+$ExpectedZip = '8AC6A3A0ADE321860D20C958B47053EBC4BEB27A94EB177E30EC59450EEA2B07'
+$AmdName = 'whql-amd-software-adrenalin-edition-26.8.1-win11-b.exe'
+$ExpectedAmd = '47272E13BD537C5796F1C760AF036D011B41684737BCDAF30B158D3BAB6740F3'
+$Root = Join-Path $Downloads 'LegionGo-AMD-26.8.1-Public-Beta-v4.0'
+
+if (-not (Test-Path -LiteralPath $Zip -PathType Leaf)) {
+    throw "Toolkit ZIP not found: $Zip"
+}
+
+$ZipHash = (Get-FileHash -LiteralPath $Zip -Algorithm SHA256).Hash.ToUpperInvariant()
+if ($ZipHash -ne $ExpectedZip) {
+    throw "Toolkit ZIP hash mismatch. Expected=$ExpectedZip Actual=$ZipHash"
+}
+Write-Host '[PASS] Toolkit ZIP SHA256 verified.' -ForegroundColor Green
+
+$AmdMatches = @(
+    Get-ChildItem -LiteralPath $Downloads -Recurse -File -ErrorAction Stop |
+    Where-Object { $_.Name -ieq $AmdName }
+)
+if ($AmdMatches.Count -ne 1) {
+    throw "Expected exactly one $AmdName under Downloads; found $($AmdMatches.Count)."
+}
+
+$AmdHash = (Get-FileHash -LiteralPath $AmdMatches[0].FullName -Algorithm SHA256).Hash.ToUpperInvariant()
+if ($AmdHash -ne $ExpectedAmd) {
+    throw "AMD installer hash mismatch. Expected=$ExpectedAmd Actual=$AmdHash"
+}
+Write-Host '[PASS] Official AMD 26.8.1 installer SHA256 verified.' -ForegroundColor Green
+
+Unblock-File -LiteralPath $Zip
+if (Test-Path -LiteralPath $Root) {
+    Remove-Item -LiteralPath $Root -Recurse -Force
+}
+Expand-Archive -LiteralPath $Zip -DestinationPath $Downloads -Force
+Get-ChildItem -LiteralPath $Root -Recurse -File | Unblock-File
+
+$Launcher = Join-Path $Root 'Start-LegionGo-AMD-26.8.1.cmd'
+if (-not (Test-Path -LiteralPath $Launcher -PathType Leaf)) {
+    throw "Launcher missing after extraction: $Launcher"
+}
+
+Write-Host '[PASS] Verified and extracted. Starting Public Beta v4.0.' -ForegroundColor Green
+& $Launcher
 ```
 
-The required result must exactly match the hash above and the GitHub Release.
+## What the managed workflow does
 
-## Run
+The supported public workflow asks exactly two Y/N questions at the beginning. After both are accepted it automatically handles:
 
-Unblock and extract the toolkit ZIP, then run:
-
-```text
-Start-LegionGo-AMD-26.7.1.cmd
-```
-
-The supported public workflow asks exactly two Y/N questions at the beginning.
-
-After both are accepted, the workflow automatically handles:
-
-- package and independent parser preflight;
+- independent package/parser preflight;
 - lightweight dependency preparation;
-- exact source extraction and hashing;
-- local catalog build/signing;
+- exact AMD source extraction and hashing;
+- merged catalog build/signing;
+- original Microsoft WHCP catalog preservation/registration;
 - temporary Test Signing configuration;
 - required reboot/resume boundaries;
 - starting-origin classification and rollback export;
-- exact 26.7.1 binding;
+- hardware-scoped `amduw23e` ownership so foreign non-Go extensions are preserved;
+- exact 26.8.1 target binding;
 - return to normal boot-signing policy;
 - matching AMD Software / DVR installation;
-- final persistence audit.
+- final 72-check persistence audit.
 
-If the independent parser gate fails before launcher logging begins, v3.1 writes a `LegionGo-AMD-26.7.1-Public-Beta-v3.1-Parser-Gate-*.txt` transcript under Downloads and keeps the failure console open until Enter is pressed.
+## Failure and retry behavior
 
-## Do not
+Public Beta v4.0 does not automatically retry a failed destructive stage.
 
-During a managed run:
+The launcher uses transaction-aware recovery checkpoints. Pre-destructive failures return through the managed Test Signing preparation path, interrupted/in-progress driver transactions enter explicit rollback recovery, and any rollback that is not proven remains recovery-only instead of becoming a normal reinstall attempt.
 
-- do not manually run the numbered stage scripts;
-- do not remove Driver Store packages;
-- do not manually delete staged `amduw23e` generations;
-- do not delete workflow state;
-- do not toggle Test Signing yourself;
-- do not rerun a failed stage repeatedly.
+Do not manually run numbered stages or edit workflow state to force progress.
+
+## Existing Complete installation
+
+If the saved workflow is already `Complete`, rerunning the public launcher performs the full Stage 4 audit **read-only**. It reports live-system drift but does not automatically repair or reinstall the driver.
 
 ## Success
 
-A complete workflow ends with:
+A complete installation ends with:
 
 ```text
 Stage 2: Passed
@@ -88,10 +128,6 @@ Stage 3: Passed
 Stage 4: Passed
 FailedChecks: 0
 Workflow Stage: Complete
+Test Signing: OFF
+nointegritychecks: OFF
 ```
-
-The final audit evidence is written under Downloads. The evidence directory is authoritative even if a ZIP wrapper is not automatically produced.
-
-## Failure
-
-Stop at the first hard failure and preserve the generated parser transcript or failure-evidence bundle/folder. The managed launcher removes resume authorization and returns boot-integrity policy to normal when recovery requires it. It does not automatically retry a failed stage.

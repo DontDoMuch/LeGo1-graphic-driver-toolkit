@@ -2,76 +2,63 @@
 
 ## Hardware scope
 
-Public Beta v3.1 is designed only for the original Lenovo Legion Go:
+Public Beta v4.0 is designed only for the original Lenovo Legion Go:
 
 ```text
 PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA
 ```
 
-Legion Go S, eGPU configurations, and unrelated AMD systems are outside this release's validated scope.
+Windows 11 is the officially supported and validated platform. Windows 10 is intentionally not hard-blocked but is unvalidated/unsupported. Legion Go S, other Legion Go variants, eGPU configurations, and unrelated AMD systems are outside this release's validated scope.
 
-## Supported starting architectures
+## Starting-origin model
 
-The v3.1 origin classifier explicitly recognizes:
+Public Beta v4.0 classifies the live physical Legion Go GPU and its Driver Store architecture before destructive work. PnP health and actual hardware applicability are authoritative; filenames alone are not.
 
 ### Microsoft Basic Display Adapter
 
-The physical target GPU may be bound to Microsoft's in-box Basic Display driver. The classifier requires Microsoft provider/service identity and does not attempt to delete the in-box package.
+The physical target may be bound to Microsoft's in-box Basic Display driver. The classifier requires Microsoft provider/service identity and never attempts to delete the in-box `display.inf` / Basic Display package.
 
 ### Lenovo OEM graphics
 
-A healthy Lenovo OEM display stack with applicable standalone Lenovo `amduw23e` lineage material is supported.
-
-Windows may retain multiple generations of `amduw23e` after Lenovo OEM installation. v3.1 accepts them as one versioned lineage only when every applicable member:
-
-- is an Extension-class package;
-- targets the original Legion Go hardware;
-- has a parseable ExtensionId;
-- shares the validated Lenovo-derived ExtensionId `{07A2A561-D001-4503-B239-EF2FE0379EFB}`.
-
-The authoritative member is selected by version/date ordering. Historical `DriverVer` differences and semantic-marker differences are retained as provenance evidence rather than treated alone as proof of an invalid origin.
-
-Every recognized lineage member is individually exported for rollback before removal. Multiple distinct applicable ExtensionIds remain genuinely ambiguous and fail closed.
-
-### Public Beta v1.1 / AMD 26.6.2
-
-Exact display identity:
+A healthy Lenovo OEM Display stack with applicable Lenovo `amduw23e` lineage material is supported. Multiple historical generations may coexist. Applicable members must be Extension-class packages that actually target the original Go and belong to the validated Lenovo-derived ExtensionId lineage:
 
 ```text
-DriverVersion: 32.0.31021.1015
-INF SHA-256:   39BD11386ABFE8CB964902B18159801A486AB22FCFA9C622622F4E6B9B9D901E
+{07A2A561-D001-4503-B239-EF2FE0379EFB}
 ```
 
-This architecture intentionally uses Lenovo standalone extension lineage material. v3.1 requires the applicable packages to be structurally scoped to the original Go and validated lineage before accepting the origin.
+Recognized Go-applicable lineage members are individually exported for rollback before removal. Multiple distinct **applicable** ExtensionIds remain ambiguous and fail closed.
 
-### Public Beta v2.1 / AMD 26.6.4
+### Prior public toolkit releases
 
-Exact display identity:
+Exact known Public Beta 26.6.2 and 26.6.4 architectures retain standalone Lenovo extension lineage material and have explicit compatibility handling. Healthy merged 26.7.1 is recognized through its embedded Lenovo marker family. Exact installed 26.8.1 is also recognized for resume/idempotent verification paths.
 
-```text
-DriverVersion: 32.0.31021.5001
-INF SHA-256:   73E8AE95849354D3D52DCB2A583CCB458D33DF22ACCCD0F0C1EE7626FDBD3034
-```
+### Healthy third-party AMD Display origins
 
-This architecture also intentionally uses Lenovo standalone extension lineage material.
+v4.0 no longer assumes that every staged `amduw23e.inf` sharing a familiar filename/class/ExtensionId belongs to the Legion Go.
 
-### Exact merged AMD 26.7.1 target
+All staged `amduw23e` packages are inventoried. **Only a readable INF whose actual model directive targets `PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA` enters the Go 1 lineage/export/removal path.**
 
-The exact final Public Beta v3.0/v3.1 merged target is supported for repair or idempotent reruns when its package identity, embedded Lenovo semantics, and GPU health are consistent:
+Therefore:
 
-```text
-DriverVersion: 32.0.31035.1003
-INF SHA-256:   9C9A8471BC433B93ED7DECD1EBC40A6D9AF619B68C49B3E91421D70D12AB0409
-```
+- proven foreign/non-applicable packages are preserved;
+- foreign packages may share the historical Lenovo-derived ExtensionId without becoming Go-owned;
+- unreadable hardware scope fails closed;
+- a foreign ExtensionId that actually targets the Go remains fail-closed rather than being ignored.
 
-## 26.7.1 merged transition
+This behavior was field-validated with a real ASUS ROG Ally Z1 Extreme graphics stack. Its `amduw23e.inf` shared the historical ExtensionId but targeted ASUS `...1043` subsystem IDs, not `381217AA`; the extension was preserved while v4.0 successfully transitioned the active Display package to 26.8.1.
 
-v3.1 exports the prior display and every applicable validated Lenovo extension member as rollback material first. The standalone extension lineage is then removed because its required semantics are incorporated into the verified 26.7.1 merged target.
+The ASUS version/hash is evidence, **not an acceptance whitelist**. Other third-party AMD origins are evaluated by the same structural health and hardware-applicability contract.
 
-## Unsupported origins
+## Dirty mixed-origin field case
 
-An arbitrary side-loaded AMD display package is not considered compatible merely because it can bind to the GPU. Unknown, unhealthy, structurally inconsistent, or multi-lineage origins fail closed.
+A further field test installed the ASUS graphics package and then Lenovo graphics **without rebooting between those two installs**, followed by Public Beta v4.0. The v4.0 / 26.8.1 transition completed successfully. This demonstrates tolerance of a realistic mixed Driver Store history, not permission to bypass fail-closed origin checks.
 
-No compatibility or support claim is made for unvalidated external driver projects.
+## Final merged 26.8.1 architecture
 
-New AMD releases require separate source inspection, semantic delta work, exact identity definitions, and regression validation.
+The final v4.0 Display package incorporates the required Lenovo semantics. Standalone **Go-applicable** Lenovo extension material is therefore absent after a clean final transition, while proven foreign/non-Go extension packages may remain staged by design.
+
+## Scope limits
+
+A different AMD release cannot be substituted merely because it can bind to the GPU. New AMD releases require separate source inspection, exact payload identities, Lenovo semantic delta work, catalog validation, and regression testing.
+
+No support claim is made for unvalidated external driver projects or other handheld hardware IDs.

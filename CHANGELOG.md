@@ -1,5 +1,19 @@
-
 # Changelog
+
+## Public Beta v4.0 — 2026-08-25
+
+- Moved the validated target to AMD Adrenalin 26.8.1 / display driver `32.0.31041.1004`.
+- Added exact frozen 26.8.1 INF, DAT, kernel, source-installer, AMD Settings, DVR, runtime, and catalog identities.
+- Added dual-catalog trust: the exact original Microsoft WHCP `u0203304.cat` is registered alongside the locally signed merged catalog, and both must cover all 14 frozen kernel/UMD targets.
+- Corrected the 26.8.1 UMD trust regression that caused Gears 5 to fall back to software/WARP and caused BattlEye to block `amdxx64.dll`; the managed official catalog survived reboot and is idempotently revalidated.
+- Changed `amduw23e` ownership from filename/class/ExtensionId assumptions to actual original-Legion-Go hardware applicability. Proven foreign packages are preserved; unreadable or actually Go-applicable foreign lineages fail closed.
+- Field-validated a real ASUS/ROG Ally `32.0.31007.6002` origin through Stage 2/3/4 with zero failed checks while retaining the ASUS-only extension.
+- Successfully exercised a dirty ASUS → Lenovo origin installed without an intervening reboot before the v4.0 transition.
+- Added transaction-aware failed-checkpoint normalization, proof-derived rollback outcome states, recovery-only handling for unproven rollback, and startup self-heal for proven rollback checkpoints whose parent normalization was interrupted.
+- Added a machine-wide installer mutex and fail-closed detection of other registered `LegionGo-AMD-*-Resume` workflows.
+- Added read-only full Stage 4 revalidation when a saved workflow is already `Complete`; physical revalidation passed 72/72 with state/GPU/BCD/task invariants unchanged.
+- Preserved AMD defaults `ColorVibrance_ENABLE_DEF=1` and `ShowRSOverlay=true`.
+- Final public release asset: `LegionGo-AMD-26.8.1-Public-Beta-v4.0.zip`, SHA-256 `8AC6A3A0ADE321860D20C958B47053EBC4BEB27A94EB177E30EC59450EEA2B07`.
 
 ## Public Beta v3.1 — 2026-08-22
 

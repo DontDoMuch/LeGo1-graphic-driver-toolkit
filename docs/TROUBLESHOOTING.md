@@ -2,57 +2,72 @@
 
 ## First rule: stop at a hard failure
 
-Do not repeatedly rerun a failed stage, manually delete workflow state, or manually remove staged `amduw23e` generations.
+Do not repeatedly force a failed numbered stage, manually delete workflow state, or manually remove staged `amduw23e` packages to bypass classification.
 
-Preserve the generated parser transcript or failure-evidence folder/ZIP under Downloads and the visible console error.
-
-## Parser gate closes immediately
-
-Public Beta v3.1 runs an independent PowerShell parser gate before the main launcher. If it fails before launcher logging exists, it writes:
-
-```text
-LegionGo-AMD-26.7.1-Public-Beta-v3.1-Parser-Gate-YYYYMMDD-HHMMSS.txt
-```
-
-under Downloads and keeps the failure console open until Enter is pressed. Preserve that transcript and do not start the numbered scripts manually.
+Preserve the visible console error plus the generated parser transcript or failure-evidence folder/ZIP under Downloads.
 
 ## Test Signing after a failure
 
-Managed hard-failure recovery inspects the current boot policy. When required, it configures Test Signing and `nointegritychecks` OFF, removes resume authorization, and reboots without retrying the failed stage.
+Managed hard-failure recovery inspects BCD and, when required, configures Test Signing and `nointegritychecks` OFF before recovery completes. It removes automatic resume authorization and never automatically retries a failed destructive stage.
 
-If the machine has rebooted after recovery, verify current state before attempting another public release or manual repair.
+Public Beta v4.0 also normalizes safe pre-destructive retry checkpoints back through the managed Test Signing preparation path. You should rerun the **main public launcher**, not Stage 2 directly.
 
-## Unknown or ambiguous starting driver
+If rollback after a destructive failure cannot be proven, the workflow remains on an explicit recovery-only path rather than silently treating the machine as ready for another install.
 
-Public Beta v3.1 intentionally fails closed on arbitrary AMD display origins and multiple distinct applicable ExtensionId lineages. Do not bypass the origin classifier by manually editing state, metadata, or Driver Store contents.
+## Another installer session is already active
 
-v3.1 specifically corrects the v3.0 false failures caused by multiple generations of the same validated Lenovo-derived ExtensionId lineage or by historical extension `DriverVer` mismatch alone.
+v4.0 uses a machine-wide named mutex. If another v4.0 manual/resume session is already active, the new launcher exits before persistent workflow mutation.
 
-Supported origins are documented in `COMPATIBILITY.md`.
+If a different registered `LegionGo-AMD-*-Resume` workflow is detected, v4.0 fails closed rather than racing another release. Resolve the older workflow instead of deleting tasks/state blindly.
+
+## Starting GPU origin is not acceptable
+
+Do not infer ownership from the filename `amduw23e.inf` alone.
+
+v4.0 inventories all such packages and only enters Go 1 extension handling when the readable INF actually targets:
+
+```text
+PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA
+```
+
+Proven foreign/non-applicable packages are intentionally preserved. Unreadable scope or conflicting Go-applicable lineages fail closed. Preserve evidence so the exact package can be classified safely.
 
 ## AMD installer not found or rejected
 
 Required source:
 
 ```text
-whql-amd-software-adrenalin-edition-26.7.1-win11-b.exe
-SHA-256: 116C6269B7676C3E76F85A8CF0CAC82D7DF3E85051C0594E18B4B1EA41BE9E3D
+whql-amd-software-adrenalin-edition-26.8.1-win11-b.exe
+SHA-256: 47272E13BD537C5796F1C760AF036D011B41684737BCDAF30B158D3BAB6740F3
 ```
 
-Leave it under your Downloads folder. A same-named but different file is not accepted.
+Keep one exact copy somewhere under Downloads. A same-named file with different bytes is not accepted.
+
+## Gears 5 reports Basic Display / Destiny 2 blocks an AMD DLL
+
+Public Beta v4.0 includes the dual-catalog correction for the 26.8.1 user-mode trust failure discovered during development. A correct final install must show:
+
+```text
+Local frozen-target coverage    = 14/14
+Official WHCP target coverage   = 14/14
+```
+
+Do not manually copy catalogs into CatRoot. Preserve Stage 4/failure evidence so the managed official-catalog state can be inspected.
 
 ## Secure Boot
 
 Secure Boot must be disabled for this local-catalog signing architecture. Enabled or unknown Secure Boot state is a hard front gate.
 
-## Final audit folder exists but ZIP does not
+**Preserve the BitLocker / Device Encryption recovery key before changing Secure Boot.**
 
-The final evidence directory is authoritative. Some runs may leave the complete audit directory without an automatically packaged ZIP. This does not by itself indicate audit failure; Stage 4 result status and `FailedChecks` remain authoritative.
+## Rerunning after Complete
+
+A saved `Complete` workflow no longer performs another installation. v4.0 reruns the full Stage 4 audit read-only to detect live-system drift. A drift failure reports evidence; it does not automatically repair the machine.
 
 ## Should I use DDU?
 
-DDU is not part of the documented Public Beta v3.1 workflow. Do not insert it into a normal upgrade/repair run unless a future documented recovery path explicitly calls for it.
+DDU is not part of the normal Public Beta v4.0 installation workflow. Do not insert it into a normal upgrade/repair run unless a documented recovery procedure specifically calls for it.
 
 ## Code 43
 
-Do not try to repair Code 43 by spoofing `ReleaseVersion`. Preserve evidence and restore a known-good package/state. Public Beta v3.1 deliberately avoids that older metadata workaround.
+Do not attempt to repair Code 43 by spoofing Radeon Software `ReleaseVersion`. v4.0 keeps the driver package and software identities internally consistent and does not use that workaround.

@@ -1,62 +1,86 @@
 # Verification
 
-## Public Beta v3.1 release asset
+## Public Beta v4.0 release asset
 
 ```text
-LegionGo-AMD-26.7.1-Public-Beta-v3.1.zip
-SHA-256: ECAED23350E6C58139FDBE6C587BF30F4F931AD5086CBBD33A46B33E68107328
-Size: 124377 bytes
+LegionGo-AMD-26.8.1-Public-Beta-v4.0.zip
+SHA-256: 8AC6A3A0ADE321860D20C958B47053EBC4BEB27A94EB177E30EC59450EEA2B07
+Size: 154588 bytes
 ```
 
-PowerShell:
+The public-named ZIP is the exact validated release bytes; only the outer filename differs from the final engineering-candidate filename used during field testing.
 
-```powershell
-Get-FileHash "$env:USERPROFILE\Downloads\LegionGo-AMD-26.7.1-Public-Beta-v3.1.zip" -Algorithm SHA256
-```
-
-The ZIP contains one top-level `LegionGo-AMD-26.7.1-Public-Beta-v3.1` directory with 18 files. Its internal `SHA256SUMS.txt` contains 17 entries and verifies every other packaged file.
+The ZIP contains one top-level `LegionGo-AMD-26.8.1-Public-Beta-v4.0` directory with 20 files. Its internal `SHA256SUMS.txt` contains 19 entries and verifies every other packaged file.
 
 ## Official AMD source
 
 ```text
-whql-amd-software-adrenalin-edition-26.7.1-win11-b.exe
-SHA-256: 116C6269B7676C3E76F85A8CF0CAC82D7DF3E85051C0594E18B4B1EA41BE9E3D
+whql-amd-software-adrenalin-edition-26.8.1-win11-b.exe
+SHA-256: 47272E13BD537C5796F1C760AF036D011B41684737BCDAF30B158D3BAB6740F3
+Size: 930653064 bytes
+Version: 26.8.1.0
 ```
+
+The AMD installer is not redistributed by this repository.
 
 ## Final installed identities
 
 ```text
 DriverVersion:
-  32.0.31035.1003
+  32.0.31041.1004
 
 Final INF SHA-256:
-  9C9A8471BC433B93ED7DECD1EBC40A6D9AF619B68C49B3E91421D70D12AB0409
+  F882C8E66D6EFC42AB9254D55E1B7DD7C3A23E772E854897C0EB9BFB1A214C42
 
 Final amdgcf.dat SHA-256:
-  DD7B29271E068BE01F5FE4F55A136F0049F60822E0D789B9AAF9152E58A9D766
+  83C3A9D7A3E524135FFCA89A3971A788670CDF14898C85FD504B2ED284C61953
 
 Loaded amdkmdag.sys SHA-256:
-  D8B1ECBB9169259E6D65D38A5CD53D7D6F0606F60471D2BA779B9C7B5F36E4D5
+  92A83D34ADB17A8C419A153B62E94E2CF3C478E260571AF6699574800AF3F3DF
 ```
+
+## Dual-catalog identities
+
+The merged Driver Store package uses the locally generated/signed active catalog. v4.0 also registers the exact original Microsoft AMD WHCP catalog for the frozen kernel/UMD payload:
+
+```text
+Official source catalog: u0203304.cat
+SHA-256:
+  23D62651554AA6AF3A9194457AC84B9881649E7C4E34BD7A0CBD51512A484A48
+
+Managed CatRoot name:
+  LegionGo-AMD-26.8.1-Official-WHCP.cat
+
+Signer:
+  Microsoft Windows Hardware Compatibility Publisher
+
+Required coverage:
+  Local catalog    14/14
+  Official catalog 14/14
+```
+
+Three critical frozen targets include `amdkmdag.sys`, `amdxc64.dll`, and `amdxx64.dll`.
 
 ## Matching AMD Software
 
 ```text
 AMD Settings product:
-  {4BB6B15D-DFAB-4FD1-8DA6-07DD594939BF}
+  {2516E7E8-BAB4-42B7-BAEA-CB34B96275FF}
 
 AMD Settings version:
-  2026.0716.2129.2099
+  2026.0811.2128.2099
 
 AMD DVR product:
-  {94D923DB-3F51-406F-A477-445876B3D70A}
+  {82B67D1C-33CB-46FF-A3DC-E7BE6902D38A}
 
 AMD DVR version:
-  26.10.26197.2124
+  26.10.26223.2125
 
-RSXCM:
+RSXCM expected:
   22.10.0.0
 ```
+
+RSXCM is ancillary/audited. Absence or version drift produces evidence warnings but is not by itself a failed driver/software seal.
 
 ## Required final policy state
 
@@ -64,7 +88,8 @@ RSXCM:
 GPU Status                = OK
 ProblemCode               = 0
 HasProblem                = False
-standalone amduw23e       = absent
+Go-applicable amduw23e    = absent
+Foreign amduw23e          = permitted/preserved
 Test Signing              = OFF
 nointegritychecks         = OFF
 ShowRSOverlay             = true
@@ -74,20 +99,13 @@ FailedChecks              = 0
 Workflow Stage            = Complete
 ```
 
-## Executable provenance
+## Final release validation gates
 
-The 18 files in `releases/public-beta-v3.1/toolkit/` are byte-identical to the contents of the frozen release ZIP.
+The exact final bytes passed:
 
-The corrected package audit records:
+- Windows PowerShell 5.1 package/parser preflight with `Passed=True`, `FailedChecks=0`, exit code `0`;
+- physical machine-wide mutex rejection of a second launcher before persistent mutation;
+- physical saved-`Complete` read-only Stage 4 revalidation;
+- 72/72 Stage 4 checks with zero failures and zero warnings on the finalized field state.
 
-```text
-Static audit: 16/16 PASS
-```
-
-Required internal RC2zp class/type identifiers remain intact. Public entrypoints, workflow/result schemas, signer identity, evidence names, and primary release headers use Public Beta v3.1.
-
-The package's internal file hashes are published in:
-
-```text
-releases/public-beta-v3.1/TOOLKIT-SHA256SUMS.txt
-```
+The package itself remains the executable source of truth. The documentation-only repository publication record does not duplicate or rewrite those executable files.

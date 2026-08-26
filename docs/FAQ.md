@@ -1,41 +1,71 @@
 # FAQ
 
-## Is this for the Legion Go S?
+## Is this for Legion Go S, Legion Go 2, or other models?
 
-No. Public Beta v3.1 is for the original Legion Go / Legion Go 1 hardware identity documented in `COMPATIBILITY.md`.
+No. Public Beta v4.0 is validated only for the original Legion Go / Legion Go 1 hardware identity:
 
-## Why can more than one Lenovo amduw23e package be present?
+```text
+PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA
+```
 
-Windows can retain multiple generations from the same Lenovo extension lineage after OEM installation. Public Beta v3.1 treats them as one versioned lineage only when every applicable package is structurally scoped to the original Legion Go and shares the validated Lenovo-derived ExtensionId.
+Changing a device ID is not considered a validated port. Other variants need their own OEM/extension/INF/catalog and hardware-scope analysis.
 
-Every recognized lineage member is exported before removal. Distinct applicable ExtensionIds still fail closed.
+## Why can foreign `amduw23e` packages remain after a successful install?
 
-## Does the extension DriverVer need to match the active Lenovo display driver?
+Because filename, class, and ExtensionId are not sufficient proof that a package belongs to the Legion Go.
 
-Not by itself. Historical Lenovo generations can have a different `DriverVer` while still belonging to the same exact-Go ExtensionId lineage. v3.1 validates class, hardware applicability, lineage identity, attachment/origin structure, and package evidence instead of treating a version mismatch alone as fatal.
+v4.0 inventories all staged `amduw23e` packages. Only packages whose readable INF model directives actually target the original Go enter the Go extension lineage. Proven foreign packages are preserved.
 
-## Why does v3.1 still contain RC2zp references?
+This was field-proven with an ASUS ROG Ally extension sharing the historical ExtensionId while targeting ASUS subsystem IDs rather than `381217AA`.
 
-RC2zp is an internal implementation/provenance token retained in some class names, preflight check identifiers, comments, cache paths, and diagnostic text.
+## Can multiple Go-applicable `amduw23e` generations be present before installation?
 
-The first unpublished public transformation attempted a broad RC-to-public substitution and modified internal type identifiers, causing an immediate parser failure. The corrected package preserves those tested internal identifiers. Public filenames, workflow/result schemas, signer identity, evidence names, and primary release headers use Public Beta v3.1.
+Yes. Windows can retain multiple versions from one Lenovo-derived lineage. v4.0 retains the v3.1 logic that treats same-lineage, Go-applicable generations as version history and exports each recognized member before removal.
 
-## Does v3.1 need Lenovo's standalone amduw23e extension in the final state?
+Multiple distinct **Go-applicable** ExtensionIds remain fail-closed.
 
-No. Lenovo OEM and the public 26.6.2/26.6.4 toolkit releases use standalone Lenovo extension lineage material. v3.1 validates and exports every applicable recognized member for rollback, then removes the lineage because the final 26.7.1 package incorporates the required Lenovo semantics.
+## Why are there two catalogs in v4.0?
+
+The merged Display package requires the locally generated/signed catalog for the adapted INF. During 26.8.1 testing, the exact original Microsoft WHCP catalog was also found necessary to preserve the expected user-mode trust path for the unchanged AMD kernel/UMD payload.
+
+v4.0 therefore requires both catalogs to cover all 14 frozen targets. The official Microsoft catalog is registered under the managed name `LegionGo-AMD-26.8.1-Official-WHCP.cat`.
+
+## Does this fix the Gears 5 / BattlEye problem seen in early 26.8.1 testing?
+
+The dual-catalog correction was physically tested: Gears 5 resumed normal AMD Direct3D operation and the observed Destiny 2 BattlEye block of `amdxx64.dll` was removed. This is evidence for the specific trust regression encountered during development, not a guarantee about every game's future anti-cheat policy.
+
+## Can I start from a third-party AMD driver?
+
+Healthy third-party AMD Display origins can be accepted when they satisfy the structural safety contract and the original Legion Go can be identified unambiguously. A real ASUS origin was field-validated end to end.
+
+This is not a blanket whitelist for arbitrary modified packages. Unhealthy, unreadable, or genuinely ambiguous Go-applicable states still fail closed.
+
+## What happens if the installer fails after Test Signing was enabled?
+
+The managed launcher normalizes boot-integrity settings, removes automatic resume authorization, and uses transaction-aware checkpoints. Safe pre-destructive failures re-enter through managed Test Signing preparation on the next main-launcher run. Unproven destructive rollback remains recovery-only.
+
+Do not directly invoke Stage 2 to bypass that logic.
+
+## What if I double-click the installer twice?
+
+v4.0 uses a machine-wide single-instance guard. The second v4.0 launcher is rejected before persistent workflow mutation.
+
+## What if the workflow already says Complete?
+
+The launcher performs the full Stage 4 final audit read-only. It does not reinstall or automatically repair drift.
+
+## Why may the frozen ZIP still contain internal engineering identifiers?
+
+Some internal class/type names and regression identifiers are part of the exact field-tested package. Broad renaming previously demonstrated that it can break parser/type contracts. Public filenames, release metadata, documentation, and user-facing release identity use **Public Beta v4.0**; protected internal identifiers are retained where byte identity or tested implementation contracts require it.
 
 ## Can I use a different AMD release?
 
-No. A different AMD release needs separate analysis, adaptation, and validation. Do not substitute a different installer.
+No. Each AMD release requires separate adaptation and validation. Do not substitute a different installer.
 
-## Does v3.1 spoof Radeon Software ReleaseVersion?
+## Does v4.0 spoof Radeon Software `ReleaseVersion`?
 
 No.
 
 ## How many prompts are there?
 
 The normal public launcher asks exactly two Y/N questions at the beginning. Required managed reboots afterward are automatic.
-
-## What proves success?
-
-Stage 2/3/4 must pass, `FailedChecks` must be zero, and workflow state must be `Complete`. The final installed hashes and policy state are listed in `VERIFICATION.md`.

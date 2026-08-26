@@ -11,53 +11,51 @@ Public Beta v2.0
 Public Beta v2.1
 Public Beta v3.0
 Public Beta v3.1
+Public Beta v4.0
 ```
 
 Release tags use lowercase:
 
 ```text
-public-beta-v3.1
+public-beta-v4.0
 ```
 
-Internal engineering labels such as RC2zk and RC2zp are not public release names.
+Internal engineering labels are not public release names.
 
 ## Current release
 
-**Public Beta v3.1** is current. It targets AMD 26.7.1 and supersedes Public Beta v3.0.
+**Public Beta v4.0** is current. It targets AMD Adrenalin 26.8.1 / display `32.0.31041.1004` and supersedes Public Beta v3.1.
 
 ## Release asset
 
 ```text
-LegionGo-AMD-26.7.1-Public-Beta-v3.1.zip
-SHA-256: ECAED23350E6C58139FDBE6C587BF30F4F931AD5086CBBD33A46B33E68107328
+LegionGo-AMD-26.8.1-Public-Beta-v4.0.zip
+SHA-256: 8AC6A3A0ADE321860D20C958B47053EBC4BEB27A94EB177E30EC59450EEA2B07
+Size: 154588 bytes
 ```
 
-The AMD target belongs in release metadata and asset naming while the permanent repository identity remains Legion Go 1 Graphics Driver Toolkit.
+The AMD target belongs in release metadata and asset naming while the permanent repository identity remains **Legion Go 1 Graphics Driver Toolkit**.
 
-## Publication records
+## Publication record
 
-Directories under `releases/` are immutable publication records.
-
-Public Beta v3.1 uses:
+Public Beta v4.0 uses a documentation-only repository record:
 
 ```text
-releases/public-beta-v3.1/
+releases/public-beta-v4.0/
   README.md
   RELEASE-NOTES.md
   VALIDATION-SUMMARY.md
-  PUBLIC-BETA-v3.1-ZIP-SHA256.txt
-  TOOLKIT-SHA256SUMS.txt
-  toolkit/
+  PUBLIC-BETA-v4.0-ZIP-SHA256.txt
 ```
 
-`toolkit/` contains the exact frozen Public Beta v3.1 executable and package-documentation snapshot. Required internal implementation/provenance identifiers are preserved where changing them would invalidate the tested package.
+The executable toolkit is distributed as the immutable GitHub Release asset rather than duplicated under the repository release folder. The package's own internal `SHA256SUMS.txt`, package audit, release notes, and validation summary remain inside that exact ZIP.
 
-All earlier publication records, including `releases/public-beta-v3.0/`, remain unchanged.
+All historical release directories remain unchanged.
 
 ## Rules
 
-- Never edit a published executable in place.
-- Functional corrections require a new public version and new hashes.
-- Documentation-only clarification may be corrected when it does not alter or misrepresent the release asset.
+- Never edit a published executable asset in place.
+- Functional corrections require a new public version and new hash.
+- Documentation clarification must not misrepresent the frozen asset.
 - Do not commit AMD installers or extracted AMD binaries.
-- Do not upload private logs, workflow state, evidence, certificates, or keys as release assets.
+- Do not upload private logs, workflow state, evidence archives, private certificates, or keys as release assets.

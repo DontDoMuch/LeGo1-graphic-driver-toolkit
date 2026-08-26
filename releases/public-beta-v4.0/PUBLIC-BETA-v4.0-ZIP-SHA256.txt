@@ -1,0 +1,12 @@
+Legion Go 1 Graphics Driver Toolkit — Public Beta v4.0
+
+Release asset:
+LegionGo-AMD-26.8.1-Public-Beta-v4.0.zip
+
+SHA-256:
+8AC6A3A0ADE321860D20C958B47053EBC4BEB27A94EB177E30EC59450EEA2B07
+
+Size:
+154588 bytes
+
+The public asset is the exact validated final v4.0 bytes under the public filename. The AMD 26.8.1 installer is not included in this asset.
