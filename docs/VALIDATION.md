@@ -1,10 +1,10 @@
 # Validation
 
-## Public Beta v4.5
+## Public Beta v4.5.1
 
-Public Beta v4.5 keeps the AMD 26.8.1 / display `32.0.31041.1004` release target and expands the v4 engine to three exact hardware profiles.
+Public Beta v4.5.1 is a targeted hotfix over v4.5. AMD 26.8.1, the three exact supported HWIDs, the frozen per-profile INF/DAT outputs, and the final-audit contracts are unchanged.
 
-## Physical field results
+## Physical profile baseline inherited unchanged from v4.5
 
 | Device/profile | Exact HWID | Result | Failures | Warnings |
 |---|---|---:|---:|---:|
@@ -12,31 +12,54 @@ Public Beta v4.5 keeps the AMD 26.8.1 / display `32.0.31041.1004` release target
 | Legion Go S Z1 Extreme / `LegionGoS-Z1Extreme` | `PCI\VEN_1002&DEV_15BF&SUBSYS_380C17AA&REV_04` | **81/81 PASS** | 0 | 0 |
 | Legion Go 2 Z2 Extreme / `LegionGo2-Z2Extreme` | `PCI\VEN_1002&DEV_150E&SUBSYS_381C17AA&REV_C5` | **79/79 PASS** | 0 | 0 |
 
-The Go 1 destructive result was produced by the immediate pre-auto-evidence combined v4.5 candidate and therefore physically proves the new exact-HWID resolver -> Go 1 profile -> shared managed workflow path. The final candidate changes only the top-level evidence-ZIP packaging/manifest identity; Stage 1-4 and device/profile logic remain unchanged, and the exact final bytes passed Regression v5 instead of triggering an unnecessary destructive reinstall.
+These results establish the unchanged device/profile baseline. v4.5.1 does not claim that all three destructive final-audit runs were repeated solely for this hotfix.
 
-Go S and Go 2 were physically field-validated with private volunteer packages whose exact profiles and Stage 1-4 scripts are preserved in v4.5. Shared helper changes after those runs are limited to the Windows PowerShell 5.1 compatibility fixes and were exercised by the final all-profile regression. Those private volunteer packages/evidence are not public release assets.
+## Field catalog-prestate failure and proven recovery
 
-## Exact final-package regression
-
-The final v4.5 package with SHA-256:
+A v4.5 Go 2 field run reached Stage 2 with this official-catalog state:
 
 ```text
-B773EEFE02560A47BB6A4AE109E21D4E967CD526A2198955EC4BBD788D13930C
+OfficialCatalogs = 1
+Covered          = 14
+ManagedExists    = False
+ManagedExact     = False
 ```
 
-passed the real Windows PowerShell 5.1 regression on the Go 1 host with:
+v4.5 treated that state as unsafe/ambiguous even though the exact Microsoft catalog already covered all 14 frozen targets. The workflow failed closed, invoked recovery, and recorded a proven rollback result with a healthy GPU (`Status=OK`, problem code `0`, AMD display `32.0.31041.1004`) while Test Signing and `nointegritychecks` were normalized OFF. This proved the recovery path worked and isolated the catalog decision as the false-negative gate.
+
+v4.5.1 corrects only that safe additive case: when one or more exact Microsoft catalog copies already cover every frozen target and the managed-name copy is absent, `ApplyPreservingExisting` registers the exact managed copy while preserving the preexisting exact Microsoft copy/copies. Partial coverage, non-exact identity, or ambiguous unsafe states still fail closed.
+
+The Stage 2 recovery code also now performs a final PnP rescan and re-proves the restored Display identity/health **after** extension restoration before `Get-LegionGoRollbackOutcomeStatus` accepts the rollback outcome.
+
+## v4.5.1 preflight results
+
+A real Windows PowerShell 5.1 regression on the v4.5.1 hotfix line completed with:
 
 ```text
 Actual public entry gate: ExitCode 0
-PowerShell parser:        13 files / 0 errors
 Package manifest:         23/23
+PowerShell parser:        13 files / 0 errors
+Static preflight:         32/32 PASS
 Source-backed preflight:  43/43 PASS
 FailedChecks:             0
 .NET ZIP smoke:           PASS
-Auto-evidence contract:   PASS
 ```
 
-The regression rebuilt all three profile outputs byte-exact from the frozen AMD 26.8.1 source and proved each exact HWID -> DDInstall binding. Go 2 `REV_C4` remained rejected.
+The source-backed pass rebuilt all three frozen profile outputs byte-exact and proved exact HWID -> DDInstall binding while rejecting Go 2 `REV_C4`.
+
+The final public asset is:
+
+```text
+LegionGo-AMD-26.8.1-Public-Beta-v4.5.1.zip
+SHA-256: 910613864EED31EEA38143E639C0203B0E4F6E4EA38B95FBEC66494053F7CA75
+Size: 132857 bytes
+```
+
+That exact final asset contains the corrected CMD target and was successfully run from a clean Windows PowerShell 5.1 environment during field recovery. It uses the fresh namespace `C:\ProgramData\LegionGo-AMD-26.8.1-MultiDevice-v4.5.1\<Profile>` so it does not consume the prior v4.5 workflow state.
+
+## PowerShell-host boundary
+
+The final successful run used clean Windows PowerShell 5.1. A separate test showed that a Windows PowerShell 5.1 child launched from PowerShell 7 can inherit a PowerShell-7-oriented `PSModulePath` and fail while resolving `Microsoft.PowerShell.Security`. No `PSModulePath` sanitizer exists in the final v4.5.1 bytes. The supported launch path is Explorer/Command Prompt or a clean Windows PowerShell 5.1 context.
 
 ## Frozen profile outputs
 
@@ -54,34 +77,8 @@ INF: BE67AD0E09147A7C33AA9688533F0BE99842F0E2FE14F8C79EB35CB6BA3F45CC
 DAT: B85E600A892480BD5F15A4BC1C9B2993FF0717E95A81F480586A8B9653F514A8
 ```
 
-Common loaded kernel SHA-256:
+## Evidence boundary
 
-```text
-92A83D34ADB17A8C419A153B62E94E2CF3C478E260571AF6699574800AF3F3DF
-```
+The repository does **not** claim a missing final v4.5.1 volunteer evidence ZIP. The field recovery outcome above is documented from the preserved handoff/evidence trail, while private volunteer packages, private evidence archives, certificates, keys, logs, and workflow state remain non-public.
 
-## Third-party AMD origin proof
-
-The v4 origin architecture was physically field-validated on Go 1 from a real ASUS ROG Ally graphics package. The active ASUS Display package was exported for rollback; its ASUS-only `amduw23e` remained staged because its model directives did not target the Go 1 hardware ID; the transition completed successfully.
-
-v4.5 preserves that origin/rollback model and replaces Go-1-specific applicability with selected-profile applicability. This supports healthy structurally classifiable third-party AMD starting states without globally deleting foreign extensions.
-
-ROG Ally-origin migration is field-proven on Go 1. No claim is made that an Ally-origin transition has been separately field-run on Go S or Go 2.
-
-## Go S proof
-
-The Go S field result verified the exact profile, Phoenix base mapping, `ati2mtag_Phoenix_LegionGoS`, exact frozen INF/DAT/kernel, both catalog paths, normal boot-integrity state, AMD Software/runtime/tasks, and all 30 frozen Lenovo OEM registry directives.
-
-## Go 2 proof
-
-The Go 2 field result verified exact `REV_C5`, Strix mapping, `ati2mtag_Strix_LegionGo2`, `%AMD150E.517%`, exact frozen INF/DAT/kernel, both catalog paths, normal boot-integrity state, AMD Software/runtime/tasks, and all 28 frozen Lenovo OEM registry directives.
-
-AMD 26.8.1 does not natively enumerate exact Lenovo C5; Lenovo OEM provenance proves the exact C5 -> Strix mapping used by the controlled public adaptation.
-
-## Evidence ZIP change
-
-The final v4.5 launcher adds direct .NET success/failure evidence ZIP creation. The production source contract and the exact `.NET ZipFile::CreateFromDirectory` + `OpenRead` path passed on the real Windows PowerShell 5.1 host. The destructive driver installation was not repeated solely to traverse this post-audit packaging-only line.
-
-## Scope limits
-
-Windows 11 x64 on the three exact hardware IDs above is the supported field scope. Windows 10, eGPU, other Legion Go variants/revisions, and arbitrary third-party driver projects are not certified by this release.
+Windows 11 x64 on the three exact hardware IDs above remains the supported field scope. Windows 10, eGPU, other Legion Go variants/revisions, and arbitrary third-party driver projects are not certified by this release.

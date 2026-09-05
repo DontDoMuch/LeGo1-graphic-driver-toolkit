@@ -1,6 +1,6 @@
 # FAQ
 
-## Which devices does Public Beta v4.5 support?
+## Which devices does Public Beta v4.5.1 support?
 
 Exactly these three:
 
@@ -27,7 +27,7 @@ The active starting Display package is preserved as verified rollback material. 
 
 Because filename, class, and ExtensionId are not sufficient proof that a package belongs to the selected Legion Go profile.
 
-v4.5 inventories all staged `amduw23e` packages. Only packages whose readable INF model directives actually target the selected exact hardware profile enter that profile's extension handling. Proven foreign/non-applicable packages are preserved.
+v4.5.1 inventories all staged `amduw23e` packages. Only packages whose readable INF model directives actually target the selected exact hardware profile enter that profile's extension handling. Proven foreign/non-applicable packages are preserved.
 
 ## Can multiple applicable Lenovo extension generations be present before installation?
 
@@ -39,13 +39,13 @@ The adapted Display package requires the locally generated/signed catalog. The u
 
 ## Why does Go 2 use Strix if AMD does not list the exact Lenovo C5 ID?
 
-AMD 26.8.1 contains DEV_150E Strix coverage. Lenovo's OEM package proves the exact `DEV_150E / SUBSYS_381C17AA / REV_C5` mapping to Strix. v4.5 inserts that exact target through a controlled profile-specific adaptation using `%AMD150E.517%`.
+AMD 26.8.1 contains DEV_150E Strix coverage. Lenovo's OEM package proves the exact `DEV_150E / SUBSYS_381C17AA / REV_C5` mapping to Strix. v4.5.1 inserts that exact target through a controlled profile-specific adaptation using `%AMD150E.517%`.
 
 That is not the same as claiming AMD natively enumerates the exact Lenovo C5 hardware ID.
 
 ## Why do some internal paths or schema names still say v4.0?
 
-The multi-device v4.5 package intentionally preserves some field-proven v4.0 engine contracts and identifiers. Broad cosmetic renaming previously created parser/type risk. Public filenames, public release metadata, exact profile selection, and package identity are v4.5; protected internal lineage identifiers may remain v4.0.
+The multi-device v4.5.1 package intentionally preserves some field-proven v4.0 engine contracts and identifiers. Broad cosmetic renaming previously created parser/type risk. Public filenames, public release metadata, exact profile selection, and package identity are v4.5.1; protected internal lineage identifiers may remain v4.0.
 
 ## What if the installer fails after Test Signing was enabled?
 
@@ -61,7 +61,7 @@ The launcher reruns the full selected-profile Stage 4 audit read-only. It does n
 
 ## Can I use a different AMD release?
 
-No. v4.5 is frozen to AMD 26.8.1. Each AMD release requires separate adaptation and validation.
+No. v4.5.1 is frozen to AMD 26.8.1. Each AMD release requires separate adaptation and validation.
 
 ## How many prompts are there?
 

@@ -1,0 +1,12 @@
+Lenovo Legion Go AMD 26.8.1 — Public Beta v4.5.1
+
+Release asset:
+LegionGo-AMD-26.8.1-Public-Beta-v4.5.1.zip
+
+SHA-256:
+910613864EED31EEA38143E639C0203B0E4F6E4EA38B95FBEC66494053F7CA75
+
+Size:
+132857 bytes
+
+This identity refers to the exact final v4.5.1 public ZIP. The AMD 26.8.1 installer is not included in this asset.

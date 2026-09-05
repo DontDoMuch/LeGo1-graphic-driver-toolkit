@@ -1,14 +1,22 @@
 # Verification
 
-## Public Beta v4.5 release asset
+## Public Beta v4.5.1 release asset
 
 ```text
-LegionGo-AMD-26.8.1-Public-Beta-v4.5.zip
-SHA-256: B773EEFE02560A47BB6A4AE109E21D4E967CD526A2198955EC4BBD788D13930C
-Size: 132499 bytes
+LegionGo-AMD-26.8.1-Public-Beta-v4.5.1.zip
+SHA-256: 910613864EED31EEA38143E639C0203B0E4F6E4EA38B95FBEC66494053F7CA75
+Size: 132857 bytes
 ```
 
-The exact public ZIP contains 24 entries. `PACKAGE-MANIFEST.json` governs the other 23 files and passed 23/23 integrity verification. ZIP CRC validation passed, and independent builds of the final candidate were byte-identical.
+The exact public ZIP contains 24 entries. `PACKAGE-MANIFEST.json` governs the other 23 files. Independent release-prep verification of the uploaded final bytes confirmed **23/23** manifest length/SHA-256 matches and a clean ZIP CRC scan.
+
+The exact CMD entrypoint inside these bytes resolves to:
+
+```text
+Run-Validated-LegionGo-AMD-26.8.1-Public-Beta-v4.5.1.ps1
+```
+
+The package also contains the v4.5.1 fresh workflow root, additive exact-catalog handling, and final rollback re-proof ordering. It does **not** contain a `PSModulePath` sanitizer.
 
 ## Official AMD source
 
@@ -85,22 +93,20 @@ Warnings            = 0
 Workflow Stage      = Complete
 ```
 
-## Final release validation gates
+## v4.5.1 validation gates
 
-The exact final bytes passed:
+A Windows PowerShell 5.1 v4.5.1 regression on the hotfix line proved:
 
-- real Windows PowerShell 5.1 package/parser/entry-gate execution;
-- `PACKAGE_MANIFEST` 23/23;
-- PowerShell parser 13 files / 0 errors;
-- 43/43 all-profile source-backed preflight with zero failures;
-- exact reconstruction of all three profile INF/DAT outputs;
-- exact HWID -> DDInstall binding for all three supported profiles;
-- negative Go 2 `REV_C4` rejection;
-- direct .NET evidence-ZIP create/open smoke test;
-- physical Go 1 combined-engine 78/78 final audit on the immediate pre-auto-evidence candidate;
-- physical Go S 81/81 final audit;
-- physical Go 2 79/79 final audit.
+```text
+Actual public entry gate: ExitCode 0
+Package manifest:         23/23
+PowerShell parser:        13 files / 0 errors
+Static preflight:         32/32 PASS
+Source-backed preflight:  43/43 PASS
+FailedChecks:             0
+.NET ZIP smoke:           PASS
+```
 
-The exact final `B773...` candidate was not destructively reinstalled solely to traverse the post-audit evidence-ZIP addition. Its Stage 1-4/device logic is unchanged from the Go 1 field-success candidate, while the exact final bytes passed the real-host entry gate, 43/43 all-profile regression, and direct .NET ZIP smoke test.
+The exact final `910613864EED31EEA38143E639C0203B0E4F6E4EA38B95FBEC66494053F7CA75` package was then frozen with the corrected CMD target. Release-prep inspection reverified its 23/23 manifest, CRC, v4.5.1 workflow namespace, `ApplyPreservingExisting` catalog contract, and final rollback-proof ordering. The field handoff records a successful run of these exact final bytes in a clean Windows PowerShell 5.1 environment.
 
-The package itself remains the executable source of truth. Private volunteer packages and private field evidence are not public release artifacts.
+The physical Go 1 / Go S / Go 2 final-audit baseline remains the unchanged v4.5 profile baseline: **78/78**, **81/81**, and **79/79** respectively. v4.5.1 does not change those device profiles or frozen output identities. No missing final volunteer evidence ZIP is represented as if it existed.

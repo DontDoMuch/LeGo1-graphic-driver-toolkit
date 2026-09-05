@@ -1,8 +1,8 @@
 # Technical notes
 
-## v4.5 architecture
+## v4.5.1 architecture
 
-Public Beta v4.5 keeps the field-proven AMD 26.8.1 v4 engine and adds an exact multi-device profile layer:
+Public Beta v4.5.1 keeps the field-proven AMD 26.8.1 v4 engine and retains the exact multi-device profile layer introduced by v4.5:
 
 1. exact AMD 26.8.1 release contract;
 2. exact immutable hardware profiles;
@@ -12,6 +12,16 @@ Public Beta v4.5 keeps the field-proven AMD 26.8.1 v4 engine and adds an exact m
 6. shared AMD Software Stage 3;
 7. selected-profile final audit;
 8. fail-closed unsupported-hardware behavior.
+
+## v4.5.1 hotfix delta
+
+The device profiles and deterministic outputs are unchanged from v4.5. v4.5.1 changes three workflow/recovery details:
+
+1. **Additive exact-catalog handling.** `Register-LegionGoOfficialCatalogTrust` recognizes `ApplyPreservingExisting` when at least one exact Microsoft catalog is already present, all 14 frozen targets are covered, and the managed-name copy is absent. It registers the exact managed copy without removing the preexisting exact Microsoft catalog copy/copies. Incomplete or ambiguous coverage still stops.
+2. **Final rollback re-proof.** After prior Display restoration and applicable extension restoration, Stage 2 performs a final device rescan, re-queries the GPU, and revalidates the expected prior INF hash/health before rollback outcome is accepted.
+3. **Fresh persistent namespace.** Workflow state, rollback material, toolkit copy, logs, and resume-task identity are rooted under `C:\ProgramData\LegionGo-AMD-26.8.1-MultiDevice-v4.5.1\<Profile>`, preventing v4.5 state from being consumed by the hotfix.
+
+The public CMD entrypoint also now targets the v4.5.1 runner explicitly.
 
 ## Exact profiles
 
@@ -53,7 +63,7 @@ A healthy unrecognized AMD Display package can classify as an acceptable `ThirdP
 
 The prior Display package is retained rather than globally purged. Recovery first prefers the exact prior Driver Store INF and can restage the verified exported INF if required.
 
-ROG Ally-origin migration is field-proven on Go 1. v4.5 carries the same origin/rollback mechanism into the selected-profile architecture.
+ROG Ally-origin migration is field-proven on Go 1. v4.5.1 carries the same origin/rollback mechanism into the selected-profile architecture.
 
 ## Recovery state machine
 
@@ -69,17 +79,17 @@ The v4 transaction model remains intact:
 
 ## Windows PowerShell 5.1 compatibility
 
-Production v4.5 intentionally avoids dependencies that failed on the real target host:
+Production v4.5.1 intentionally avoids dependencies that failed on the real target host:
 
 - no production `Get-FileHash` dependency;
 - no `Import-PowerShellDataFile` dependency;
 - `${Variable}:`-safe interpolation where required.
 
-Hashing uses direct .NET SHA-256 streams. The release contract is loaded with a narrow static parser for the exact verified data-file grammar.
+Hashing uses direct .NET SHA-256 streams. The release contract is loaded with a narrow static parser for the exact verified data-file grammar. The v4.5.1 asset does **not** sanitize inherited `PSModulePath`; a PowerShell 7 parent can therefore poison a Windows PowerShell 5.1 child module path. Explorer/Command Prompt or a clean Windows PowerShell 5.1 context is the supported launch environment.
 
 ## Evidence packaging
 
-The final v4.5 launcher uses direct `.NET System.IO.Compression.ZipFile` for final/failure evidence ZIP creation rather than relying on `Compress-Archive`. The exact API path passed a create/open smoke test on the real Windows PowerShell 5.1 host.
+The final v4.5.1 launcher uses direct `.NET System.IO.Compression.ZipFile` for final/failure evidence ZIP creation rather than relying on `Compress-Archive`. The exact API path passed a create/open smoke test on the real Windows PowerShell 5.1 host.
 
 ## Protected v4.0 internal identifiers
 

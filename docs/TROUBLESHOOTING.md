@@ -8,7 +8,7 @@ Preserve the visible console error plus the generated parser/final/failure evide
 
 ## Unsupported hardware / profile resolution failure
 
-Public Beta v4.5 supports only:
+Public Beta v4.5.1 supports only:
 
 ```text
 PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA&REV_04
@@ -17,6 +17,20 @@ PCI\VEN_1002&DEV_150E&SUBSYS_381C17AA&REV_C5
 ```
 
 Do not edit a profile or hardware ID to bypass the gate. Other revisions/variants require separate validation.
+
+## `Microsoft.PowerShell.Security` / inherited `PSModulePath` failure
+
+Symptom: the CMD or entry gate reaches Windows PowerShell 5.1 but module loading fails with an error naming `Microsoft.PowerShell.Security`, especially when the installer was started from inside PowerShell 7 / `pwsh`.
+
+The v4.5.1 CMD explicitly invokes Windows PowerShell 5.1 with `-NoProfile`, but child processes still inherit environment variables. A PowerShell 7 parent can supply a PowerShell-7-oriented `PSModulePath`, causing the 5.1 host to resolve an incompatible module location.
+
+The exact v4.5.1 release asset does **not** contain a `PSModulePath` sanitizer. Supported workaround:
+
+- close the PowerShell 7 parent shell;
+- launch `Start-LegionGo-AMD-26.8.1.cmd` from File Explorer or Command Prompt, or from a fresh Windows PowerShell 5.1 session;
+- do not edit the package or bypass the entry gate.
+
+This is a host-environment workaround, not a claim that the package rewrites `PSModulePath`.
 
 ## Test Signing after a failure
 
@@ -34,7 +48,7 @@ The v4 engine uses a machine-wide named mutex. A second manual/resume session is
 
 Do not infer ownership from `amduw23e.inf` alone.
 
-v4.5 inventories all such packages and only enters destructive extension handling when the readable INF actually targets the **selected exact hardware profile**. Proven foreign/non-applicable packages are intentionally preserved. Unreadable scope or conflicting selected-profile-applicable lineages fail closed.
+v4.5.1 inventories all such packages and only enters destructive extension handling when the readable INF actually targets the **selected exact hardware profile**. Proven foreign/non-applicable packages are intentionally preserved. Unreadable scope or conflicting selected-profile-applicable lineages fail closed.
 
 A healthy third-party AMD Display package can be an accepted starting origin; an unhealthy or ambiguous one cannot.
 
@@ -57,16 +71,16 @@ Secure Boot must be disabled for this local-catalog signing architecture. Enable
 
 ## Evidence ZIP was not created
 
-Preserve the evidence folder itself. v4.5 uses direct .NET ZIP packaging after the audit. A packaging-only failure must not be treated as permission to reinstall the driver or manually rerun destructive stages.
+Preserve the evidence folder itself. v4.5.1 uses direct .NET ZIP packaging after the audit. A packaging-only failure must not be treated as permission to reinstall the driver or manually rerun destructive stages.
 
 ## Rerunning after Complete
 
 A saved `Complete` workflow reruns the selected-profile Stage 4 audit read-only to detect live-system drift. A drift failure reports evidence; it does not automatically repair the machine.
 
-## Why do paths say v4.0 during a v4.5 run?
+## Why do paths say v4.0 during a v4.5.1 run?
 
-Some protected internal v4 engine identifiers intentionally retain v4.0 naming. Do not rename or delete them. Verify the outer v4.5 package hash and the selected profile instead.
+Some protected internal v4 engine identifiers intentionally retain v4.0 naming. Do not rename or delete them. Verify the outer v4.5.1 package hash and the selected profile instead.
 
 ## Should I use DDU?
 
-DDU is not part of the normal Public Beta v4.5 workflow. Do not insert it into a normal upgrade/repair run unless a documented recovery procedure specifically calls for it.
+DDU is not part of the normal Public Beta v4.5.1 workflow. Do not insert it into a normal upgrade/repair run unless a documented recovery procedure specifically calls for it.
