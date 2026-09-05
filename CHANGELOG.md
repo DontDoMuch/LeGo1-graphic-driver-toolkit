@@ -1,5 +1,25 @@
 # Changelog
 
+## Public Beta v4.5 — 2026-09-04
+
+- Expanded the AMD 26.8.1 v4 architecture from one original-Legion-Go target to three exact install-capable profiles selected automatically by exact hardware ID.
+- Added Lenovo Legion Go 1 Z1 Extreme `PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA&REV_04` -> Phoenix -> `ati2mtag_Phoenix_LegionGo`.
+- Added Lenovo Legion Go S Z1 Extreme `PCI\VEN_1002&DEV_15BF&SUBSYS_380C17AA&REV_04` -> Phoenix -> `ati2mtag_Phoenix_LegionGoS`.
+- Added Lenovo Legion Go 2 Z2 Extreme `PCI\VEN_1002&DEV_150E&SUBSYS_381C17AA&REV_C5` -> Strix -> `ati2mtag_Strix_LegionGo2`.
+- Kept unvalidated hardware fail-closed; the tested Go 2 `REV_C4` fixture is rejected.
+- Preserved the proven Go S ordering rule that Lenovo OEM AddReg directives must be applied after AMD DelReg; all 30 frozen Go S OEM directives are audited.
+- Added the exact Go 2 `%AMD150E.517%` model binding and 28 frozen Lenovo OEM directives. AMD 26.8.1 has DEV_150E Strix coverage, while the exact Lenovo C5 mapping is OEM-proven adaptation rather than native exact-C5 AMD enumeration.
+- Generalized origin, extension ownership, rollback, recovery, and final audit handling to the selected immutable profile while preserving the field-proven v4 engine.
+- Retained support for healthy third-party AMD Display starting states. The ROG Ally-origin transition remains field-proven on Go 1; foreign/non-applicable `amduw23e` packages are preserved by hardware applicability rather than filename/class/ExtensionId assumptions.
+- Removed production dependence on `Get-FileHash` and `Import-PowerShellDataFile` after real Windows PowerShell 5.1 host failures; production hashing now uses direct .NET SHA-256 and the release contract uses a narrow static parser.
+- Corrected Windows PowerShell 5.1 `${Variable}:` parsing incompatibilities in the release-contract loader.
+- Added automatic final/failure evidence ZIP packaging through direct .NET `System.IO.Compression.ZipFile`, avoiding optional archive-cmdlet dependency.
+- Physical combined-package Go 1 validation completed **78/78**, zero failed checks, zero warnings on the immediate pre-auto-evidence candidate. The final candidate changes only top-level evidence-ZIP packaging/manifest identity and was not destructively reinstalled solely for that post-audit packaging change.
+- Go S Z1 Extreme volunteer hardware completed **81/81**, zero failed checks, zero warnings.
+- Go 2 Z2 Extreme volunteer hardware completed **79/79**, zero failed checks, zero warnings.
+- Exact final v4.5 bytes passed the real Windows PowerShell 5.1 entry gate and 43/43 all-profile source-backed regression with zero failures, including a direct .NET ZIP create/open smoke test.
+- Final public release asset: `LegionGo-AMD-26.8.1-Public-Beta-v4.5.zip`, SHA-256 `B773EEFE02560A47BB6A4AE109E21D4E967CD526A2198955EC4BBD788D13930C`, size `132499` bytes.
+
 ## Public Beta v4.0 — 2026-08-25
 
 - Moved the validated target to AMD Adrenalin 26.8.1 / display driver `32.0.31041.1004`.

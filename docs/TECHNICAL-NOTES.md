@@ -1,102 +1,94 @@
 # Technical notes
 
-## v4.0 architecture
+## v4.5 architecture
 
-Public Beta v4.0 moves the merged Legion Go target to AMD 26.8.1 while retaining the architecture developed through the 26.7.1 public releases:
+Public Beta v4.5 keeps the field-proven AMD 26.8.1 v4 engine and adds an exact multi-device profile layer:
 
-1. exact AMD base display payload;
-2. Lenovo-required integration semantics merged into the target INF/DAT architecture;
-3. explicit origin/rollback modeling;
-4. separately validated Radeon Software runtime;
-5. fail-closed signing/catalog/persistence contracts.
+1. exact AMD 26.8.1 release contract;
+2. exact immutable hardware profiles;
+3. automatic exact-HWID resolver with no manual override;
+4. deterministic profile-specific INF/DAT construction;
+5. selected-profile origin/extension/rollback/recovery handling;
+6. shared AMD Software Stage 3;
+7. selected-profile final audit;
+8. fail-closed unsupported-hardware behavior.
 
-The physical target-device binding and active Driver Store package remain primary authority. CN/Radeon metadata is supplemental and is never used to spoof a driver identity.
+## Exact profiles
+
+```text
+Go 1 Z1 Extreme
+15BF / 381217AA / REV_04
+Phoenix -> ati2mtag_Phoenix_LegionGo
+
+Go S Z1 Extreme
+15BF / 380C17AA / REV_04
+Phoenix -> ati2mtag_Phoenix_LegionGoS
+
+Go 2 Z2 Extreme
+150E / 381C17AA / REV_C5
+Strix -> ati2mtag_Strix_LegionGo2
+```
+
+The selected profile ID, fingerprint, exact HWID, AMD family, base DDInstall, and release-contract fingerprint are persisted and revalidated across reboot boundaries.
+
+## Profile-specific INF/DAT construction
+
+Go 1 and Go S both use Phoenix but have separate dedicated install sections and separate INF identities. Go 1 and Go S intentionally share the frozen 15BF/REV_04 `amdgcf.dat` output.
+
+Go S preserves 30 exact ordered Lenovo OEM directives. The Lenovo AddReg block must remain after AMD DelReg.
+
+Go 2 uses Strix, `%AMD150E.517%`, 28 exact ordered Lenovo OEM directives, and its own final DAT. AMD 26.8.1 has DEV_150E Strix coverage but not native enumeration of the exact Lenovo C5 ID; Lenovo OEM provenance establishes exact C5 -> Strix for this controlled adaptation.
 
 ## Hardware-scoped extension ownership
 
-A major v4.0 correction is the separation of **inventory** from **destructive ownership**.
+All staged `amduw23e.inf` packages are inventoried, but filename/class/ExtensionId do not prove ownership. Destructive extension handling is based on readable INF model directives targeting the **selected exact profile**.
 
-All staged `amduw23e.inf` packages are inventoried, but filename/class/ExtensionId do not prove that the package belongs to the original Go. A package enters the Go 1 lineage only when its readable INF model directive actually targets:
+This is the generalized form of the v4.0 Go 1 rule that preserved a field-observed ASUS ROG Ally extension sharing the same filename/class/ExtensionId while targeting ASUS subsystem IDs.
 
-```text
-PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA
-```
+Applicable recognized selected-profile lineage members are exported before removal. Proven foreign/non-applicable packages are preserved. Unreadable applicability or conflicting applicable lineages fail closed.
 
-This matters because the field-observed ASUS ROG Ally package used the same `amduw23e.inf` filename, `Class=Extension`, and historical ExtensionId while targeting ASUS `...1043` subsystem IDs. v4.0 preserves that foreign package.
+## Third-party Display origins and rollback
 
-Applicable same-lineage historical Go generations remain supported; distinct applicable ExtensionIds or unreadable applicability fail closed.
+A healthy unrecognized AMD Display package can classify as an acceptable `ThirdPartyDisplay / GenericAmd` origin. Before destructive Stage 2 work, the exact active Display INF identity is recorded, hashed, and exported for rollback.
 
-## Rollback
+The prior Display package is retained rather than globally purged. Recovery first prefers the exact prior Driver Store INF and can restage the verified exported INF if required.
 
-Before destructive Stage 2 work, the workflow records and exports the starting Display package. When the starting architecture contains Go-applicable standalone Lenovo extension lineage material, each recognized member is individually exported.
-
-The prior Display package is retained rather than globally purged. Rollback therefore remains origin-aware and does not require the Driver Store to contain only one AMD Display package.
-
-Rollback outcome status is derived from proof of prior Display restoration plus any required extension-lineage restoration. An unproven rollback stays on a recovery-only route.
+ROG Ally-origin migration is field-proven on Go 1. v4.5 carries the same origin/rollback mechanism into the selected-profile architecture.
 
 ## Recovery state machine
 
-Final v4.0 hardening adds explicit transaction-aware behavior:
+The v4 transaction model remains intact:
 
-- pre-driver Test Signing boundary failures and pre-destructive `ReadyForInstall` failures can rewind to `SignedPackageReady` for a fresh managed re-arm;
-- `DriverTransactionInProgress` remains reserved for rollback recovery;
-- `DriverInstalledPreReboot` remains preserved so target binding cannot repeat;
-- interrupted recovery is evaluated before the ordinary Test Signing prerequisite;
-- proven rollback cannot fall straight back into normal Stage 2;
-- if rollback proof was saved but parent checkpoint normalization was interrupted, the public launcher self-heals back to `SignedPackageReady`;
-- no failed destructive stage automatically retries.
+- pre-destructive failures can return through managed preparation;
+- `DriverTransactionInProgress` remains rollback/recovery territory;
+- a proven installed-pre-reboot target is not rebound blindly;
+- rollback outcome is proof-derived;
+- unproven rollback remains recovery-only;
+- no failed destructive stage automatically retries;
+- machine-wide concurrency protection remains active.
 
-## Concurrency
+## Windows PowerShell 5.1 compatibility
 
-All v4.0 public/resume entry routes share the machine-wide named mutex:
+Production v4.5 intentionally avoids dependencies that failed on the real target host:
 
-```text
-Global\LegionGo-AMD-Driver-Toolkit-Installer
-```
+- no production `Get-FileHash` dependency;
+- no `Import-PowerShellDataFile` dependency;
+- `${Variable}:`-safe interpolation where required.
 
-A second v4.0 session is rejected before persistent workflow mutation. Registered `LegionGo-AMD-*-Resume` tasks belonging to another release are also a fail-closed conflict.
+Hashing uses direct .NET SHA-256 streams. The release contract is loaded with a narrow static parser for the exact verified data-file grammar.
 
-## Dual-catalog trust
+## Evidence packaging
 
-The adapted Display INF requires its locally generated/signed catalog. The unchanged AMD 26.8.1 kernel/UMD payload is additionally covered by the exact original Microsoft WHCP catalog:
+The final v4.5 launcher uses direct `.NET System.IO.Compression.ZipFile` for final/failure evidence ZIP creation rather than relying on `Compress-Archive`. The exact API path passed a create/open smoke test on the real Windows PowerShell 5.1 host.
 
-```text
-u0203304.cat
-SHA-256: 23D62651554AA6AF3A9194457AC84B9881649E7C4E34BD7A0CBD51512A484A48
-```
+## Protected v4.0 internal identifiers
 
-Stage 2 registers that catalog through Windows catalog-management APIs under the managed name:
+Some field-proven internal state/schema/log identifiers still contain `v4.0`. They are implementation lineage, not hardware selection or public-release identity. They are intentionally not mass-renamed solely for cosmetics.
 
-```text
-LegionGo-AMD-26.8.1-Official-WHCP.cat
-```
-
-Both local and official catalogs must cover all 14 frozen targets. Registration is idempotent for the exact managed catalog, rechecked after reboot, and independently audited by Stage 4.
-
-## Frozen payload preservation
-
-The build protects a frozen 190-file unchanged manifest and exact v4 INF/DAT builders. The final deterministic identities are:
+## Frozen common payload
 
 ```text
 Driver:       32.0.31041.1004
-INF SHA-256:  F882C8E66D6EFC42AB9254D55E1B7DD7C3A23E772E854897C0EB9BFB1A214C42
-DAT SHA-256:  83C3A9D7A3E524135FFCA89A3971A788670CDF14898C85FD504B2ED284C61953
 Kernel SHA:   92A83D34ADB17A8C419A153B62E94E2CF3C478E260571AF6699574800AF3F3DF
+Official CAT: 23D62651554AA6AF3A9194457AC84B9881649E7C4E34BD7A0CBD51512A484A48
 ```
-
-## AMD defaults
-
-v4.0 intentionally preserves:
-
-```text
-ColorVibrance_ENABLE_DEF = 1
-ShowRSOverlay            = true
-```
-
-## Complete-state revalidation
-
-A saved `Complete` checkpoint is not blindly trusted forever. Rerunning the public launcher executes the full Stage 4 audit read-only. Drift produces evidence/failure without automatic repair or state clearing.
-
-## No ReleaseVersion spoofing
-
-Live Radeon Software `ReleaseVersion` spoofing is not part of v4.0. The driver package and software stack are validated against their real exact identities.

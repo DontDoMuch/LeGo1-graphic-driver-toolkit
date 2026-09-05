@@ -1,64 +1,66 @@
 # Compatibility
 
-## Hardware scope
+## Public Beta v4.5 hardware scope
 
-Public Beta v4.0 is designed only for the original Lenovo Legion Go:
+Public Beta v4.5 supports exactly three Lenovo Legion Go hardware profiles:
 
-```text
-PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA
-```
+| Profile | Exact HWID | Family | Active DDInstall |
+|---|---|---|---|
+| Legion Go 1 Z1 Extreme | `PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA&REV_04` | Phoenix | `ati2mtag_Phoenix_LegionGo` |
+| Legion Go S Z1 Extreme | `PCI\VEN_1002&DEV_15BF&SUBSYS_380C17AA&REV_04` | Phoenix | `ati2mtag_Phoenix_LegionGoS` |
+| Legion Go 2 Z2 Extreme | `PCI\VEN_1002&DEV_150E&SUBSYS_381C17AA&REV_C5` | Strix | `ati2mtag_Strix_LegionGo2` |
 
-Windows 11 is the officially supported and validated platform. Windows 10 is intentionally not hard-blocked but is unvalidated/unsupported. Legion Go S, other Legion Go variants, eGPU configurations, and unrelated AMD systems are outside this release's validated scope.
+Windows 11 x64 is the officially supported and validated platform. Windows 10 is intentionally not hard-blocked but remains unvalidated/unsupported.
+
+The resolver has no manual profile override. A device must match one exact supported hardware ID. Go 2 `REV_C4` is a tested negative fixture and is rejected.
+
+Unsupported by v4.5 include non-Extreme Go 1 variants, non-Z1-Extreme Go S variants, Go 2 AI Extreme, other Go 2 revisions/variants, eGPU configurations, and unrelated AMD systems.
 
 ## Starting-origin model
 
-Public Beta v4.0 classifies the live physical Legion Go GPU and its Driver Store architecture before destructive work. PnP health and actual hardware applicability are authoritative; filenames alone are not.
+v4.5 classifies the live physical target GPU and its Driver Store architecture before destructive work. PnP health and actual selected-profile hardware applicability are authoritative; filenames alone are not.
 
 ### Microsoft Basic Display Adapter
 
-The physical target may be bound to Microsoft's in-box Basic Display driver. The classifier requires Microsoft provider/service identity and never attempts to delete the in-box `display.inf` / Basic Display package.
+A supported physical target may be bound to Microsoft's in-box Basic Display driver. The classifier never attempts to delete the in-box `display.inf` package.
 
 ### Lenovo OEM graphics
 
-A healthy Lenovo OEM Display stack with applicable Lenovo `amduw23e` lineage material is supported. Multiple historical generations may coexist. Applicable members must be Extension-class packages that actually target the original Go and belong to the validated Lenovo-derived ExtensionId lineage:
+Healthy Lenovo OEM Display stacks are supported. Applicable standalone Lenovo extension material is identified by readable model directives that target the **selected exact profile**, exported for rollback, and then handled according to the selected profile's frozen architecture.
 
-```text
-{07A2A561-D001-4503-B239-EF2FE0379EFB}
-```
-
-Recognized Go-applicable lineage members are individually exported for rollback before removal. Multiple distinct **applicable** ExtensionIds remain ambiguous and fail closed.
+Multiple historical same-lineage generations may coexist. Conflicting selected-profile-applicable ExtensionIds remain ambiguous and fail closed.
 
 ### Prior public toolkit releases
 
-Exact known Public Beta 26.6.2 and 26.6.4 architectures retain standalone Lenovo extension lineage material and have explicit compatibility handling. Healthy merged 26.7.1 is recognized through its embedded Lenovo marker family. Exact installed 26.8.1 is also recognized for resume/idempotent verification paths.
+Known prior toolkit architectures remain classifiable where the field-proven v4 origin model supports them. Protected internal v4.0 state/schema identifiers may persist in the v4.5 engine and are not evidence that the wrong public package is running.
 
 ### Healthy third-party AMD Display origins
 
-v4.0 no longer assumes that every staged `amduw23e.inf` sharing a familiar filename/class/ExtensionId belongs to the Legion Go.
+A healthy structurally classifiable third-party AMD Display package can be an accepted starting origin. The current active Display INF is preserved as verified rollback material before the destructive transition.
 
-All staged `amduw23e` packages are inventoried. **Only a readable INF whose actual model directive targets `PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA` enters the Go 1 lineage/export/removal path.**
+All staged `amduw23e` packages are inventoried. Only a readable INF whose actual model directive targets the selected exact v4.5 profile enters that profile's extension ownership/export/removal path.
 
 Therefore:
 
 - proven foreign/non-applicable packages are preserved;
-- foreign packages may share the historical Lenovo-derived ExtensionId without becoming Go-owned;
+- foreign packages may share a familiar filename/class/ExtensionId without becoming selected-profile-owned;
 - unreadable hardware scope fails closed;
-- a foreign ExtensionId that actually targets the Go remains fail-closed rather than being ignored.
+- an unexpected lineage that actually targets the selected profile remains fail-closed rather than being ignored.
 
-This behavior was field-validated with a real ASUS ROG Ally Z1 Extreme graphics stack. Its `amduw23e.inf` shared the historical ExtensionId but targeted ASUS `...1043` subsystem IDs, not `381217AA`; the extension was preserved while v4.0 successfully transitioned the active Display package to 26.8.1.
+The original v4 architecture was physically field-validated from a real ASUS ROG Ally Z1 Extreme graphics origin on Go 1. Its extension targeted ASUS subsystem IDs and was preserved while the Go 1 transition completed. v4.5 keeps that field-proven behavior and generalizes applicability to the selected profile.
 
-The ASUS version/hash is evidence, **not an acceptance whitelist**. Other third-party AMD origins are evaluated by the same structural health and hardware-applicability contract.
+ROG Ally-origin migration is field-proven on Go 1. The same generalized third-party-origin contract is present for Go S and Go 2, but an Ally-origin transition has not been separately field-run on those devices.
 
-## Dirty mixed-origin field case
+## Go S profile specifics
 
-A further field test installed the ASUS graphics package and then Lenovo graphics **without rebooting between those two installs**, followed by Public Beta v4.0. The v4.0 / 26.8.1 transition completed successfully. This demonstrates tolerance of a realistic mixed Driver Store history, not permission to bypass fail-closed origin checks.
+Go S Z1 Extreme uses Phoenix and the dedicated `ati2mtag_Phoenix_LegionGoS` section. Its 30 exact ordered Lenovo OEM directives are frozen. Lenovo OEM AddReg must remain after AMD DelReg or required Lenovo values can be deleted.
 
-## Final merged 26.8.1 architecture
+## Go 2 profile specifics
 
-The final v4.0 Display package incorporates the required Lenovo semantics. Standalone **Go-applicable** Lenovo extension material is therefore absent after a clean final transition, while proven foreign/non-Go extension packages may remain staged by design.
+Go 2 Z2 Extreme uses Strix and the dedicated `ati2mtag_Strix_LegionGo2` section with `%AMD150E.517%`.
+
+Official AMD 26.8.1 contains DEV_150E Strix coverage but does **not** natively enumerate the exact Lenovo `381C17AA / REV_C5` target. Lenovo OEM material proves exact C5 -> Strix, and v4.5 performs a controlled profile-specific adaptation. Do not describe exact C5 support as native AMD enumeration.
 
 ## Scope limits
 
-A different AMD release cannot be substituted merely because it can bind to the GPU. New AMD releases require separate source inspection, exact payload identities, Lenovo semantic delta work, catalog validation, and regression testing.
-
-No support claim is made for unvalidated external driver projects or other handheld hardware IDs.
+A different AMD release cannot be substituted merely because it can bind to a supported GPU. New AMD releases require separate source inspection, exact payload identities, OEM semantic delta work, catalog validation, and regression testing.

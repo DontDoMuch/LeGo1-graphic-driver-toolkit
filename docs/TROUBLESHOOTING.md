@@ -2,35 +2,41 @@
 
 ## First rule: stop at a hard failure
 
-Do not repeatedly force a failed numbered stage, manually delete workflow state, or manually remove staged `amduw23e` packages to bypass classification.
+Do not repeatedly force a failed numbered stage, manually delete workflow state, manually override the selected profile, or manually remove staged `amduw23e` packages to bypass classification.
 
-Preserve the visible console error plus the generated parser transcript or failure-evidence folder/ZIP under Downloads.
+Preserve the visible console error plus the generated parser/final/failure evidence folder or ZIP under Downloads.
+
+## Unsupported hardware / profile resolution failure
+
+Public Beta v4.5 supports only:
+
+```text
+PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA&REV_04
+PCI\VEN_1002&DEV_15BF&SUBSYS_380C17AA&REV_04
+PCI\VEN_1002&DEV_150E&SUBSYS_381C17AA&REV_C5
+```
+
+Do not edit a profile or hardware ID to bypass the gate. Other revisions/variants require separate validation.
 
 ## Test Signing after a failure
 
-Managed hard-failure recovery inspects BCD and, when required, configures Test Signing and `nointegritychecks` OFF before recovery completes. It removes automatic resume authorization and never automatically retries a failed destructive stage.
+Managed hard-failure recovery uses transaction-aware checkpoints and normalizes boot-integrity settings according to the proven state. It removes automatic resume authorization and never automatically retries a failed destructive stage.
 
-Public Beta v4.0 also normalizes safe pre-destructive retry checkpoints back through the managed Test Signing preparation path. You should rerun the **main public launcher**, not Stage 2 directly.
+Rerun the main public launcher only when the workflow/evidence says the state is safe for a normal rerun. Do not directly invoke Stage 2 to bypass recovery routing.
 
-If rollback after a destructive failure cannot be proven, the workflow remains on an explicit recovery-only path rather than silently treating the machine as ready for another install.
+If rollback after a destructive failure cannot be proven, the workflow remains recovery-only.
 
 ## Another installer session is already active
 
-v4.0 uses a machine-wide named mutex. If another v4.0 manual/resume session is already active, the new launcher exits before persistent workflow mutation.
-
-If a different registered `LegionGo-AMD-*-Resume` workflow is detected, v4.0 fails closed rather than racing another release. Resolve the older workflow instead of deleting tasks/state blindly.
+The v4 engine uses a machine-wide named mutex. A second manual/resume session is rejected before persistent workflow mutation. A conflicting registered `LegionGo-AMD-*-Resume` workflow also fails closed.
 
 ## Starting GPU origin is not acceptable
 
-Do not infer ownership from the filename `amduw23e.inf` alone.
+Do not infer ownership from `amduw23e.inf` alone.
 
-v4.0 inventories all such packages and only enters Go 1 extension handling when the readable INF actually targets:
+v4.5 inventories all such packages and only enters destructive extension handling when the readable INF actually targets the **selected exact hardware profile**. Proven foreign/non-applicable packages are intentionally preserved. Unreadable scope or conflicting selected-profile-applicable lineages fail closed.
 
-```text
-PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA
-```
-
-Proven foreign/non-applicable packages are intentionally preserved. Unreadable scope or conflicting Go-applicable lineages fail closed. Preserve evidence so the exact package can be classified safely.
+A healthy third-party AMD Display package can be an accepted starting origin; an unhealthy or ambiguous one cannot.
 
 ## AMD installer not found or rejected
 
@@ -41,18 +47,7 @@ whql-amd-software-adrenalin-edition-26.8.1-win11-b.exe
 SHA-256: 47272E13BD537C5796F1C760AF036D011B41684737BCDAF30B158D3BAB6740F3
 ```
 
-Keep one exact copy somewhere under Downloads. A same-named file with different bytes is not accepted.
-
-## Gears 5 reports Basic Display / Destiny 2 blocks an AMD DLL
-
-Public Beta v4.0 includes the dual-catalog correction for the 26.8.1 user-mode trust failure discovered during development. A correct final install must show:
-
-```text
-Local frozen-target coverage    = 14/14
-Official WHCP target coverage   = 14/14
-```
-
-Do not manually copy catalogs into CatRoot. Preserve Stage 4/failure evidence so the managed official-catalog state can be inspected.
+Keep exactly one matching copy somewhere under Downloads. A same-named file with different bytes is not accepted.
 
 ## Secure Boot
 
@@ -60,14 +55,18 @@ Secure Boot must be disabled for this local-catalog signing architecture. Enable
 
 **Preserve the BitLocker / Device Encryption recovery key before changing Secure Boot.**
 
+## Evidence ZIP was not created
+
+Preserve the evidence folder itself. v4.5 uses direct .NET ZIP packaging after the audit. A packaging-only failure must not be treated as permission to reinstall the driver or manually rerun destructive stages.
+
 ## Rerunning after Complete
 
-A saved `Complete` workflow no longer performs another installation. v4.0 reruns the full Stage 4 audit read-only to detect live-system drift. A drift failure reports evidence; it does not automatically repair the machine.
+A saved `Complete` workflow reruns the selected-profile Stage 4 audit read-only to detect live-system drift. A drift failure reports evidence; it does not automatically repair the machine.
+
+## Why do paths say v4.0 during a v4.5 run?
+
+Some protected internal v4 engine identifiers intentionally retain v4.0 naming. Do not rename or delete them. Verify the outer v4.5 package hash and the selected profile instead.
 
 ## Should I use DDU?
 
-DDU is not part of the normal Public Beta v4.0 installation workflow. Do not insert it into a normal upgrade/repair run unless a documented recovery procedure specifically calls for it.
-
-## Code 43
-
-Do not attempt to repair Code 43 by spoofing Radeon Software `ReleaseVersion`. v4.0 keeps the driver package and software identities internally consistent and does not use that workaround.
+DDU is not part of the normal Public Beta v4.5 workflow. Do not insert it into a normal upgrade/repair run unless a documented recovery procedure specifically calls for it.

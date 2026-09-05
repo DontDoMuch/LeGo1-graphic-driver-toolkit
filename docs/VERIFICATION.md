@@ -1,111 +1,106 @@
 # Verification
 
-## Public Beta v4.0 release asset
+## Public Beta v4.5 release asset
 
 ```text
-LegionGo-AMD-26.8.1-Public-Beta-v4.0.zip
-SHA-256: 8AC6A3A0ADE321860D20C958B47053EBC4BEB27A94EB177E30EC59450EEA2B07
-Size: 154588 bytes
+LegionGo-AMD-26.8.1-Public-Beta-v4.5.zip
+SHA-256: B773EEFE02560A47BB6A4AE109E21D4E967CD526A2198955EC4BBD788D13930C
+Size: 132499 bytes
 ```
 
-The public-named ZIP is the exact validated release bytes; only the outer filename differs from the final engineering-candidate filename used during field testing.
-
-The ZIP contains one top-level `LegionGo-AMD-26.8.1-Public-Beta-v4.0` directory with 20 files. Its internal `SHA256SUMS.txt` contains 19 entries and verifies every other packaged file.
+The exact public ZIP contains 24 entries. `PACKAGE-MANIFEST.json` governs the other 23 files and passed 23/23 integrity verification. ZIP CRC validation passed, and independent builds of the final candidate were byte-identical.
 
 ## Official AMD source
 
 ```text
 whql-amd-software-adrenalin-edition-26.8.1-win11-b.exe
 SHA-256: 47272E13BD537C5796F1C760AF036D011B41684737BCDAF30B158D3BAB6740F3
-Size: 930653064 bytes
 Version: 26.8.1.0
 ```
 
 The AMD installer is not redistributed by this repository.
 
-## Final installed identities
+## Official source identities
 
 ```text
-DriverVersion:
-  32.0.31041.1004
+Display INF: u0203304.inf
+INF SHA-256: F47B47014525C5D9A29DC6ECAC5A91C4E7B8EF6699CEB1D886BCCB0F208B25FA
 
-Final INF SHA-256:
-  F882C8E66D6EFC42AB9254D55E1B7DD7C3A23E772E854897C0EB9BFB1A214C42
+Source DAT: B026373\amdgcf.dat
+DAT SHA-256: 205E22588E619FE197E5D864F6834A71ECCEF2C76317CBC38157B860F1D3FD24
 
-Final amdgcf.dat SHA-256:
-  83C3A9D7A3E524135FFCA89A3971A788670CDF14898C85FD504B2ED284C61953
+Kernel amdkmdag.sys SHA-256:
+92A83D34ADB17A8C419A153B62E94E2CF3C478E260571AF6699574800AF3F3DF
 
-Loaded amdkmdag.sys SHA-256:
-  92A83D34ADB17A8C419A153B62E94E2CF3C478E260571AF6699574800AF3F3DF
+Official Microsoft WHCP catalog u0203304.cat SHA-256:
+23D62651554AA6AF3A9194457AC84B9881649E7C4E34BD7A0CBD51512A484A48
 ```
 
-## Dual-catalog identities
+## Exact supported profile outputs
 
-The merged Driver Store package uses the locally generated/signed active catalog. v4.0 also registers the exact original Microsoft AMD WHCP catalog for the frozen kernel/UMD payload:
+### Legion Go 1 Z1 Extreme
 
 ```text
-Official source catalog: u0203304.cat
-SHA-256:
-  23D62651554AA6AF3A9194457AC84B9881649E7C4E34BD7A0CBD51512A484A48
-
-Managed CatRoot name:
-  LegionGo-AMD-26.8.1-Official-WHCP.cat
-
-Signer:
-  Microsoft Windows Hardware Compatibility Publisher
-
-Required coverage:
-  Local catalog    14/14
-  Official catalog 14/14
+HWID: PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA&REV_04
+Active DDInstall: ati2mtag_Phoenix_LegionGo
+INF SHA-256: F882C8E66D6EFC42AB9254D55E1B7DD7C3A23E772E854897C0EB9BFB1A214C42
+DAT SHA-256: 83C3A9D7A3E524135FFCA89A3971A788670CDF14898C85FD504B2ED284C61953
+Expected final audit: 78/78
 ```
 
-Three critical frozen targets include `amdkmdag.sys`, `amdxc64.dll`, and `amdxx64.dll`.
-
-## Matching AMD Software
+### Legion Go S Z1 Extreme
 
 ```text
-AMD Settings product:
-  {2516E7E8-BAB4-42B7-BAEA-CB34B96275FF}
-
-AMD Settings version:
-  2026.0811.2128.2099
-
-AMD DVR product:
-  {82B67D1C-33CB-46FF-A3DC-E7BE6902D38A}
-
-AMD DVR version:
-  26.10.26223.2125
-
-RSXCM expected:
-  22.10.0.0
+HWID: PCI\VEN_1002&DEV_15BF&SUBSYS_380C17AA&REV_04
+Active DDInstall: ati2mtag_Phoenix_LegionGoS
+INF SHA-256: 1C17657B1550AAB3BE0A981864122B3A2E852E3F90DA3EEF1413AB33561FE6EA
+DAT SHA-256: 83C3A9D7A3E524135FFCA89A3971A788670CDF14898C85FD504B2ED284C61953
+Expected final audit: 81/81
 ```
 
-RSXCM is ancillary/audited. Absence or version drift produces evidence warnings but is not by itself a failed driver/software seal.
+### Legion Go 2 Z2 Extreme
+
+```text
+HWID: PCI\VEN_1002&DEV_150E&SUBSYS_381C17AA&REV_C5
+Active DDInstall: ati2mtag_Strix_LegionGo2
+INF SHA-256: BE67AD0E09147A7C33AA9688533F0BE99842F0E2FE14F8C79EB35CB6BA3F45CC
+DAT SHA-256: B85E600A892480BD5F15A4BC1C9B2993FF0717E95A81F480586A8B9653F514A8
+Expected final audit: 79/79
+```
 
 ## Required final policy state
 
 ```text
-GPU Status                = OK
-ProblemCode               = 0
-HasProblem                = False
-Go-applicable amduw23e    = absent
-Foreign amduw23e          = permitted/preserved
-Test Signing              = OFF
-nointegritychecks         = OFF
-ShowRSOverlay             = true
-ColorVibrance_ENABLE_DEF  = 1
-Stage 2/3/4               = Passed
-FailedChecks              = 0
-Workflow Stage            = Complete
+GPU Status          = OK
+ProblemCode         = 0
+HasProblem          = False
+Selected profile    = exact HWID match
+Applicable amduw23e = absent after clean transition
+Foreign amduw23e    = permitted/preserved
+Test Signing        = OFF
+nointegritychecks   = OFF
+Stage 2/3/4         = Passed
+FailedChecks        = 0
+Warnings            = 0
+Workflow Stage      = Complete
 ```
 
 ## Final release validation gates
 
 The exact final bytes passed:
 
-- Windows PowerShell 5.1 package/parser preflight with `Passed=True`, `FailedChecks=0`, exit code `0`;
-- physical machine-wide mutex rejection of a second launcher before persistent mutation;
-- physical saved-`Complete` read-only Stage 4 revalidation;
-- 72/72 Stage 4 checks with zero failures and zero warnings on the finalized field state.
+- real Windows PowerShell 5.1 package/parser/entry-gate execution;
+- `PACKAGE_MANIFEST` 23/23;
+- PowerShell parser 13 files / 0 errors;
+- 43/43 all-profile source-backed preflight with zero failures;
+- exact reconstruction of all three profile INF/DAT outputs;
+- exact HWID -> DDInstall binding for all three supported profiles;
+- negative Go 2 `REV_C4` rejection;
+- direct .NET evidence-ZIP create/open smoke test;
+- physical Go 1 combined-engine 78/78 final audit on the immediate pre-auto-evidence candidate;
+- physical Go S 81/81 final audit;
+- physical Go 2 79/79 final audit.
 
-The package itself remains the executable source of truth. The documentation-only repository publication record does not duplicate or rewrite those executable files.
+The exact final `B773...` candidate was not destructively reinstalled solely to traverse the post-audit evidence-ZIP addition. Its Stage 1-4/device logic is unchanged from the Go 1 field-success candidate, while the exact final bytes passed the real-host entry gate, 43/43 all-profile regression, and direct .NET ZIP smoke test.
+
+The package itself remains the executable source of truth. Private volunteer packages and private field evidence are not public release artifacts.
