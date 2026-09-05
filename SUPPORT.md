@@ -2,11 +2,11 @@
 
 ## Supported release
 
-**Public Beta v4.5 / AMD 26.8.1 is the current supported release.** Earlier releases remain historical publication records and may receive best-effort troubleshooting support, but new installs should use v4.5 unless a maintainer specifically requests an older build for regression work.
+**Public Beta v4.5.1 / AMD 26.8.1 is the current supported release.** Public Beta v4.5 and earlier releases remain historical publication records and may receive best-effort troubleshooting support, but new installs should use v4.5.1 unless a maintainer specifically requests an older build for regression work.
 
 ## Supported hardware
 
-Only these exact v4.5 targets are supported:
+Only these exact v4.5.1 targets are supported:
 
 ```text
 Legion Go 1 Z1 Extreme
@@ -24,7 +24,7 @@ Do not assume support from the marketing model name alone. Other revisions and v
 ## Before opening an issue
 
 - Stop at the first hard failure; do not repeatedly force the failed stage.
-- Verify the v4.5 ZIP and required AMD installer hashes.
+- Verify the v4.5.1 ZIP and required AMD installer hashes.
 - Preserve the complete console output and generated final/failure evidence bundle or folder.
 - Record the exact hardware ID, selected profile, Windows version/build, starting display-driver version/INF, Secure Boot state, and whether another graphics-driver project was previously used.
 - If the failure mentions `amduw23e`, include the staged package inventory rather than manually deleting packages.
@@ -33,7 +33,7 @@ Do not assume support from the marketing model name alone. Other revisions and v
 
 Protected field-proven engine identifiers may still contain `Public-Beta-v4.0` in internal state/schema/log paths. Do not rename or delete those paths manually. Use the exact evidence/log locations printed by the launcher.
 
-Final and failure evidence is also written under Downloads; v4.5 attempts to package it automatically as a ZIP.
+Final and failure evidence is also written under Downloads; v4.5.1 attempts to package it automatically as a ZIP.
 
 ## Platform
 

@@ -1,5 +1,16 @@
 # Changelog
 
+## Public Beta v4.5.1 — 2026-09-05
+
+- Published a compatibility/recovery hotfix over Public Beta v4.5 without changing AMD 26.8.1, the three exact supported HWIDs, the frozen per-profile INF/DAT identities, or the 78/81/79 final-audit contracts.
+- Corrected the field-observed official-catalog pre-state where one or more exact Microsoft WHCP catalog copies already cover all 14 frozen targets but the managed-name copy is absent. v4.5.1 uses the additive `ApplyPreservingExisting` path and preserves those preexisting exact Microsoft copies; incomplete or ambiguous coverage still fails closed.
+- Corrected rollback adjudication so the live Display identity/health is re-proven **after** applicable extension restoration and the final PnP rescan, before recovery outcome is accepted.
+- Moved persistent workflow state to `C:\ProgramData\LegionGo-AMD-26.8.1-MultiDevice-v4.5.1\<Profile>` so the hotfix never consumes or modifies v4.5 workflow state.
+- Corrected `Start-LegionGo-AMD-26.8.1.cmd` to launch `Run-Validated-LegionGo-AMD-26.8.1-Public-Beta-v4.5.1.ps1` explicitly through Windows PowerShell 5.1.
+- Recorded a PowerShell-host edge case: starting Windows PowerShell 5.1 from a PowerShell 7 parent can inherit a PowerShell-7-oriented `PSModulePath` and trigger `Microsoft.PowerShell.Security` module-load failures. The shipped v4.5.1 bytes do **not** contain a `PSModulePath` sanitizer; the supported workaround is Explorer/Command Prompt or a clean Windows PowerShell 5.1 launch context.
+- The v4.5 catalog-prestate failure recovered to a proven healthy GPU/rollback state with boot-integrity policy normalized. The corrected v4.5.1 path was then successfully run from a clean Windows PowerShell 5.1 environment. No separate final volunteer evidence ZIP is claimed for that final run.
+- Final public release asset: `LegionGo-AMD-26.8.1-Public-Beta-v4.5.1.zip`, SHA-256 `910613864EED31EEA38143E639C0203B0E4F6E4EA38B95FBEC66494053F7CA75`, size `132857` bytes.
+
 ## Public Beta v4.5 — 2026-09-04
 
 - Expanded the AMD 26.8.1 v4 architecture from one original-Legion-Go target to three exact install-capable profiles selected automatically by exact hardware ID.

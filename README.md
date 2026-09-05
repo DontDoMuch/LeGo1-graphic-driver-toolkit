@@ -2,9 +2,9 @@
 
 # Lenovo Legion Go AMD 26.8.1 Toolkit
 
-### Public Beta v4.5 — one compatibility-focused workflow for three exact validated hardware profiles
+### Public Beta v4.5.1 — v4.5 compatibility hotfix for three exact validated hardware profiles
 
-![Release](https://img.shields.io/badge/release-Public%20Beta%20v4.5-2EA44F?style=for-the-badge)
+![Release](https://img.shields.io/badge/release-Public%20Beta%20v4.5.1-2EA44F?style=for-the-badge)
 ![Target](https://img.shields.io/badge/current%20target-AMD%2026.8.1-ED1C24?style=for-the-badge)
 ![Profiles](https://img.shields.io/badge/validated%20profiles-3-111111?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/platform-Windows%2011-0078D4?style=for-the-badge)
@@ -12,23 +12,23 @@
 
 **Build, install, and verify AMD 26.8.1 while preserving the OEM integration required by each validated Legion Go profile.**
 
-[Latest release](../../releases/tag/public-beta-v4.5) · [Installation](docs/INSTALLATION.md) · [Compatibility](docs/COMPATIBILITY.md) · [Verification](docs/VERIFICATION.md) · [Troubleshooting](docs/TROUBLESHOOTING.md)
+[Latest release](../../releases/tag/public-beta-v4.5.1) · [Installation](docs/INSTALLATION.md) · [Compatibility](docs/COMPATIBILITY.md) · [Verification](docs/VERIFICATION.md) · [Troubleshooting](docs/TROUBLESHOOTING.md)
 
 </div>
 
 ---
 
 > [!IMPORTANT]
-> **Current release: Public Beta v4.5.** It targets AMD Adrenalin 26.8.1 / display driver `32.0.31041.1004` and expands the v4 engine from the original Legion Go to three exact validated hardware profiles.
+> **Current release: Public Beta v4.5.1.** It targets AMD Adrenalin 26.8.1 / display driver `32.0.31041.1004` and retains the exact three-profile hardware scope introduced by v4.5.
 >
-> v4.5 uses one automatic exact-HWID resolver with no manual profile override. The physical Go 1 combined-package run passed **78/78**, the Go S Z1 Extreme field run passed **81/81**, and the Go 2 Z2 Extreme field run passed **79/79**, all with zero failed checks and zero warnings. The exact final package also passed the real Windows PowerShell 5.1 entry gate and a 43-check all-profile source-backed regression with zero failures.
+> v4.5.1 retains the v4.5 automatic exact-HWID resolver with no manual profile override. The physical Go 1 combined-package run passed **78/78**, the Go S Z1 Extreme field run passed **81/81**, and the Go 2 Z2 Extreme field run passed **79/79**, all with zero failed checks and zero warnings. The v4.5 profile baseline remains unchanged. v4.5.1 fixes a field catalog-prestate false negative, re-proves rollback after extension restore/final rescan, moves to a fresh workflow namespace, and corrects the public CMD entrypoint. The exact final v4.5.1 bytes were successfully run from a clean Windows PowerShell 5.1 environment; no separate final volunteer evidence ZIP is claimed for that run.
 
 > [!WARNING]
 > This toolkit changes the display-driver package, Driver Store, certificate trust, AMD Software, scheduled tasks, and temporary Windows Test Signing configuration. Back up important data and **preserve your BitLocker or Device Encryption recovery key before disabling Secure Boot or starting the workflow**.
 
 ## Exact supported hardware
 
-Public Beta v4.5 supports only these exact hardware IDs:
+Public Beta v4.5.1 supports only these exact hardware IDs:
 
 | Device | Exact HWID | AMD family | Active DDInstall | Final audit |
 |---|---|---|---|---:|
@@ -38,11 +38,11 @@ Public Beta v4.5 supports only these exact hardware IDs:
 
 The resolver fails closed on every other hardware ID. In particular, Go 2 `REV_C4` is a tested negative fixture.
 
-Not validated by v4.5: non-Extreme Go 1 variants, non-Z1-Extreme Go S variants, Go 2 AI Extreme, other Go 2 revisions/variants, eGPU paths, and unrelated AMD systems.
+Not validated by v4.5.1: non-Extreme Go 1 variants, non-Z1-Extreme Go S variants, Go 2 AI Extreme, other Go 2 revisions/variants, eGPU paths, and unrelated AMD systems.
 
-## What Public Beta v4.5 includes
+## What Public Beta v4.5.1 includes
 
-| Area | Public Beta v4.5 behavior |
+| Area | Public Beta v4.5.1 behavior |
 |---|---|
 | AMD target | Adrenalin 26.8.1 / display `32.0.31041.1004` |
 | Public workflow | One command, exactly two initial Y/N confirmations, automatic required reboot/resume boundaries |
@@ -57,7 +57,7 @@ Not validated by v4.5: non-Extreme Go 1 variants, non-Z1-Extreme Go S variants, 
 | Recovery | Failed checkpoints are transaction-aware; unproven rollback stays recovery-only; no failed destructive stage automatically retries |
 | Concurrency | Machine-wide installer mutex plus fail-closed detection of other registered Legion Go AMD resume workflows |
 | Boot policy | Secure Boot front-gated; temporary Test Signing must finish OFF; `nointegritychecks` must finish OFF |
-| Evidence | Final/failure evidence is preserved; v4.5 adds direct .NET ZIP packaging rather than relying on optional archive cmdlets |
+| Evidence | Final/failure evidence is preserved; direct .NET ZIP packaging is retained from v4.5 |
 
 Compatibility does not mean an arbitrary AMD release can be substituted. Each AMD release needs separate payload inspection, semantic delta work, exact identities, and regression validation.
 
@@ -81,9 +81,9 @@ Per-profile output identities:
 
 ## Existing third-party AMD drivers
 
-You do **not** need to restore Lenovo OEM graphics before running v4.5 when the current AMD Display stack is healthy and structurally classifiable.
+You do **not** need to restore Lenovo OEM graphics before running v4.5.1 when the current AMD Display stack is healthy and structurally classifiable.
 
-The v4 origin/rollback architecture was physically field-validated from a real ASUS/ROG Ally graphics origin on the original Legion Go. v4.5 preserves that logic and generalizes hardware applicability to the selected profile. Existing third-party Display material is retained as rollback input; foreign/non-applicable `amduw23e` material is preserved rather than blindly deleted.
+The v4 origin/rollback architecture was physically field-validated from a real ASUS/ROG Ally graphics origin on the original Legion Go. v4.5.1 preserves that logic and generalizes hardware applicability to the selected profile. Existing third-party Display material is retained as rollback input; foreign/non-applicable `amduw23e` material is preserved rather than blindly deleted.
 
 ROG Ally-origin migration is field-proven on Go 1. The same profile-aware third-party-origin contract is present for Go S and Go 2, but an Ally-origin transition has not been separately field-run on those two devices.
 
@@ -92,16 +92,16 @@ ROG Ally-origin migration is field-proven on Go 1. The same profile-aware third-
 Release asset:
 
 ```text
-LegionGo-AMD-26.8.1-Public-Beta-v4.5.zip
+LegionGo-AMD-26.8.1-Public-Beta-v4.5.1.zip
 ```
 
 SHA-256:
 
 ```text
-B773EEFE02560A47BB6A4AE109E21D4E967CD526A2198955EC4BBD788D13930C
+910613864EED31EEA38143E639C0203B0E4F6E4EA38B95FBEC66494053F7CA75
 ```
 
-Size: `132499 bytes`.
+Size: `132857 bytes`.
 
 The AMD installer is **not** included. Download AMD's official 26.8.1 package and keep it somewhere under your Downloads folder:
 
@@ -116,18 +116,20 @@ Use the fail-closed verify/unblock/extract/run block in [Installation](docs/INST
 
 ## Field validation highlights
 
-- Combined v4.5 engine on physical Go 1 Z1 Extreme: **78/78 PASS**, zero failures, zero warnings. That destructive run used the immediate pre-auto-evidence candidate; the final candidate changes only top-level evidence-ZIP packaging/manifest identity and preserves the field-proven Stage 1-4/device path.
-- Go S Z1 Extreme profile on volunteer hardware: **81/81 PASS**, zero failures, zero warnings.
-- Go 2 Z2 Extreme profile on volunteer hardware: **79/79 PASS**, zero failures, zero warnings.
-- Exact final v4.5 ZIP: real Windows PowerShell 5.1 entry gate PASS plus **43/43** all-profile source-backed preflight and direct .NET ZIP smoke PASS.
-- All three profile INF/DAT pairs rebuild byte-exact from the frozen AMD 26.8.1 source.
+- v4.5 physical baseline retained unchanged in v4.5.1: Go 1 Z1 Extreme **78/78 PASS**, Go S Z1 Extreme **81/81 PASS**, and Go 2 Z2 Extreme **79/79 PASS**, all with zero failed checks and zero warnings.
+- The v4.5 field failure that motivated this hotfix was a safe preexisting-official-catalog state: one exact Microsoft catalog already covered all 14 frozen targets, but the managed-name copy was absent. v4.5 failed closed and recovery re-proved a healthy GPU/rollback state.
+- v4.5.1 adds the `ApplyPreservingExisting` disposition for that exact safe additive state, preserves preexisting exact Microsoft catalog copies, and still fails closed on incomplete or ambiguous coverage.
+- v4.5.1 re-establishes final rollback Display proof **after** restoring applicable extensions and performing the final PnP rescan, before recovery outcome is accepted.
+- v4.5.1 uses `C:\ProgramData\LegionGo-AMD-26.8.1-MultiDevice-v4.5.1\<Profile>` and therefore does not reuse v4.5 workflow state.
+- A Windows PowerShell 5.1 v4.5.1 regression on the hotfix line passed package manifest **23/23**, parser **13 files / 0 errors**, actual entry gate, **32/32** static preflight, and **43/43** source-backed preflight. The exact final `910613...CA75` asset additionally has the corrected CMD target and was successfully run from a clean Windows PowerShell 5.1 environment.
 - Real Go 1 ASUS/ROG Ally Display origin migration remains field-proven through the inherited v4 origin/rollback architecture.
 
 Private volunteer packages and private evidence archives are not public release assets.
 
 ## Release history
 
-- [Public Beta v4.5](releases/public-beta-v4.5/) — current release, AMD 26.8.1, exact three-profile support
+- [Public Beta v4.5.1](releases/public-beta-v4.5.1/) — current hotfix release, AMD 26.8.1, exact three-profile support
+- [Public Beta v4.5](releases/public-beta-v4.5/) — historical multi-device release superseded by v4.5.1
 - [Public Beta v4.0](releases/public-beta-v4.0/) — AMD 26.8.1, original Go 1 release
 - [Public Beta v3.1](releases/public-beta-v3.1/) — AMD 26.7.1 bugfix
 - [Public Beta v3.0](releases/public-beta-v3.0/) — AMD 26.7.1
