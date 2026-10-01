@@ -1,6 +1,6 @@
 # FAQ
 
-## Which devices does Public Beta v4.5.1 support?
+## Which devices does Public Beta v5.0 support?
 
 Exactly these three:
 
@@ -17,6 +17,10 @@ PCI\VEN_1002&DEV_150E&SUBSYS_381C17AA&REV_C5
 
 Other revisions and variants are not supported by inference. The public resolver chooses the profile automatically and has no manual override.
 
+## What changed in v5.0?
+
+Only the public entry gate. A normal launch could forward empty `-OfficialInfPath` / `-OfficialDatPath` arguments to preflight. v5.0 adds those parameters only when non-empty. Stage 1-4 logic, deterministic builders, profile identities, signing/rollback behavior, and the internal `Public-Beta-v5.0` workflow namespace are unchanged.
+
 ## Can I start from an ROG Ally or another third-party AMD driver?
 
 A healthy structurally classifiable third-party AMD Display origin can be accepted. You do not need to restore Lenovo OEM first merely because the current active Display package came from another AMD handheld package.
@@ -27,7 +31,7 @@ The active starting Display package is preserved as verified rollback material. 
 
 Because filename, class, and ExtensionId are not sufficient proof that a package belongs to the selected Legion Go profile.
 
-v4.5.1 inventories all staged `amduw23e` packages. Only packages whose readable INF model directives actually target the selected exact hardware profile enter that profile's extension handling. Proven foreign/non-applicable packages are preserved.
+v5.0 inventories all staged `amduw23e` packages. Only packages whose readable INF model directives actually target the selected exact hardware profile enter that profile's extension handling. Proven foreign/non-applicable packages are preserved.
 
 ## Can multiple applicable Lenovo extension generations be present before installation?
 
@@ -35,17 +39,22 @@ Yes, when they are recognized members of one supported lineage. Each applicable 
 
 ## Why are there two catalogs?
 
-The adapted Display package requires the locally generated/signed catalog. The unchanged AMD 26.8.1 kernel/UMD payload is additionally covered by the exact original Microsoft WHCP `u0203304.cat`. Both catalog paths are independently audited.
+The adapted Display package requires the locally generated/signed catalog. The unchanged AMD 26.9.2 kernel/UMD payload is additionally covered by the exact original Microsoft WHCP `u0204590.cat`. Both catalog paths are independently audited.
 
-## Why does Go 2 use Strix if AMD does not list the exact Lenovo C5 ID?
+## Why does Go 2 use Strix?
 
-AMD 26.8.1 contains DEV_150E Strix coverage. Lenovo's OEM package proves the exact `DEV_150E / SUBSYS_381C17AA / REV_C5` mapping to Strix. v4.5.1 inserts that exact target through a controlled profile-specific adaptation using `%AMD150E.517%`.
+Lenovo OEM material establishes the exact `DEV_150E / SUBSYS_381C17AA / REV_C5` mapping used by the profile-specific Strix adaptation. v5.0 builds the dedicated `ati2mtag_Strix_LegionGo2` section and freezes its deterministic output identity.
 
-That is not the same as claiming AMD natively enumerates the exact Lenovo C5 hardware ID.
+This is not the same as claiming the exact Lenovo C5 ID is natively enumerated by every AMD release.
 
-## Why do some internal paths or schema names still say v4.0?
+## Why do some internal names still say v4.0 or v5.0?
 
-The multi-device v4.5.1 package intentionally preserves some field-proven v4.0 engine contracts and identifiers. Broad cosmetic renaming previously created parser/type risk. Public filenames, public release metadata, exact profile selection, and package identity are v4.5.1; protected internal lineage identifiers may remain v4.0.
+Two separate compatibility choices exist:
+
+- some protected engine contracts still retain v4.0 lineage names because broad cosmetic renaming previously created parser/type risk;
+- v5.0 uses the internal `Public-Beta-v5.0` runner/workflow namespace, and optional entry-gate source paths are forwarded only when non-empty.
+
+The outer public package, release metadata, and asset identity are v5.0.
 
 ## What if the installer fails after Test Signing was enabled?
 
@@ -53,20 +62,12 @@ The managed launcher uses transaction-aware checkpoints and rollback/recovery lo
 
 ## What if I double-click the installer twice?
 
-The v4 engine uses a machine-wide single-instance guard. A second launcher is rejected before persistent workflow mutation.
-
-## What if the workflow already says Complete?
-
-The launcher reruns the full selected-profile Stage 4 audit read-only. It does not reinstall or automatically repair drift.
+The engine uses a machine-wide single-instance guard and also checks for other registered Legion Go AMD resume workflows. A second active workflow should fail closed rather than interleave destructive operations.
 
 ## Can I use a different AMD release?
 
-No. v4.5.1 is frozen to AMD 26.8.1. Each AMD release requires separate adaptation and validation.
+No. v5.0 is frozen to AMD 26.9.2. Each AMD release requires separate adaptation and validation.
 
-## How many prompts are there?
+## Which devices have new physical 26.9.2 validation?
 
-The normal public launcher asks exactly two Y/N questions at the beginning. Required managed reboots afterward are automatic.
-
-## Inside of AMD Adrenalin software there is the "manage updates" button and some updates show, can I install them?
-
-These should be considered if your device has performance issues. If installing them causes issues, uninstall the update and install the one provided on the website to revert changes.
+Go 1 has new physical AMD 26.9.2 end-to-end validation on the v5.0 line. Go S and Go 2 have deterministic AMD 26.9.2 source/build proof, while their device-profile physical evidence is inherited from the v4.5.1 lineage. The public release does not claim new Go S or Go 2 physical 26.9.2 runs.

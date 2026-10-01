@@ -2,7 +2,9 @@
 
 ## Current release
 
-Public Beta v4.5.1 targets AMD Adrenalin 26.8.1 on three exact Lenovo Legion Go hardware profiles. The installer resolves the profile automatically from the physical hardware ID; there is no manual profile override.
+Public Beta v5.0 targets AMD Adrenalin 26.9.2 on three exact Lenovo Legion Go hardware profiles. The installer resolves the profile automatically from the physical hardware ID; there is no manual profile override.
+
+Public Beta v5.0 uses the `Public-Beta-v5.0` runner/workflow namespace. The entry gate forwards optional source paths only when non-empty.
 
 ## Requirements
 
@@ -31,20 +33,20 @@ Windows 10 is not officially supported. The installer intentionally does not har
 
 ## Required downloads
 
-1. `LegionGo-AMD-26.8.1-Public-Beta-v4.5.1.zip`
-2. AMD's official `whql-amd-software-adrenalin-edition-26.8.1-win11-b.exe`
+1. `LegionGo-AMD-26.9.2-Public-Beta-v5.0.zip`
+2. AMD's official `whql-amd-software-adrenalin-edition-26.9.2-win11-c.exe`
 
 Toolkit ZIP identity:
 
 ```text
-SHA-256: 910613864EED31EEA38143E639C0203B0E4F6E4EA38B95FBEC66494053F7CA75
-Size: 132857 bytes
+SHA-256: 4CB55F1EC556E9EEAE37E0BE37167D2352505A172D19BFF601D1F9ABA9EA9E7E
+Size: 135755 bytes
 ```
 
 AMD installer SHA-256:
 
 ```text
-47272E13BD537C5796F1C760AF036D011B41684737BCDAF30B158D3BAB6740F3
+72E368AE264F36E89CA0FE1DAB1CAD926047C2D6B0A3EFED9745D8D99780FE58
 ```
 
 Keep one exact AMD installer somewhere under Downloads. It is not included in the toolkit release asset.
@@ -53,21 +55,21 @@ Keep one exact AMD installer somewhere under Downloads. It is not included in th
 
 You do not need to restore Lenovo OEM graphics first if the current AMD Display stack is healthy and structurally classifiable. The workflow can preserve a third-party AMD Display package as rollback material. ROG Ally-origin migration is field-proven on Go 1.
 
-Unhealthy, unreadable, or ambiguous selected-profile states fail closed before the destructive transition.
+Unhealthy, unreadable, or ambiguous selected-profile states fail closed before destructive transition.
 
 ## Recommended fail-closed verify, unblock, extract, and run
 
-Open **Windows PowerShell 5.1** (`powershell.exe`), not PowerShell 7 / `pwsh`, and run the block below. It avoids dependencies on `Get-FileHash`, `Import-PowerShellDataFile`, and `Expand-Archive`, verifies both downloads with direct .NET SHA-256, extracts with .NET ZIP APIs into a dedicated Downloads folder, unblocks files when `Unblock-File` is available, and starts the generic v4.5.1 launcher.
+Open **Windows PowerShell 5.1** (`powershell.exe`), not PowerShell 7 / `pwsh`, and run:
 
 ```powershell
 $ErrorActionPreference = 'Stop'
 
 $Downloads = Join-Path $env:USERPROFILE 'Downloads'
-$Zip = Join-Path $Downloads 'LegionGo-AMD-26.8.1-Public-Beta-v4.5.1.zip'
-$ExpectedZip = '910613864EED31EEA38143E639C0203B0E4F6E4EA38B95FBEC66494053F7CA75'
-$AmdName = 'whql-amd-software-adrenalin-edition-26.8.1-win11-b.exe'
-$ExpectedAmd = '47272E13BD537C5796F1C760AF036D011B41684737BCDAF30B158D3BAB6740F3'
-$Root = Join-Path $Downloads 'LegionGo-AMD-26.8.1-Public-Beta-v4.5.1'
+$Zip = Join-Path $Downloads 'LegionGo-AMD-26.9.2-Public-Beta-v5.0.zip'
+$ExpectedZip = '4CB55F1EC556E9EEAE37E0BE37167D2352505A172D19BFF601D1F9ABA9EA9E7E'
+$AmdName = 'whql-amd-software-adrenalin-edition-26.9.2-win11-c.exe'
+$ExpectedAmd = '72E368AE264F36E89CA0FE1DAB1CAD926047C2D6B0A3EFED9745D8D99780FE58'
+$Root = Join-Path $Downloads 'LegionGo-AMD-26.9.2-Public-Beta-v5.0'
 
 function Get-SHA256Hex {
     param([Parameter(Mandatory=$true)][string]$Path)
@@ -106,7 +108,7 @@ $ActualAmd = Get-SHA256Hex -Path $AmdMatches[0].FullName
 if ($ActualAmd -cne $ExpectedAmd) {
     throw "AMD installer SHA256 mismatch.`nExpected: $ExpectedAmd`nActual:   $ActualAmd"
 }
-Write-Host '[PASS] Official AMD 26.8.1 installer SHA256 verified.' -ForegroundColor Green
+Write-Host '[PASS] Official AMD 26.9.2 installer SHA256 verified.' -ForegroundColor Green
 
 try {
     Add-Type -AssemblyName System.IO.Compression.FileSystem -ErrorAction Stop
@@ -128,27 +130,22 @@ if ($null -ne $Unblock) {
     Get-ChildItem -LiteralPath $Root -Recurse -File | Unblock-File
 }
 
-$Launcher = Join-Path $Root 'Start-LegionGo-AMD-26.8.1.cmd'
+$Launcher = Join-Path $Root 'Start-LegionGo-AMD-26.9.2.cmd'
 if (-not (Test-Path -LiteralPath $Launcher -PathType Leaf)) {
     throw "Launcher missing after extraction: $Launcher"
 }
 
-Write-Host '[PASS] Verified and extracted. Starting Public Beta v4.5.1.' -ForegroundColor Green
+Write-Host '[PASS] Verified and extracted. Starting Public Beta v5.0.' -ForegroundColor Green
 & $Launcher
 ```
 
-
 ## Windows PowerShell 5.1 launch environment
 
-The shipped `Start-LegionGo-AMD-26.8.1.cmd` explicitly starts:
-
-```text
-%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile
-```
+The shipped `Start-LegionGo-AMD-26.9.2.cmd` explicitly starts Windows PowerShell 5.1 with `-NoProfile` and invokes `Run-Validated-LegionGo-AMD-26.9.2-Public-Beta-v5.0.ps1`.
 
 For the supported path, launch the CMD from **File Explorer**, **Command Prompt**, or a clean Windows PowerShell 5.1 session. Avoid launching it from inside `pwsh` / PowerShell 7.
 
-A field-observed edge case occurs when a PowerShell 7 parent process passes its `PSModulePath` into Windows PowerShell 5.1. That inherited path can make the 5.1 host resolve an incompatible module location and fail while loading `Microsoft.PowerShell.Security`. The exact v4.5.1 release asset does **not** sanitize or rewrite `PSModulePath`, so documentation must not treat that behavior as fixed in code. If this symptom appears, close the PowerShell 7 parent and relaunch the CMD from Explorer/Command Prompt or a fresh Windows PowerShell 5.1 context.
+The exact v5.0 asset does not sanitize inherited `PSModulePath`. If Windows PowerShell 5.1 fails while resolving a PowerShell module after being launched from PowerShell 7, close the PowerShell 7 parent and relaunch from Explorer/Command Prompt or a fresh Windows PowerShell 5.1 context.
 
 ## What the managed workflow does
 
@@ -157,7 +154,7 @@ After the independent entry gate resolves the exact supported profile and both i
 - package/parser/public-scope preflight;
 - exact profile selection and fingerprint persistence;
 - dependency preparation;
-- exact AMD 26.8.1 source extraction and hashing;
+- exact AMD 26.9.2 source extraction and hashing;
 - deterministic profile-specific INF/DAT construction;
 - merged catalog build/signing plus original Microsoft WHCP catalog preservation/registration;
 - temporary Test Signing configuration;
@@ -182,9 +179,9 @@ A successful run also requires `FailedChecks = 0`, `Warnings = 0`, GPU problem c
 
 ## Failure and retry behavior
 
-Public Beta v4.5.1 does not automatically retry a failed destructive stage. Do not manually run numbered stages or edit workflow state to force progress.
+Public Beta v5.0 does not automatically retry a failed destructive stage. Do not manually run numbered stages or edit workflow state to force progress.
 
-Preserve the returned evidence. Unproven rollback remains recovery-only rather than silently becoming another install attempt.
+Preserve returned evidence. Unproven rollback remains recovery-only rather than silently becoming another install attempt.
 
 ## Existing Complete installation
 

@@ -8,27 +8,28 @@ Repository URL remains:
 DontDoMuch/LeGo1-graphic-driver-toolkit
 ```
 
-Public Beta v4.5.1 deliberately keeps that historical URL while the repository serves as the multi-device public-beta proving ground.
+Public Beta v5.0 keeps that historical repository URL while the project serves as the multi-device public-beta proving ground.
 
-## Publish Public Beta v4.5.1
+## Publish Public Beta v5.0
 
-1. Start from the reviewed `main` snapshot at `b7c703e4d5cc60eedc84cc02e7050ce3cffe60f9`.
-2. Create branch `release/public-beta-v4.5.1`.
-3. Preserve **all** historical release records unchanged, including every byte under `releases/public-beta-v4.5/**`.
-4. Apply only the reviewed 18-file v4.5.1 documentation/publication-record delta.
-5. Regenerate `REPOSITORY-SHA256-MANIFEST.txt` after all documentation changes.
-6. Confirm the GitHub Release asset bytes exactly match `910613864EED31EEA38143E639C0203B0E4F6E4EA38B95FBEC66494053F7CA75` and `132857` bytes.
-7. Do **not** copy the executable toolkit into `releases/public-beta-v4.5.1/`; that folder is documentation-only.
-8. Confirm `docs/COMPATIBILITY.md` still lists only the three exact supported HWIDs.
-9. Confirm `docs/VALIDATION.md` distinguishes inherited v4.5 physical results from v4.5.1 hotfix/recovery validation and does not claim a missing final volunteer evidence ZIP.
-10. Confirm no private volunteer package, evidence archive, certificate, key, log, workflow state, AMD binary, or installer is committed/uploaded.
-11. Open PR `Publish Public Beta v4.5.1 hotfix` targeting `main`. Do not merge without separate approval.
-12. After an approved merge, publish the GitHub Release as a pre-release and attach the exact frozen ZIP separately.
+1. Start from reviewed `main`.
+2. Create branch `release/public-beta-v5.0`.
+3. Preserve **all** historical release records unchanged.
+4. Update current documentation and add the documentation-only v5.0 publication record under `releases/public-beta-v5.0/`.
+5. Regenerate `REPOSITORY-SHA256-MANIFEST.txt` after all repository changes.
+6. Confirm the GitHub Release asset bytes exactly match `4CB55F1EC556E9EEAE37E0BE37167D2352505A172D19BFF601D1F9ABA9EA9E7E` and `135755` bytes.
+7. Do **not** copy the executable toolkit into `releases/public-beta-v5.0/`; that folder is documentation-only.
+8. Confirm `docs/COMPATIBILITY.md` lists only the three exact supported HWIDs.
+9. Confirm `docs/VALIDATION.md` distinguishes Go 1 physical AMD 26.9.2 validation from Go S / Go 2 deterministic 26.9.2 build proof plus inherited v4.5.1 device-profile evidence.
+10. Confirm the release notes include the final conditional optional source-path forwarding behavior and the `Public-Beta-v5.0` workflow identity.
+11. Confirm no private volunteer package, evidence archive, certificate, key, log, workflow state, AMD binary, or installer is committed/uploaded.
+12. Open PR `Publish Public Beta v5.0` targeting `main`; merge only after review/approval.
+13. Publish the GitHub Release as a pre-release and attach the exact frozen ZIP separately.
 
 Suggested publication commit:
 
 ```text
-Publish Public Beta v4.5.1 hotfix
+Publish Public Beta v5.0
 ```
 
 ## GitHub Release
@@ -36,13 +37,13 @@ Publish Public Beta v4.5.1 hotfix
 Tag:
 
 ```text
-public-beta-v4.5.1
+public-beta-v5.0
 ```
 
 Title:
 
 ```text
-Legion Go AMD 26.8.1 — Public Beta v4.5.1
+Legion Go AMD 26.9.2 — Public Beta v5.0
 ```
 
 Mark as:
@@ -54,24 +55,24 @@ Pre-release: Yes
 Attach exactly one custom toolkit asset:
 
 ```text
-LegionGo-AMD-26.8.1-Public-Beta-v4.5.1.zip
+LegionGo-AMD-26.9.2-Public-Beta-v5.0.zip
 ```
 
 Required SHA-256:
 
 ```text
-910613864EED31EEA38143E639C0203B0E4F6E4EA38B95FBEC66494053F7CA75
+4CB55F1EC556E9EEAE37E0BE37167D2352505A172D19BFF601D1F9ABA9EA9E7E
 ```
 
 Required size:
 
 ```text
-132857 bytes
+135755 bytes
 ```
 
 Do not upload AMD's official installer; users download it directly from AMD and the toolkit verifies its exact required bytes.
 
-Use `releases/public-beta-v4.5.1/RELEASE-NOTES.md` as the factual base for the GitHub Release description.
+Use `releases/public-beta-v5.0/RELEASE-NOTES.md` as the factual base for the GitHub Release description.
 
 ## Do not upload
 
@@ -79,10 +80,10 @@ Use `releases/public-beta-v4.5.1/RELEASE-NOTES.md` as the factual base for the G
 - Driver Store copies;
 - private keys or local certificates;
 - private logs, workflow state, or field evidence archives;
-- private Go S / Go 2 volunteer packages;
+- private volunteer packages;
 - internal regression/evidence archives;
 - development snapshots presented as the public release.
 
 ## Provenance
 
-The public asset identity is frozen at `910613864EED31EEA38143E639C0203B0E4F6E4EA38B95FBEC66494053F7CA75` / `132857` bytes. It contains the v4.5.1 catalog-prestate fix, final rollback re-proof, fresh workflow namespace, and corrected CMD target. It does not contain a `PSModulePath` sanitizer. Public Beta v4.5 remains immutable historical evidence.
+The public asset identity is frozen at `4CB55F1EC556E9EEAE37E0BE37167D2352505A172D19BFF601D1F9ABA9EA9E7E` / `135755` bytes. It contains the final v5.0 public entry-gate behavior together with the v5.0 Stage 1-4 workflow identity. Public Beta v4.5.1 and all earlier release records remain immutable historical evidence.

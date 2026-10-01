@@ -14,45 +14,44 @@ Public Beta v3.1
 Public Beta v4.0
 Public Beta v4.5
 Public Beta v4.5.1
+Public Beta v5.0
 ```
 
 Current release tag:
 
 ```text
-public-beta-v4.5.1
+public-beta-v5.0
 ```
-
-Internal engineering labels are not public release names.
 
 ## Current release
 
-**Public Beta v4.5.1** is current. It is a compatibility/recovery hotfix over v4.5, targets AMD Adrenalin 26.8.1 / display `32.0.31041.1004`, and supports exactly the same three validated profiles: Go 1 Z1 Extreme, Go S Z1 Extreme, and Go 2 Z2 Extreme.
+**Public Beta v5.0** is current. It targets AMD Adrenalin 26.9.2 / display `32.0.32015.2008`, supports the three exact hardware profiles established by v4.5, and includes conditional handling of optional public entry-gate source-path parameters.
 
 ## Release asset
 
 ```text
-LegionGo-AMD-26.8.1-Public-Beta-v4.5.1.zip
-SHA-256: 910613864EED31EEA38143E639C0203B0E4F6E4EA38B95FBEC66494053F7CA75
-Size: 132857 bytes
+LegionGo-AMD-26.9.2-Public-Beta-v5.0.zip
+SHA-256: 4CB55F1EC556E9EEAE37E0BE37167D2352505A172D19BFF601D1F9ABA9EA9E7E
+Size: 135755 bytes
 ```
 
-The AMD target belongs in release metadata and asset naming. The existing repository URL remains `LeGo1-graphic-driver-toolkit` for continuity during the multi-device public-beta phase; long-term project branding is intentionally not frozen by v4.5.1.
+The AMD target belongs in release metadata and asset naming. The existing repository URL remains `LeGo1-graphic-driver-toolkit` for continuity during the multi-device public-beta phase.
 
 ## Publication record
 
-Public Beta v4.5.1 uses a documentation-only repository record:
+Public Beta v5.0 uses a documentation-only repository record:
 
 ```text
-releases/public-beta-v4.5.1/
+releases/public-beta-v5.0/
   README.md
   RELEASE-NOTES.md
   VALIDATION-SUMMARY.md
-  PUBLIC-BETA-v4.5.1-ZIP-SHA256.txt
+  PUBLIC-BETA-v5.0-ZIP-SHA256.txt
 ```
 
 The executable toolkit is distributed as the immutable GitHub Release asset rather than duplicated under the repository release folder.
 
-Public Beta v4.5 remains an immutable historical release record at `releases/public-beta-v4.5/**`; it is not rewritten by the v4.5.1 publication. All earlier release directories remain unchanged as well.
+All prior release directories remain immutable historical records.
 
 ## Rules
 

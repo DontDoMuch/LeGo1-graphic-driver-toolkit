@@ -1,84 +1,86 @@
 # Validation
 
-## Public Beta v4.5.1
+## Public Beta v5.0
 
-Public Beta v4.5.1 is a targeted hotfix over v4.5. AMD 26.8.1, the three exact supported HWIDs, the frozen per-profile INF/DAT outputs, and the final-audit contracts are unchanged.
+Public Beta v5.0 targets AMD 26.9.2 and includes the final public entry-gate behavior, deterministic builders, profile identities, signing/rollback behavior, and `Public-Beta-v5.0` workflow namespace as one release.
 
-## Physical profile baseline inherited unchanged from v4.5
-
-| Device/profile | Exact HWID | Result | Failures | Warnings |
-|---|---|---:|---:|---:|
-| Legion Go 1 Z1 Extreme / `LegionGo1` | `PCI\VEN_1002&DEV_15BF&SUBSYS_381217AA&REV_04` | **78/78 PASS** | 0 | 0 |
-| Legion Go S Z1 Extreme / `LegionGoS-Z1Extreme` | `PCI\VEN_1002&DEV_15BF&SUBSYS_380C17AA&REV_04` | **81/81 PASS** | 0 | 0 |
-| Legion Go 2 Z2 Extreme / `LegionGo2-Z2Extreme` | `PCI\VEN_1002&DEV_150E&SUBSYS_381C17AA&REV_C5` | **79/79 PASS** | 0 | 0 |
-
-These results establish the unchanged device/profile baseline. v4.5.1 does not claim that all three destructive final-audit runs were repeated solely for this hotfix.
-
-## Field catalog-prestate failure and proven recovery
-
-A v4.5 Go 2 field run reached Stage 2 with this official-catalog state:
+## Exact public asset integrity
 
 ```text
-OfficialCatalogs = 1
-Covered          = 14
-ManagedExists    = False
-ManagedExact     = False
+LegionGo-AMD-26.9.2-Public-Beta-v5.0.zip
+SHA-256: 4CB55F1EC556E9EEAE37E0BE37167D2352505A172D19BFF601D1F9ABA9EA9E7E
+Size: 135755 bytes
+ZIP entries: 24
+PACKAGE-MANIFEST entries: 23
+Publication manifest verification: 23/23 exact length + SHA-256
+ZIP CRC: PASS
+PowerShell files in package: 13
 ```
 
-v4.5 treated that state as unsafe/ambiguous even though the exact Microsoft catalog already covered all 14 frozen targets. The workflow failed closed, invoked recovery, and recorded a proven rollback result with a healthy GPU (`Status=OK`, problem code `0`, AMD display `32.0.31041.1004`) while Test Signing and `nointegritychecks` were normalized OFF. This proved the recovery path worked and isolated the catalog decision as the false-negative gate.
+## Go 1 physical AMD 26.9.2 validation
 
-v4.5.1 corrects only that safe additive case: when one or more exact Microsoft catalog copies already cover every frozen target and the managed-name copy is absent, `ApplyPreservingExisting` registers the exact managed copy while preserving the preexisting exact Microsoft copy/copies. Partial coverage, non-exact identity, or ambiguous unsafe states still fail closed.
-
-The Stage 2 recovery code also now performs a final PnP rescan and re-proves the restored Display identity/health **after** extension restoration before `Get-LegionGoRollbackOutcomeStatus` accepts the rollback outcome.
-
-## v4.5.1 preflight results
-
-A real Windows PowerShell 5.1 regression on the v4.5.1 hotfix line completed with:
+The v5.0 release line records a physical Go 1 AMD 26.9.2 validation followed by a full RC1 one-command/resume/idempotent end-to-end run:
 
 ```text
-Actual public entry gate: ExitCode 0
-Package manifest:         23/23
-PowerShell parser:        13 files / 0 errors
-Static preflight:         32/32 PASS
-Source-backed preflight:  43/43 PASS
-FailedChecks:             0
-.NET ZIP smoke:           PASS
+Profile: LegionGo1
+Final audit: 78/78 PASS
+FailedChecks: 0
+Warnings: 0
+Test Signing: OFF
+nointegritychecks: OFF
+Local catalog critical coverage: 14/14
+Official catalog critical coverage: 14/14
 ```
 
-The source-backed pass rebuilt all three frozen profile outputs byte-exact and proved exact HWID -> DDInstall binding while rejecting Go 2 `REV_C4`.
+The validated v5.0 package forwards `OfficialInfPath` / `OfficialDatPath` only when non-empty while preserving the validated Stage 1-4 contract.
 
-The final public asset is:
+## Go S and Go 2 validation boundary
+
+The v5.0 package freezes deterministic AMD 26.9.2 source/build contracts for all three profiles. Its public release scope records an exact-source rebuild preflight of **45 checks / 0 failures** with these outputs:
+
+| Profile | Deterministic INF SHA-256 | Deterministic DAT SHA-256 |
+|---|---|---|
+| Go 1 | `381E6122577AB273ED1ED8EE7BEB4B66CB89DA4B8BEFABA64B064416E778E1BF` | `2E477E3DD0C9C88C09831AB116EDBD27FB4FBE5396BB408EE89354A383FEF223` |
+| Go S | `8F2AF5D9CC3CAB28CDE2D96499A655B579AC9BC6C62A215961DA66B360C83136` | `2E477E3DD0C9C88C09831AB116EDBD27FB4FBE5396BB408EE89354A383FEF223` |
+| Go 2 | `F6EED28F18EA658FCB7B62F28ECC2FE9DE1ED24EF46CFA47AC5870211622F7D2` | `DCBD6E683B6EDCA86DF0F5D22A1E09299391B5AF45759D750367AC38AD919EF4` |
+
+For **Go S and Go 2**, device-specific physical profile evidence is inherited from the physically validated v4.5.1 lineage. This release **does not claim new physical AMD 26.9.2 field runs on those two devices**.
+
+Historical physical profile baseline retained as device-profile evidence:
 
 ```text
-LegionGo-AMD-26.8.1-Public-Beta-v4.5.1.zip
-SHA-256: 910613864EED31EEA38143E639C0203B0E4F6E4EA38B95FBEC66494053F7CA75
-Size: 132857 bytes
+Legion Go S Z1 Extreme: 81/81 PASS, 0 failures, 0 warnings
+Legion Go 2 Z2 Extreme: 79/79 PASS, 0 failures, 0 warnings
 ```
 
-That exact final asset contains the corrected CMD target and was successfully run from a clean Windows PowerShell 5.1 environment during field recovery. It uses the fresh namespace `C:\ProgramData\LegionGo-AMD-26.8.1-MultiDevice-v4.5.1\<Profile>` so it does not consume the prior v4.5 workflow state.
+## Public entry-gate behavior
 
-## PowerShell-host boundary
+The v5.0 runner now builds preflight arguments conditionally:
 
-The final successful run used clean Windows PowerShell 5.1. A separate test showed that a Windows PowerShell 5.1 child launched from PowerShell 7 can inherit a PowerShell-7-oriented `PSModulePath` and fail while resolving `Microsoft.PowerShell.Security`. No `PSModulePath` sanitizer exists in the final v4.5.1 bytes. The supported launch path is Explorer/Command Prompt or a clean Windows PowerShell 5.1 context.
+- `-OfficialInfPath` is added only when non-empty;
+- `-OfficialDatPath` is added only when non-empty;
+- a normal launch therefore enters `STATIC_PACKAGE_PREFLIGHT` instead of forwarding empty path arguments;
+- Stage 1-4 scripts, builders, profiles, release contract, signing, rollback, and internal workflow identity remain unchanged from v5.0.
 
-## Frozen profile outputs
+## Required final policy state
+
+A successful installed profile must finish with:
 
 ```text
-Go 1 Z1 Extreme
-INF: F882C8E66D6EFC42AB9254D55E1B7DD7C3A23E772E854897C0EB9BFB1A214C42
-DAT: 83C3A9D7A3E524135FFCA89A3971A788670CDF14898C85FD504B2ED284C61953
-
-Go S Z1 Extreme
-INF: 1C17657B1550AAB3BE0A981864122B3A2E852E3F90DA3EEF1413AB33561FE6EA
-DAT: 83C3A9D7A3E524135FFCA89A3971A788670CDF14898C85FD504B2ED284C61953
-
-Go 2 Z2 Extreme
-INF: BE67AD0E09147A7C33AA9688533F0BE99842F0E2FE14F8C79EB35CB6BA3F45CC
-DAT: B85E600A892480BD5F15A4BC1C9B2993FF0717E95A81F480586A8B9653F514A8
+GPU Status          = OK
+ProblemCode         = 0
+HasProblem          = False
+Selected profile    = exact HWID match
+Applicable amduw23e = absent after clean transition
+Foreign amduw23e    = permitted/preserved
+Test Signing        = OFF
+nointegritychecks   = OFF
+Stage 2/3/4         = Passed
+FailedChecks        = 0
+Warnings            = 0
+Workflow Stage      = Complete
 ```
 
 ## Evidence boundary
 
-The repository does **not** claim a missing final v4.5.1 volunteer evidence ZIP. The field recovery outcome above is documented from the preserved handoff/evidence trail, while private volunteer packages, private evidence archives, certificates, keys, logs, and workflow state remain non-public.
-
-Windows 11 x64 on the three exact hardware IDs above remains the supported field scope. Windows 10, eGPU, other Legion Go variants/revisions, and arbitrary third-party driver projects are not certified by this release.
+Private volunteer packages, evidence archives, certificates, keys, logs, and workflow state are not public release assets. Public documentation distinguishes exact package/source proof from physical device proof and does not promote inherited evidence into a new 26.9.2 field-run claim.

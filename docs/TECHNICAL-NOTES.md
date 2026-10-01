@@ -1,104 +1,84 @@
 # Technical notes
 
-## v4.5.1 architecture
+## v5.0 architecture
 
-Public Beta v4.5.1 keeps the field-proven AMD 26.8.1 v4 engine and retains the exact multi-device profile layer introduced by v4.5:
+Public Beta v5.0 moves the frozen AMD target to 26.9.2 / display `32.0.32015.2008` while retaining the multi-device transaction/recovery architecture proven through v4.5.1.
 
-1. exact AMD 26.8.1 release contract;
-2. exact immutable hardware profiles;
-3. automatic exact-HWID resolver with no manual override;
-4. deterministic profile-specific INF/DAT construction;
-5. selected-profile origin/extension/rollback/recovery handling;
-6. shared AMD Software Stage 3;
-7. selected-profile final audit;
-8. fail-closed unsupported-hardware behavior.
+The package layers are:
 
-## v4.5.1 hotfix delta
+1. exact AMD 26.9.2 release contract;
+2. exact-HWID profile resolver with no manual override;
+3. deterministic per-profile INF/DAT builders;
+4. selected-profile origin classifier and rollback export;
+5. local merged-catalog signing plus original Microsoft WHCP catalog preservation;
+6. reboot/resume transaction state;
+7. matching native AMD Software / DVR normalization;
+8. profile-aware final persistence audit;
+9. public package/parser/preflight entry gate.
 
-The device profiles and deterministic outputs are unchanged from v4.5. v4.5.1 changes three workflow/recovery details:
+## v5.0 public entry-gate behavior
 
-1. **Additive exact-catalog handling.** `Register-LegionGoOfficialCatalogTrust` recognizes `ApplyPreservingExisting` when at least one exact Microsoft catalog is already present, all 14 frozen targets are covered, and the managed-name copy is absent. It registers the exact managed copy without removing the preexisting exact Microsoft catalog copy/copies. Incomplete or ambiguous coverage still stops.
-2. **Final rollback re-proof.** After prior Display restoration and applicable extension restoration, Stage 2 performs a final device rescan, re-queries the GPU, and revalidates the expected prior INF hash/health before rollback outcome is accepted.
-3. **Fresh persistent namespace.** Workflow state, rollback material, toolkit copy, logs, and resume-task identity are rooted under `C:\ProgramData\LegionGo-AMD-26.8.1-MultiDevice-v4.5.1\<Profile>`, preventing v4.5 state from being consumed by the hotfix.
+The v5.0 public runner builds optional source-path arguments conditionally. `OfficialInfPath` and `OfficialDatPath` are appended to the preflight command line only when non-empty.
 
-The public CMD entrypoint also now targets the v4.5.1 runner explicitly.
+The following remain unchanged from the v5.0 base release line:
 
-## Exact profiles
+- Stage 1-4 scripts and behavior;
+- deterministic builders;
+- three profile definitions and frozen outputs;
+- signing and rollback model;
+- `Public-Beta-v5.0` internal schema/runner identity;
+- `C:\ProgramData\LegionGo-AMD-26.9.2-MultiDevice-v5.0\<Profile>` workflow root.
+
+The public package, runner, and workflow identity all use `v5.0`.
+
+## Exact AMD 26.9.2 release contract
 
 ```text
-Go 1 Z1 Extreme
-15BF / 381217AA / REV_04
-Phoenix -> ati2mtag_Phoenix_LegionGo
-
-Go S Z1 Extreme
-15BF / 380C17AA / REV_04
-Phoenix -> ati2mtag_Phoenix_LegionGoS
-
-Go 2 Z2 Extreme
-150E / 381C17AA / REV_C5
-Strix -> ati2mtag_Strix_LegionGo2
+ReleaseId: AMD-26.9.2
+DriverVersion: 32.0.32015.2008
+Installer: whql-amd-software-adrenalin-edition-26.9.2-win11-c.exe
+Installer SHA-256: 72E368AE264F36E89CA0FE1DAB1CAD926047C2D6B0A3EFED9745D8D99780FE58
+Official INF: u0204590.inf
+Official INF SHA-256: 8E000BB2DDEC7E948D225B383FC867B4857F06387AA4A2B2A1EA1CF1819669F2
+Official DAT SHA-256: C0AF3662075989517CC5A5C1B6417682525B7707EAE1B95DD9AB3F263AD8D2F4
+Kernel SHA-256: 432AF310FE3FD129065E844548251CC49B969060A9478D543AC40ED59F318774
+Official catalog SHA-256: E960CA26A2A0EA877976850204522719077FB02162754009D443220080F681F5
 ```
 
-The selected profile ID, fingerprint, exact HWID, AMD family, base DDInstall, and release-contract fingerprint are persisted and revalidated across reboot boundaries.
+The unchanged-file manifest remains 190 entries and the official critical catalog-target manifest remains 14 entries.
 
-## Profile-specific INF/DAT construction
+## Profile identity persistence
 
-Go 1 and Go S both use Phoenix but have separate dedicated install sections and separate INF identities. Go 1 and Go S intentionally share the frozen 15BF/REV_04 `amdgcf.dat` output.
+The selected profile ID, fingerprint, exact HWID, AMD family, base DDInstall, and release-contract fingerprint are persisted and revalidated across reboot boundaries. Unsupported or changed hardware identity fails closed.
 
-Go S preserves 30 exact ordered Lenovo OEM directives. The Lenovo AddReg block must remain after AMD DelReg.
+## Go S and Go 2 OEM semantics
 
-Go 2 uses Strix, `%AMD150E.517%`, 28 exact ordered Lenovo OEM directives, and its own final DAT. AMD 26.8.1 has DEV_150E Strix coverage but not native enumeration of the exact Lenovo C5 ID; Lenovo OEM provenance establishes exact C5 -> Strix for this controlled adaptation.
+Go S uses Phoenix and preserves 30 exact ordered Lenovo OEM directives. Go 2 uses Strix and preserves 28 exact ordered Lenovo OEM directives. Their deterministic AMD 26.9.2 outputs are frozen in the package profile contracts.
 
-## Hardware-scoped extension ownership
+Physical 26.9.2 validation differs by profile: Go 1 has a full v5.0-line physical run; Go S and Go 2 use new deterministic 26.9.2 source/build proof with physical device-profile evidence inherited from v4.5.1.
 
-All staged `amduw23e.inf` packages are inventoried, but filename/class/ExtensionId do not prove ownership. Destructive extension handling is based on readable INF model directives targeting the **selected exact profile**.
+## Origin classification and rollback
 
-This is the generalized form of the v4.0 Go 1 rule that preserved a field-observed ASUS ROG Ally extension sharing the same filename/class/ExtensionId while targeting ASUS subsystem IDs.
+The classifier treats live selected-profile applicability as authoritative. Applicable recognized Lenovo extension lineage is exported and handled as transaction material. Proven foreign/non-applicable `amduw23e` packages are preserved.
 
-Applicable recognized selected-profile lineage members are exported before removal. Proven foreign/non-applicable packages are preserved. Unreadable applicability or conflicting applicable lineages fail closed.
+ROG Ally-origin migration remains field-proven on Go 1. That result proves the architecture can preserve a third-party Display origin as rollback input without treating every familiar extension filename as selected-profile-owned.
 
-## Third-party Display origins and rollback
+## Catalog model
 
-A healthy unrecognized AMD Display package can classify as an acceptable `ThirdPartyDisplay / GenericAmd` origin. Before destructive Stage 2 work, the exact active Display INF identity is recorded, hashed, and exported for rollback.
+The adapted INF requires a local per-machine signer/catalog. The unchanged AMD payload also retains exact Microsoft WHCP coverage through `u0204590.cat`. Final audit independently verifies the relevant local and official catalog contracts.
 
-The prior Display package is retained rather than globally purged. Recovery first prefers the exact prior Driver Store INF and can restage the verified exported INF if required.
-
-ROG Ally-origin migration is field-proven on Go 1. v4.5.1 carries the same origin/rollback mechanism into the selected-profile architecture.
-
-## Recovery state machine
-
-The v4 transaction model remains intact:
-
-- pre-destructive failures can return through managed preparation;
-- `DriverTransactionInProgress` remains rollback/recovery territory;
-- a proven installed-pre-reboot target is not rebound blindly;
-- rollback outcome is proof-derived;
-- unproven rollback remains recovery-only;
-- no failed destructive stage automatically retries;
-- machine-wide concurrency protection remains active.
+The Go 1 physical AMD 26.9.2 validation recorded critical coverage of 14/14 under both catalog paths.
 
 ## Windows PowerShell 5.1 compatibility
 
-Production v4.5.1 intentionally avoids dependencies that failed on the real target host:
+Production code intentionally avoids dependencies that failed on real target hosts, including production reliance on `Get-FileHash` and `Import-PowerShellDataFile`. Hashing uses direct .NET SHA-256 streams and release-contract parsing is narrow/static.
 
-- no production `Get-FileHash` dependency;
-- no `Import-PowerShellDataFile` dependency;
-- `${Variable}:`-safe interpolation where required.
-
-Hashing uses direct .NET SHA-256 streams. The release contract is loaded with a narrow static parser for the exact verified data-file grammar. The v4.5.1 asset does **not** sanitize inherited `PSModulePath`; a PowerShell 7 parent can therefore poison a Windows PowerShell 5.1 child module path. Explorer/Command Prompt or a clean Windows PowerShell 5.1 context is the supported launch environment.
+The package does not contain a `PSModulePath` sanitizer. Launching Windows PowerShell 5.1 as a child of PowerShell 7 can therefore inherit a PowerShell-7-oriented module path. Explorer, Command Prompt, or a clean Windows PowerShell 5.1 context remains the supported launch environment.
 
 ## Evidence packaging
 
-The final v4.5.1 launcher uses direct `.NET System.IO.Compression.ZipFile` for final/failure evidence ZIP creation rather than relying on `Compress-Archive`. The exact API path passed a create/open smoke test on the real Windows PowerShell 5.1 host.
+Final/failure evidence uses direct `.NET System.IO.Compression.ZipFile` packaging. A packaging-only failure does not authorize bypassing state checks or rerunning destructive stages manually.
 
-## Protected v4.0 internal identifiers
+## Internal lineage names
 
-Some field-proven internal state/schema/log identifiers still contain `v4.0`. They are implementation lineage, not hardware selection or public-release identity. They are intentionally not mass-renamed solely for cosmetics.
-
-## Frozen common payload
-
-```text
-Driver:       32.0.31041.1004
-Kernel SHA:   92A83D34ADB17A8C419A153B62E94E2CF3C478E260571AF6699574800AF3F3DF
-Official CAT: 23D62651554AA6AF3A9194457AC84B9881649E7C4E34BD7A0CBD51512A484A48
-```
+Some protected state/schema/log identifiers still contain `v4.0`. They are implementation lineage, not the public release identity. The `v5.0` runner/workflow namespace is the current release identity. Neither should be mass-renamed solely for cosmetics.
