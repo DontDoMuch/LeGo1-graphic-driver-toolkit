@@ -26,6 +26,8 @@
 > [!WARNING]
 > This toolkit changes the display-driver package, Driver Store, certificate trust, AMD Software, scheduled tasks, and temporary Windows Test Signing configuration. Back up important data and **preserve your BitLocker or Device Encryption recovery key before disabling Secure Boot or starting the workflow**.
 
+Apologies for my mistake, 5.0 has the correct files that was reuploaded, enjoy!
+
 ## Exact supported hardware
 
 Public Beta v5.0 supports only these exact hardware IDs:
