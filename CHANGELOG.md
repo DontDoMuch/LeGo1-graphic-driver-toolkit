@@ -1,5 +1,16 @@
 # Changelog
 
+## Public Beta v5.0 — 2026-09-30
+
+- Moved the public target to AMD Adrenalin 26.9.2 / display driver `32.0.32015.2008`.
+- Retained exact fail-closed support for Go 1 Z1 Extreme, Go S Z1 Extreme, and Go 2 Z2 Extreme.
+- Froze deterministic AMD 26.9.2 per-profile INF/DAT identities and the Microsoft WHCP `u0204590.cat` trust contract.
+- Recorded physical Go 1 AMD 26.9.2 end-to-end validation: **78/78 PASS**, zero failures, zero warnings, Test Signing OFF, `nointegritychecks` OFF, and critical catalog coverage **14/14 local + 14/14 official**.
+- Recorded exact-source deterministic three-profile rebuild preflight: **45 checks / 0 failures**. Go S and Go 2 retain deterministic AMD 26.9.2 source/build proof while their physical device-profile evidence remains inherited from v4.5.1; no new 26.9.2 physical run is claimed for those two devices.
+- Added conditional public entry-gate forwarding for optional `-OfficialInfPath` / `-OfficialDatPath`; normal launches use the standard static package-preflight path.
+- Final public release asset: `LegionGo-AMD-26.9.2-Public-Beta-v5.0.zip`, SHA-256 `4CB55F1EC556E9EEAE37E0BE37167D2352505A172D19BFF601D1F9ABA9EA9E7E`, size `135755` bytes.
+- Verified the exact v5.0 asset contains 24 files, with **23/23** package-manifest length/SHA-256 matches and a clean ZIP CRC scan.
+
 ## Public Beta v4.5.1 — 2026-09-05
 
 - Published a compatibility/recovery hotfix over Public Beta v4.5 without changing AMD 26.8.1, the three exact supported HWIDs, the frozen per-profile INF/DAT identities, or the 78/81/79 final-audit contracts.

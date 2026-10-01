@@ -2,11 +2,13 @@
 
 ## Supported release
 
-**Public Beta v4.5.1 / AMD 26.8.1 is the current supported release.** Public Beta v4.5 and earlier releases remain historical publication records and may receive best-effort troubleshooting support, but new installs should use v4.5.1 unless a maintainer specifically requests an older build for regression work.
+**Public Beta v5.0 / AMD 26.9.2 is the current supported release.** Public Beta v4.5.1 and earlier releases remain historical publication records and may receive best-effort troubleshooting support, but new installs should use v5.0 unless a maintainer specifically requests an older build for regression work.
+
+The v5.0 public entry gate forwards optional source paths only when non-empty. Its Stage 1-4 workflow identity is `Public-Beta-v5.0`.
 
 ## Supported hardware
 
-Only these exact v4.5.1 targets are supported:
+Only these exact targets are supported:
 
 ```text
 Legion Go 1 Z1 Extreme
@@ -21,20 +23,24 @@ PCI\VEN_1002&DEV_150E&SUBSYS_381C17AA&REV_C5
 
 Do not assume support from the marketing model name alone. Other revisions and variants remain unsupported until separately validated.
 
+## Validation boundary
+
+Go 1 has physical AMD 26.9.2 end-to-end validation on the v5.0 line. Go S and Go 2 have deterministic AMD 26.9.2 build/source proof while their device-profile physical evidence remains inherited from the v4.5.1 lineage. Do not describe Go S or Go 2 as having a new 26.9.2 physical field run unless new evidence is published.
+
 ## Before opening an issue
 
 - Stop at the first hard failure; do not repeatedly force the failed stage.
-- Verify the v4.5.1 ZIP and required AMD installer hashes.
+- Verify the v5.0 ZIP and required AMD 26.9.2 installer hashes.
 - Preserve the complete console output and generated final/failure evidence bundle or folder.
 - Record the exact hardware ID, selected profile, Windows version/build, starting display-driver version/INF, Secure Boot state, and whether another graphics-driver project was previously used.
 - If the failure mentions `amduw23e`, include the staged package inventory rather than manually deleting packages.
 - State whether the run began from Microsoft Basic, Lenovo OEM, a previous public toolkit release, or a third-party AMD/ROG Ally-style graphics stack.
 - Remove personal information, recovery keys, and private certificate material before sharing evidence.
 
-Protected field-proven engine identifiers may still contain `Public-Beta-v4.0` in internal state/schema/log paths. Do not rename or delete those paths manually. Use the exact evidence/log locations printed by the launcher.
+Some protected engine identifiers may still contain `Public-Beta-v4.0`; v5.0 also intentionally retains the internal `Public-Beta-v5.0` workflow namespace. Do not rename or delete those paths manually. Use the exact evidence/log locations printed by the launcher.
 
-Final and failure evidence is also written under Downloads; v4.5.1 attempts to package it automatically as a ZIP.
+Final and failure evidence is also written under Downloads; v5.0 attempts to package it automatically as a ZIP.
 
 ## Platform
 
-Windows 11 x64 is the officially validated platform. Windows 10 is not officially supported and is intentionally not hard-blocked.
+Windows 11 x64 is the officially supported platform. Windows 10 is not officially supported and is intentionally not hard-blocked.
