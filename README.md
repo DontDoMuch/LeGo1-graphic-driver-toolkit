@@ -1,5 +1,10 @@
 This page is no longer officially supported and considered deprecated. Its new home has been moved to here https://github.com/DontDoMuch/Finesse
 
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
 <div align="center">
 
 # Lenovo Legion Go AMD 26.9.2 Toolkit
